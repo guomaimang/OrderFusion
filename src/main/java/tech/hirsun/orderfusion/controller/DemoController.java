@@ -1,6 +1,7 @@
 package tech.hirsun.orderfusion.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tech.hirsun.orderfusion.result.CodeMessage;
@@ -11,7 +12,8 @@ import tech.hirsun.orderfusion.result.Result;
 public class DemoController {
 
     @RequestMapping("/page")
-    public String page() {
+    public String page(Model model) {
+        model.addAttribute("name", "orderfusion");
         return "demo";
     }
 
@@ -37,7 +39,6 @@ public class DemoController {
     public String db() {
             return "db";
     }
-
 
 
 
