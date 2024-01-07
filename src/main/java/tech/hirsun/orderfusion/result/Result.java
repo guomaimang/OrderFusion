@@ -19,16 +19,23 @@ public class Result<T> {
         this.data = data;
     }
 
-
+    // For success result
     public static <T> Result<T> success(T data) {
-        return new Result<T>(data);
+        return new Result<>(data);
     }
 
-    public static <T> Result<T> error(T data) {
-        return new Result<T>(data);
+    // For error result
+    public static Result error(CodeMessage codeMessage) {
+        if (codeMessage == null) {
+            return null;
+        }
+
+        Result errResult = new Result<>(codeMessage);
+        errResult.code = codeMessage.getCode();
+        errResult.msg = codeMessage.getMessage();
+        errResult.data = null;
+        return errResult;
     }
-
-
 
 
 
