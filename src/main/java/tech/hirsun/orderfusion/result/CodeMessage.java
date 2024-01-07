@@ -12,7 +12,7 @@ public class CodeMessage {
 
     // Common Message
     public static CodeMessage SUCCESS = new CodeMessage(0, "success");
-    public static CodeMessage SERVER_ERROR = new CodeMessage(50001, "error");
+    public static CodeMessage SERVER_ERROR = new CodeMessage(50001, "Server Error");
 
     // Login Message, like 5001x
 
@@ -41,7 +41,7 @@ public class CodeMessage {
                 '}';
     }
 
-    
+
 
 
 

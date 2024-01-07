@@ -2,8 +2,9 @@ package tech.hirsun.orderfusion.result;
 
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class Result<T> {
 
     private int code;
