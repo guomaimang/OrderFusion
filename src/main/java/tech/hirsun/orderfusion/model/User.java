@@ -1,13 +1,14 @@
 package tech.hirsun.orderfusion.model;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@AllArgsConstructor
+@Data
 public class User {
-    @Getter
-    @Setter
     private int id;
-
-    @Getter
-    @Setter
     private String name;
 }
+
+
