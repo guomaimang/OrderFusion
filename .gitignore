@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
