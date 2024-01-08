@@ -12,17 +12,17 @@ public class RedisService {
     @Autowired
     JedisPool jedisPool;
 
-    public <T> T get(String key, Class<T> clazz) {
+    public <T> T get(KeyPrefix prefix, String key, Class<T> clazz) {
         try (Jedis jedis = jedisPool.getResource()) {
-            String value = jedis.get(key);
+            String value = jedis.get(prefix.getPrefix() + key);
             return stringToBean(value, clazz);
         }
     }
 
-    public <T> boolean set(String key, T value) {
+    public <T> boolean set(KeyPrefix prefix, String key, T value) {
         try (Jedis jedis = jedisPool.getResource()) {
             String rvalue = beanToString(value);
-            jedis.set(key, rvalue);
+            jedis.set(prefix.getPrefix() + key, rvalue);
             return true;
         }
     }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tech.hirsun.orderfusion.model.User;
 import tech.hirsun.orderfusion.redis.RedisService;
+import tech.hirsun.orderfusion.redis.UserKey;
 import tech.hirsun.orderfusion.result.CodeMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.UserService;
@@ -53,19 +54,22 @@ public class DemoController {
     }
 
     @ResponseBody
-    @RequestMapping("/redis/get")
-    public Result<Integer> redis() {
-        Integer value = redisService.get("key1", Integer.class);
-        return Result.success(value);
+    @RequestMapping("/redis/get/user")
+    public Result<User> redisGet() {
+        User user = redisService.get(UserKey.getById,"1", User.class);
+        return Result.success(user);
     }
 
     @ResponseBody
-    @RequestMapping("/redis/set")
-    public Result<String> redisSet() {
-        boolean outcome = redisService.set("key2", "hello, orderfusion");
-        String value = redisService.get("key2", String.class);
-        return Result.success(value);
+    @RequestMapping("/redis/set/user")
+    public Result<User> redisSet() {
+        User user = new User(1,"hanjiaming");
+        redisService.set(UserKey.getById, "1",user);
+        User userrt= redisService.get(UserKey.getById,"1", User.class);
+        return Result.success(userrt);
     }
+
+    
 
 
 }
