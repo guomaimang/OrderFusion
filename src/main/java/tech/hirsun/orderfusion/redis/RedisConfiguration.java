@@ -1,32 +1,48 @@
 package tech.hirsun.orderfusion.redis;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
-@Component
-@ConfigurationProperties(prefix = "spring.data.redis")
-@Data
+@Configuration
+@Getter @Setter
 public class RedisConfiguration {
 
+    @Value("${redis.host}")
     private String host;
+
+    @Value("${redis.port}")
     private int port;
+
+    @Value("${redis.password}")
     private String password;
+
+    @Value("${redis.database}")
     private int database;
+
+    @Value("${redis.timeout}")
     private int timeout;
-    private Lettuce lettuce;
 
-    public static class Lettuce {
-        @Getter @Setter
-        private Pool pool;
+    @Value("${redis.poolMaxIdle}")
+    private int maxIdle;
 
-        @Data
-        public static class Pool {
-            private int maxActive;
-            private int maxIdle;
-            private int maxWait;
-        }
+    @Value("${redis.poolMaxTotal}")
+    private int maxTotal;
+
+    @Value("${redis.poolMaxWait}")
+    private int maxWaitSeconds;
+
+    public JedisPool JedisPoolFactory() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMaxTotal(maxTotal);
+        jedisPoolConfig.setMaxWaitMillis(maxWaitSeconds*1000);
+        JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout*1000, password, database);
+        System.out.println("RedisConfiguration.JedisPoolFactory() called");
+        return jedisPool;
     }
 }
