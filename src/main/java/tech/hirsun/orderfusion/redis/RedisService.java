@@ -9,7 +9,8 @@ import redis.clients.jedis.JedisPool;
 @Service
 public class RedisService {
 
-    JedisPool jedisPool = new RedisConfiguration().JedisPoolFactory();
+    @Autowired
+    JedisPool jedisPool;
 
     public <T> T get(String key, Class<T> clazz) {
         try (Jedis jedis = jedisPool.getResource()) {
