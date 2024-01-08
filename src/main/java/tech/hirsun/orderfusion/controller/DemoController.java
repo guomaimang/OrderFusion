@@ -59,5 +59,13 @@ public class DemoController {
         return Result.success(value);
     }
 
+    @ResponseBody
+    @RequestMapping("/redis/set")
+    public Result<String> redisSet() {
+        boolean outcome = redisService.set("key2", "hello, orderfusion");
+        String value = redisService.get("key2", String.class);
+        return Result.success(value);
+    }
+
 
 }
