@@ -69,7 +69,6 @@ public class DemoController {
         return Result.success(userrt);
     }
 
-    
 
 
 }

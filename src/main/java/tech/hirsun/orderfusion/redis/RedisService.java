@@ -19,11 +19,33 @@ public class RedisService {
         }
     }
 
-    public <T> boolean set(KeyPrefix prefix, String key, T value) {
+    public <T> void set(KeyPrefix prefix, String key, T value) {
         try (Jedis jedis = jedisPool.getResource()) {
             String rvalue = beanToString(value);
+            if (prefix.getExpireSeconds() <= 0){
+                jedis.set(prefix.getPrefix() + key, rvalue);
+            }else{
+                jedis.setex(prefix.getPrefix() + key, prefix.getExpireSeconds(), rvalue);
+            }
             jedis.set(prefix.getPrefix() + key, rvalue);
-            return true;
+        }
+    }
+
+    public boolean exists(KeyPrefix prefix, String key) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.exists(prefix.getPrefix() + key);
+        }
+    }
+
+    public Long incr(KeyPrefix prefix, String key) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.incr(prefix.getPrefix() + key);
+        }
+    }
+
+    public Long decr(KeyPrefix prefix, String key) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.decr(prefix.getPrefix() + key);
         }
     }
 
