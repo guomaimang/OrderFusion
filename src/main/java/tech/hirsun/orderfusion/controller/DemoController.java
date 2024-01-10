@@ -11,6 +11,7 @@ import tech.hirsun.orderfusion.redis.UserKey;
 import tech.hirsun.orderfusion.result.CodeMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.UserService;
+import tech.hirsun.orderfusion.utils.HashUtil;
 
 @Controller
 @RequestMapping("/demo")
