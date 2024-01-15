@@ -1,7 +1,6 @@
 package tech.hirsun.orderfusion.result;
 
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

@@ -11,7 +11,6 @@ import tech.hirsun.orderfusion.redis.UserKey;
 import tech.hirsun.orderfusion.result.CodeMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.UserService;
-import tech.hirsun.orderfusion.utils.HashUtil;
 
 @Controller
 @RequestMapping("/demo")
@@ -64,7 +63,7 @@ public class DemoController {
     @ResponseBody
     @RequestMapping("/redis/set/user")
     public Result<User> redisSet() {
-        User user = new User(1,"hanjiaming");
+        User user = new User(1,"himpu");
         redisService.set(UserKey.getById, "1",user);
         User userrt= redisService.get(UserKey.getById,"1", User.class);
         return Result.success(userrt);
