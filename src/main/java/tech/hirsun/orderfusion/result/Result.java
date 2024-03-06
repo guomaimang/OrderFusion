@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class Result<T> {
 
-    private int code;
-    private String msg;
-    private T data;
+    private int code;    // Response code, 0 for success; others for failure
+    private String msg;  // Response message
+    private T data;      // Response data
 
     private Result(T data) {
         if (data == null) {
@@ -36,7 +36,6 @@ public class Result<T> {
         errResult.data = null;
         return errResult;
     }
-
 
 
 

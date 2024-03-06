@@ -3,15 +3,15 @@ package tech.hirsun.orderfusion.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.hirsun.orderfusion.dao.UserDao;
-import tech.hirsun.orderfusion.model.User;
+import tech.hirsun.orderfusion.pojo.User;
 
 @Service
-public class UserService {
+public interface UserService {
 
-    @Autowired
-    private UserDao userDao;
+    User login(User user);
 
-    public User getUserById(int id) {
-        return userDao.getUserById(id);
-    }
+    void update(User user);
+
+    void register(User user);
+
 }

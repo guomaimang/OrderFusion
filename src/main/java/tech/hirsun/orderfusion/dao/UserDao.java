@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import tech.hirsun.orderfusion.model.User;
+import tech.hirsun.orderfusion.pojo.User;
 
 @Mapper
 public interface UserDao {

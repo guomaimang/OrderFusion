@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import tech.hirsun.orderfusion.model.User;
+import tech.hirsun.orderfusion.pojo.User;
 import tech.hirsun.orderfusion.redis.RedisService;
 import tech.hirsun.orderfusion.redis.UserKey;
 import tech.hirsun.orderfusion.result.CodeMessage;

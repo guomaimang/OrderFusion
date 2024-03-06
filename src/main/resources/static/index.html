@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home</title>
+    <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.css">
+    <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="dist/css/main.css" rel="stylesheet"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <script src="dist/js/public.js"></script>
+</head>
+<body class="hold-transition sidebar-mini" onLoad="checkCookie();">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="https://www38.polyu.edu.hk/eStudent/login.jsf" class="nav-link">E-Student</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="https://myapps.microsoft.com/" class="nav-link">Myapps</a>
+            </li>
+        </ul>
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="https://codimd.orchanger.com/YPMwPLcRQeS4n01LK8Bo8A" class="nav-link">Document</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="https://github.com/guomaimang/Sandy_E-Learning" class="nav-link">About</a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user">&nbsp;User</i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-user-o mr-2"></i>
+                        <span class="float-right text-muted text-sm" id = "userNameDisplay"> Not Log In</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-user-secret mr-2"> Identifier</i>
+                        <span class="float-right text-muted text-sm">PolyU Member</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-address-card mr-2"> Subject</i>
+                        <span class="float-right text-muted text-sm">COMP3334</span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <button type="button" onclick="logout()" class="btn btn-primary btn-block btn-flat">Login/Logout
+                        </button>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="index.html" class="brand-link">
+            <img src="dist/img/logo.png" alt="ssm-cluster Logo" class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">Sandy E-Learning</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="dist/img/logo2.png" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">COMP3334</a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-header">Module</li>
+                    <li class="nav-item">
+                        <a href="./index.html" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>Notice</p>
+                        </a>
+                    </li>
+                    <li class="nav-header">Interactive Exchange</li>
+                    <li class="nav-item">
+                        <a href="article.html" class="nav-link">
+                            <i class="nav-icon fa fa-edit"></i>
+                            <p>
+                                Forum
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user.html" class="nav-link">
+                            <i class="fa fa-user-circle nav-icon"></i>
+                            <p>User Management</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="lecture.html" class="nav-link">
+                            <i class="nav-icon fa fa-book"></i>
+                            <p>Lecture</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Notice</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Notice</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Course Information</h3>
+                    </div> <!-- /.card-body -->
+                    <div class="card-body">
+                        <div class="panel panel-default">
+                            <div style="padding: 10px 0 20px 10px;">
+                                <h3>&nbsp;&nbsp;&nbsp; COMP3334: Computer Systems Security</h3>
+                                <br>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Topics to be covered</p>
+                                <ul>
+                                    <li>Overview: Security goals and policies, types of attacks, and threat models</li>
+                                    <li>Cryptography: Classical cryptography, public-key cryptography, and steganography</li>
+                                    <li>Authentication: Password systems, one-time passwords, strong password protocols, and password authentication protocols</li>
+                                    <li>Web Security: Input validation, SQL injection, cross-site scripting, cross-site request forgery, and non-validated redirects and forwards</li>
+                                    <li>Software Vulnerability: Buffer overflow, memory protection and corruption</li>
+                                    <li>Case study & Advanced topics: Blockchain, Merkle tree, zero-knowledge proof, and blind signatures</li>
+                                    <img src="https://static-file.hirsun.tech/2023/04/12/509bc926272ca.png" alt="CleanShot 2023-04-12 at 13.26.03@2x.png" title="CleanShot 2023-04-12 at 13.26.03@2x.png" width="300"/>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div><!-- /.container-fluid -->
+
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Workshop2</h3>
+                    </div> <!-- /.card-body -->
+                    <div class="card-body">
+                        <div class="panel panel-default">
+                            <div style="padding: 10px 0 20px 10px;">
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Important Notice</p>
+                                <ul>
+                                    <p>
+                                        In the coming week, we will have our workshop 2 in PQ604ABC during the class time. <br> <br>
+                                        For Tuesday class, due to unavailability of PQ604ABC, it is rescheduled to: <br> <br>
+                                        6:30pm – 9:20pm, 30 March (Thu) <br> <br>
+                                        To allow certain flexibility, students of Tuesday class may join other sessions (subject to available seats) or review the workshop 2 video. You can work on the workshop tasks in your Intel-based laptop (by importing the VM image) or using the lab computers. <br> <br>
+                                        Regards, <br>
+                                    </p>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <strong>Copyright &copy; Hirsun's Teams 2023 - Present <a href="https://github.com/guomaimang/Sandy_E-Learning"> Sandy Server Project </a>.</strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 1.0
+        </div>
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+ <!-- after login -->
+<script>
+    document.getElementById("userNameDisplay").innerHTML = getCookie("userName");
+</script>
+
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jQueryUI/jquery-ui.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+
+</body>
+</html>
