@@ -11,10 +11,13 @@ public class CodeMessage {
     private String message;
 
     // Common Message
-    public static CodeMessage SUCCESS = new CodeMessage(0, "success");
+    public static CodeMessage SUCCESS = new CodeMessage(0, "Success");
+
+    // Server Internal Message, like 5000x
     public static CodeMessage SERVER_ERROR = new CodeMessage(50001, "Server Error");
 
     // Login Message, like 5001x
+    public static CodeMessage USER_NOT_EXIST = new CodeMessage(50010, "User not Exist");
 
     // Goods Message, like 5002x
 
@@ -40,27 +43,5 @@ public class CodeMessage {
                 ", message='" + message + '\'' +
                 '}';
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

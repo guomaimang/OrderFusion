@@ -14,5 +14,3 @@ public class User {
     private String isFrozen;
     private String isAdmin;
 }
-
-
