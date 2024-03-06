@@ -11,6 +11,14 @@ public class User {
     private String password;
     private String randomSalt;
     private String avatarUri;
-    private String isFrozen;
-    private String isAdmin;
+    private int isFrozen;
+    private int isAdmin;
+
+    // Return to Frontend
+    public User(String name, String email, String avatarUri, int isAdmin) {
+        this.name = name;
+        this.email = email;
+        this.avatarUri = avatarUri;
+        this.isAdmin = isAdmin;
+    }
 }

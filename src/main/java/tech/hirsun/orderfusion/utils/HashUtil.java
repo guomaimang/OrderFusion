@@ -48,8 +48,8 @@ public class HashUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(formPlainPassToMidPass("123456"));
-        System.out.println(formMidPassToDBPass("0b39ea1a37c546ff91371ec1f8ab371ae62aedf1b1b5023492511f53fff5ae29","ah28as"));
+        System.out.println(formPlainPassToMidPass("8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92")); //123456 in frontend
+        System.out.println(formMidPassToDBPass("f252ed298aa0b59dd85b69787420c260d08c2f7fb9d1df9f1b2253307cc5801c","ah28as"));
     }
 
 }

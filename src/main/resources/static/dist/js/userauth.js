@@ -6,39 +6,21 @@
  * @returns {boolean}
  */
 function isNull(obj) {
-    if (obj == null || obj == undefined || obj.trim() == "") {
+    if (obj == null || obj == undefined || obj.trim() === "") {
         return true;
     }
     return false;
 }
 
 /**
- * 参数长度验证
+ * 用户名称验证,限制输入为邮箱
  *
- * @param obj
- * @param length
+ * @param email
  * @returns {boolean}
  */
-function validLength(obj, length) {
-    if (obj.trim().length < length) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * 用户名称验证 限制邮箱）
- *
- * @param userName
- * @returns {boolean}
- */
-function validUserName(userName) {
+function validUserName(email) {
     var pattern = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
-    if (pattern.test(userName.trim())) {
-        return (true);
-    } else {
-        return (false);
-    }
+    return pattern.test(email.trim());
 }
 
 /**
@@ -49,24 +31,23 @@ function validUserName(userName) {
  */
 function validPassword(password) {
     var pattern = /^[a-zA-Z0-9]{6,20}$/;
-    if (pattern.test(password.trim())) {
-        return (true);
-    } else {
-        return (false);
-    }
+    return pattern.test(password.trim());
 }
+
 
 <!-- 正则验证 end-->
 
-function login() {
-    var userName = $("#userName").val();
-    var password = $("#password").val();
-    if (isNull(userName)) {
-        showErrorInfo("Please enter your username!");
+async function login() {
+
+    let email = $("#email").val();
+    let password = $("#password").val();
+
+    if (isNull(email)) {
+        showErrorInfo("Please enter your email!");
         return;
     }
-    if (!validUserName(userName)) {
-        showErrorInfo("Please enter the correct user name!");
+    if (!validUserName(email)) {
+        showErrorInfo("Please enter the correct email!");
         return;
     }
     if (isNull(password)) {
@@ -77,39 +58,51 @@ function login() {
         showErrorInfo("Please enter the correct password!");
         return;
     }
-    var data = {"userName": userName, "password": password}
+
+    if (window.localStorage.getItem("_grecaptcha") == null || window.localStorage.getItem("_grecaptcha") === ""){
+        showErrorInfo("Please verify the captcha!");
+        return;
+    }
+
+    let data = {"email": email, "password":await sha256(password)};
     $.ajax({
         type: "POST",//方法类型
         dataType: "json",//预期服务器返回的数据类型
-        url: "users/login",
+        url: "userauth/login",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(data),
+
+        beforeSend: function (request) {
+            //设置header值
+            request.setRequestHeader("_grecaptcha", window.localStorage.getItem("_grecaptcha"));
+        },
+
         success: function (result) {
-            if (result.resultCode == 200) {
+            if (result.code === 0) {
                 $('.alert-danger').css("display", "none");
-                setCookie("token", result.data.userToken);
-                setCookie("userName", result.data.userName);
-                setCookie("isStudent", result.data.isStudent);
+                window.localStorage.setItem("jwt", result.data.jwt);
+
+                window.localStorage.setItem("email", result.data.user.email);
+                window.localStorage.setItem("name", result.data.user.name);
+                window.localStorage.setItem("isAdmin", result.data.user.isAdmin);
+
                 window.location.href = "/";
             }
-            ;
-            if (result.resultCode == 500) {
-                showErrorInfo("Login failed! Please check account and password!");
-                return;
+            else{
+                showErrorInfo(result.msg);
             }
         },
+
         error: function () {
             $('.alert-danger').css("display", "none");
             showErrorInfo("Interface exception, please contact the administrator!");
-            return;
+
         }
     });
 }
 
 function logout(){
-    delCookie("token");
-    delCookie("userName");
-    delCookie("isStudent");
+    window.localStorage.clear();
     window.location.href = "/login.html";
 }
 
@@ -150,7 +143,6 @@ function oauth2Login() {
         }
     });
 }
-
 
 <!-- cookie操作 start-->
 
@@ -196,13 +188,23 @@ function delCookie(name) {
 /**
  * 检查cookie
  */
-function checkCookie() {
-    if (getCookie("token") == null) {
-        swal("Not logged in", {
-            icon: "error",
-        });
+function checkLogin() {
+    if (window.localStorage.getItem("jwt") == null || window.localStorage.getItem("jwt") === ""){
         window.location.href = "login.html";
+        return;
+    }else {
+        let name = document.getElementById("nameField");
+        name.textContent = window.localStorage.getItem("name");
     }
+
+    let identifier = document.getElementById("identifierField");
+    if (window.localStorage.getItem("isAdmin") === "0"){
+        identifier.textContent = "Member";
+    } else {
+        identifier.textContent = "Admin";
+    }
+
+
 }
 
 /**

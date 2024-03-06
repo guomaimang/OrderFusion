@@ -13,9 +13,11 @@
     <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <script src="dist/js/public.js"></script>
+    <script src="dist/js/userauth.js"></script>
 </head>
-<body class="hold-transition sidebar-mini" onLoad="checkCookie();">
+
+<body class="hold-transition sidebar-mini" onLoad="checkLogin();">
+
 <div class="wrapper">
 
     <!-- Navbar -->
@@ -29,19 +31,19 @@
                 <a href="index.html" class="nav-link">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="https://www38.polyu.edu.hk/eStudent/login.jsf" class="nav-link">E-Student</a>
+                <a href="https://www38.polyu.edu.hk/eStudent/login.jsf" class="nav-link">Products</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="https://myapps.microsoft.com/" class="nav-link">Myapps</a>
+                <a href="https://myapps.microsoft.com/" class="nav-link">Orders</a>
             </li>
         </ul>
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="https://codimd.orchanger.com/YPMwPLcRQeS4n01LK8Bo8A" class="nav-link">Document</a>
+                <a href="https://codimd.orchanger.com/YPMwPLcRQeS4n01LK8Bo8A" class="nav-link">AI Helper</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="https://github.com/guomaimang/Sandy_E-Learning" class="nav-link">About</a>
+                <a href="https://codimd.orchanger.com/YPMwPLcRQeS4n01LK8Bo8A" class="nav-link">Documents</a>
             </li>
 
             <li class="nav-item dropdown">
@@ -52,17 +54,17 @@
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
                         <i class="fa fa-user-o mr-2"></i>
-                        <span class="float-right text-muted text-sm" id = "userNameDisplay"> Not Log In</span>
+                        <span class="float-right text-muted text-sm" id = "nameField">Not Log In</span>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
-                        <i class="fa fa-user-secret mr-2"> Identifier</i>
+                        <i class="fa fa-user-secret mr-2"> Organization</i>
                         <span class="float-right text-muted text-sm">PolyU Member</span>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
-                        <i class="fa fa-address-card mr-2"> Subject</i>
-                        <span class="float-right text-muted text-sm">COMP3334</span>
+                        <i class="fa fa-address-card mr-2"> Identifier</i>
+                        <span class="float-right text-muted text-sm" id="identifierField"></span>
                     </a>
                     <a href="#" class="dropdown-item">
                         <button type="button" onclick="logout()" class="btn btn-primary btn-block btn-flat">Login/Logout

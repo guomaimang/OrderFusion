@@ -16,8 +16,11 @@
     <!-- sweet alert -->
     <link rel="stylesheet" href="plugins/sweetalert/sweetalert.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="dist/js/public.js"></script>
+
+    <script src="https://www.recaptcha.net/recaptcha/api.js" async defer></script>
+    <script src="dist/js/userauth.js"></script>
+    <script src="dist/js/utils.js"></script>
+
 </head>
 
 <body class="hold-transition login-page">
@@ -31,12 +34,12 @@
             <p class="login-box-msg"> Capstone Project of Hirsun</p>
             <form action="#" onsubmit="return false;" method="post">
                 <div class="form-group">
-                    <div class="alert alert-danger" id="error-message" style="display: none;">Error message display bar.</div>
+                    <div class="alert alert-danger" id="error-message" style="display: none;">Internal error, try later!</div>
                 </div>
 
                 <div class="form-group has-feedback">
-                    <label for="userName" class="fa fa-user form-control-feedback"> Email</label>
-                    <input type="text" id="userName" class="form-control" placeholder="Demo: jiaming.han@connect.polyu.hk">
+                    <label for="email" class="fa fa-user form-control-feedback"> Email</label>
+                    <input type="text" id="email" class="form-control" placeholder="Demo: jiaming.han@connect.polyu.hk">
                 </div>
 
                 <div class="form-group has-feedback">
@@ -53,7 +56,10 @@
                         </div>
                     </div>
 
-                    <div class="g-recaptcha" data-sitekey="your_site_key"></div>
+                    <div class="g-recaptcha" data-sitekey="6Le6mowpAAAAAMFjhoVkXAQx1lFAiIC0AHVF1LoK"></div>
+
+                    <script>
+                    </script>
 
                     <div class="col-12">
                         <br>
@@ -78,6 +84,6 @@
 <script src="plugins/sweetalert/sweetalert.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="dist/js/public.js"></script>
+<script src="dist/js/userauth.js"></script>
 </body>
 </html>

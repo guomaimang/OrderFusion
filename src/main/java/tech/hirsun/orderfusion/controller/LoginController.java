@@ -12,7 +12,9 @@ import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.UserService;
 import tech.hirsun.orderfusion.utils.JwtUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -35,9 +37,11 @@ public class LoginController {
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", u.getId());
             claims.put("email", u.getEmail());
-
             String jwt = JwtUtils.createJWT(claims);
-            return Result.success(jwt);
+            Map<String, Object> map = new HashMap<>();
+            map.put("jwt", jwt);
+            map.put("user", u);
+            return Result.success(map);
         }else {
             // If user does not exist, return error message
             return Result.error(CodeMessage.USER_NOT_EXIST);
