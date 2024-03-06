@@ -27,7 +27,7 @@ public class LoginController {
 
     @RequestMapping("/login")
     public Result login(@RequestBody User userAttemped){
-        log.info("User login api is requested.");
+        log.info("User login api is requested, username: {}", userAttemped.getEmail());
         User u = userService.login(userAttemped);
 
         // If user exists, create a JWT and return it
@@ -47,4 +47,3 @@ public class LoginController {
 
 
 }
-

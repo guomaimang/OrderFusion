@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,50 +16,56 @@
     <!-- sweet alert -->
     <link rel="stylesheet" href="plugins/sweetalert/sweetalert.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="dist/js/public.js"></script>
 </head>
+
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <b>Sandy E-learning</b>
+        <b>Order Fusion - Seckill</b>
     </div>
     <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg"> Course: COMP3334, 22-23SEM2, VD.2</p>
+            <p class="login-box-msg"> Capstone Project of Hirsun</p>
             <form action="#" onsubmit="return false;" method="post">
                 <div class="form-group">
-                    <div class="alert alert-danger" style="display: none;">Error message display bar.</div>
+                    <div class="alert alert-danger" id="error-message" style="display: none;">Error message display bar.</div>
                 </div>
+
                 <div class="form-group has-feedback">
-                    <span class="fa fa-user form-control-feedback"></span>
+                    <label for="userName" class="fa fa-user form-control-feedback"> Email</label>
                     <input type="text" id="userName" class="form-control" placeholder="Demo: jiaming.han@connect.polyu.hk">
                 </div>
+
                 <div class="form-group has-feedback">
-                    <span class="fa fa-lock form-control-feedback"></span>
-                    <input type="password" id="password" class="form-control" placeholder="Demo: jecomp3334stu">
+                    <label for="password" class="fa fa-lock form-control-feedback"> Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Demo: cp4931stu">
                 </div>
+
                 <div class="row">
                     <div class="col-8">
                         <div class="checkbox icheck">
                             <label>
                                 <input type="checkbox"> Remember me
                             </label>
-                            <label>
-                                <a href="/oauth2/authorize"> SSO For PolyU (ADFS) </a>
-                            </label>
                         </div>
                     </div>
-                    <!-- /.col -->
-                    <div class="col-4">
-                        <button type="submit" onclick="login()" class="btn btn-primary btn-block btn-flat">Login
-                        </button>
+
+                    <div class="g-recaptcha" data-sitekey="your_site_key"></div>
+
+                    <div class="col-12">
+                        <br>
+                        <button type="submit" onclick="login()" class="btn btn-primary btn-block btn-flat">Login</button>
                     </div>
-                    <!-- /.col -->
+
+                    <div class="sso-link">
+                        <br>
+                        <a href="/oauth2/authorize">SSO For PolyU (ADFS)</a>
+                    </div>
                 </div>
             </form>
-
         </div>
         <!-- /.login-card-body -->
     </div>
@@ -72,11 +79,5 @@
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="dist/js/public.js"></script>
-<button class="g-recaptcha"
-        data-sitekey="6LcxhIMlAAAAAEC4Cg6X5Szmal5WJRkv8EPh6IbX"
-        data-callback='onSubmit'
-        style="display:none;"
-        data-action='submit'>
-</button>
 </body>
 </html>

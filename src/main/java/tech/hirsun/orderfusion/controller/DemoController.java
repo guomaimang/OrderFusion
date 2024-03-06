@@ -46,12 +46,12 @@ public class DemoController {
         return Result.error(CodeMessage.SERVER_ERROR);
     }
 
-    @ResponseBody
-    @RequestMapping("/db/get")
-    public Result<User> db() {
-            User user = userService.getUserById(2);
-            return Result.success(user);
-    }
+//    @ResponseBody
+//    @RequestMapping("/db/get")
+//    public Result<User> db() {
+//            User user = userService.getUserById(2);
+//            return Result.success(user);
+//    }
 
     @ResponseBody
     @RequestMapping("/redis/get/user")
@@ -60,14 +60,14 @@ public class DemoController {
         return Result.success(user);
     }
 
-    @ResponseBody
-    @RequestMapping("/redis/set/user")
-    public Result<User> redisSet() {
-        User user = new User(1,"himpu");
-        redisService.set(UserKey.getById, "1",user);
-        User userrt= redisService.get(UserKey.getById,"1", User.class);
-        return Result.success(userrt);
-    }
+//    @ResponseBody
+//    @RequestMapping("/redis/set/user")
+//    public Result<User> redisSet() {
+//        User user = new User(1,"himpu");
+//        redisService.set(UserKey.getById, "1",user);
+//        User userrt= redisService.get(UserKey.getById,"1", User.class);
+//        return Result.success(userrt);
+//    }
 
 
 
