@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
         String saltedPassword = HashUtil.formPlainPassToDBPass(user.getPassword(), dbUser.getRandomSalt());
 
         if(dbUser.getPassword().equals(saltedPassword)) {
-            return dbUser;
+            return new User(dbUser.getName(), dbUser.getEmail(), dbUser.getAvatarUri(), dbUser.getIsAdmin());
         }else {
             return null;
         }

@@ -180,7 +180,7 @@ function getCookie(name) {
 function checkLogin() {
     if (window.localStorage.getItem("jwt") == null || window.localStorage.getItem("jwt") === ""){
         alert("You are not logged in, please go to login first!")
-        window.location.href = "login.html";
+        // window.location.href = "login.html";
         return;
     }else {
         let name = document.getElementById("nameField");
@@ -193,7 +193,6 @@ function checkLogin() {
     } else {
         identifier.textContent = "Admin";
     }
-
 
 }
 

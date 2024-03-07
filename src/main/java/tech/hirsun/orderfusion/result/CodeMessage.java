@@ -15,7 +15,7 @@ public class CodeMessage {
 
     // Server Message, like 5000x
     public static CodeMessage SERVER_ERROR = new CodeMessage(50001, "Server Error");
-    public static CodeMessage RECAPTCHA_ERROR = new CodeMessage(50002, "Recaptcha Error");
+    public static CodeMessage RECAPTCHA_ERROR = new CodeMessage(50002, "Recaptcha Error. Please click it.");
 
     // Login Message, like 5001x
     public static CodeMessage USER_NOT_EXIST = new CodeMessage(50010, "No match found. Please try again.");
