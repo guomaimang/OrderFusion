@@ -1,3 +1,9 @@
+/**
+ * get the sha256 value of the input
+ * @param input
+ * @returns {Promise<string>}
+ */
+
 async function sha256(input) {
     return crypto.subtle
         .digest('SHA-256', new TextEncoder('utf-8').encode(input))
@@ -22,4 +28,19 @@ async function sha256(input) {
 function validLength(obj, length) {
     return obj.trim().length < length;
 
+}
+
+/**
+ * 获取url参数
+ * @param name
+ * @returns {null|string}
+ */
+
+function getQueryString(name) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    let r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return decodeURIComponent(r[2]);
+    }
+    return null;
 }

@@ -173,9 +173,8 @@ function getCookie(name) {
 }
 
 
-
 /**
- * 检查cookie
+ * Check if logged in
  */
 function checkLogin() {
     if (window.localStorage.getItem("jwt") == null || window.localStorage.getItem("jwt") === ""){
@@ -193,7 +192,14 @@ function checkLogin() {
     } else {
         identifier.textContent = "Admin";
     }
+}
 
+/**
+ * Check if you are a logged in administrator
+ * @returns {boolean}
+ */
+function checkLoginForAdmin() {
+        return (window.localStorage.getItem("isAdmin") === "0") && checkLogin();
 }
 
 /**
@@ -206,11 +212,6 @@ function checkResultCode(code) {
 }
 
 <!-- cookie操作 end-->
-
-function showErrorInfo(info) {
-    $('.alert-danger').css("display", "block");
-    $('.alert-danger').html(info);
-}
 
 /**
  * 获取jqGrid选中的一条记录
@@ -249,4 +250,13 @@ function getSelectedRows() {
         return;
     }
     return grid.getGridParam("selarrrow");
+}
+
+/**
+ * display error info
+ * @param info
+ */
+function showErrorInfo(info) {
+    $('.alert-danger').css("display", "block");
+    $('.alert-danger').html(info);
 }
