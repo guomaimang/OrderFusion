@@ -41,6 +41,12 @@ public class DemoController {
     }
 
     @ResponseBody
+    @RequestMapping("/proc/hello")
+    public Result<String> procHello() {
+        return Result.success("hello, logged user in orderfusion");
+    }
+
+    @ResponseBody
     @RequestMapping("/error")
     public Result<String> error() {
         return Result.error(CodeMessage.SERVER_ERROR);

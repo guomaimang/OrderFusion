@@ -2,17 +2,17 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <title>Home</title>
-    <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.css">
+    <link href="plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="dist/css/main.css" rel="stylesheet"/>
     <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
+    <link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link href="dist/css/adminlte.min.css" rel="stylesheet">
     <script src="dist/js/userauth.js"></script>
 </head>
 
@@ -28,22 +28,22 @@
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="index.html" class="nav-link">Home</a>
+                <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="https://www38.polyu.edu.hk/eStudent/login.jsf" class="nav-link">Products</a>
+                <a class="nav-link" href="https://www38.polyu.edu.hk/eStudent/login.jsf">Products</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="https://myapps.microsoft.com/" class="nav-link">Orders</a>
+                <a class="nav-link" href="https://myapps.microsoft.com/">Orders</a>
             </li>
         </ul>
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="https://codimd.orchanger.com/YPMwPLcRQeS4n01LK8Bo8A" class="nav-link">AI Helper</a>
+                <a class="nav-link" href="https://codimd.orchanger.com/YPMwPLcRQeS4n01LK8Bo8A">Copilot</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="https://codimd.orchanger.com/YPMwPLcRQeS4n01LK8Bo8A" class="nav-link">Documents</a>
+                <a class="nav-link" href="https://codimd.orchanger.com/YPMwPLcRQeS4n01LK8Bo8A">Documents</a>
             </li>
 
             <li class="nav-item dropdown">
@@ -52,22 +52,22 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
+                    <a class="dropdown-item" href="#">
                         <i class="fa fa-user-o mr-2"></i>
                         <span class="float-right text-muted text-sm" id = "nameField">Not Log In</span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
+                    <a class="dropdown-item" href="#">
                         <i class="fa fa-user-secret mr-2"> Organization</i>
                         <span class="float-right text-muted text-sm">PolyU Member</span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
+                    <a class="dropdown-item" href="#">
                         <i class="fa fa-address-card mr-2"> Identifier</i>
                         <span class="float-right text-muted text-sm" id="identifierField"></span>
                     </a>
-                    <a href="#" class="dropdown-item">
-                        <button type="button" onclick="logout()" class="btn btn-primary btn-block btn-flat">Login/Logout
+                    <a class="dropdown-item" href="#">
+                        <button class="btn btn-primary btn-block btn-flat" onclick="logout()" type="button">Logout
                         </button>
                     </a>
                 </div>
@@ -79,40 +79,32 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index.html" class="brand-link">
-            <img src="dist/img/logo.png" alt="ssm-cluster Logo" class="brand-image img-circle elevation-3"
+        <a class="brand-link" href="index.html">
+            <img alt="ssm-cluster Logo" class="brand-image img-circle elevation-3" src="dist/img/logo.png"
                  style="opacity: .8">
-            <span class="brand-text font-weight-light">Sandy E-Learning</span>
+            <span class="brand-text font-weight-light">Order Fusion</span>
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="dist/img/logo2.png" class="img-circle elevation-2" alt="User Image">
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">COMP3334</a>
-                </div>
-            </div>
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview"
+                    role="menu">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-header">Module</li>
                     <li class="nav-item">
-                        <a href="./index.html" class="nav-link">
+                        <a class="nav-link" href="./index.html">
                             <i class="fa fa-circle-o nav-icon"></i>
                             <p>Notice</p>
                         </a>
                     </li>
+
                     <li class="nav-header">Interactive Exchange</li>
                     <li class="nav-item">
-                        <a href="article.html" class="nav-link">
+                        <a class="nav-link" href="article.html">
                             <i class="nav-icon fa fa-edit"></i>
                             <p>
                                 Forum
@@ -120,13 +112,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="user.html" class="nav-link">
+                        <a class="nav-link" href="user.html">
                             <i class="fa fa-user-circle nav-icon"></i>
                             <p>User Management</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="lecture.html" class="nav-link">
+                        <a class="nav-link" href="lecture.html">
                             <i class="nav-icon fa fa-book"></i>
                             <p>Lecture</p>
                         </a>
@@ -177,7 +169,7 @@
                                     <li>Web Security: Input validation, SQL injection, cross-site scripting, cross-site request forgery, and non-validated redirects and forwards</li>
                                     <li>Software Vulnerability: Buffer overflow, memory protection and corruption</li>
                                     <li>Case study & Advanced topics: Blockchain, Merkle tree, zero-knowledge proof, and blind signatures</li>
-                                    <img src="https://static-file.hirsun.tech/2023/04/12/509bc926272ca.png" alt="CleanShot 2023-04-12 at 13.26.03@2x.png" title="CleanShot 2023-04-12 at 13.26.03@2x.png" width="300"/>
+                                    <img alt="CleanShot 2023-04-12 at 13.26.03@2x.png" src="https://static-file.hirsun.tech/2023/04/12/509bc926272ca.png" title="CleanShot 2023-04-12 at 13.26.03@2x.png" width="300"/>
                                 </ul>
                             </div>
                         </div>
@@ -228,11 +220,6 @@
     <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
- <!-- after login -->
-<script>
-    document.getElementById("userNameDisplay").innerHTML = getCookie("userName");
-</script>
 
 
 <!-- jQuery -->

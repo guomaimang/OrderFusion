@@ -59,7 +59,7 @@ async function login() {
         return;
     }
 
-    if (window.localStorage.getItem("_grecaptcha") == null || window.localStorage.getItem("_grecaptcha") === ""){
+    if (grecaptcha.getResponse() == null || grecaptcha.getResponse() === ""){
         showErrorInfo("Please verify the captcha!");
         return;
     }
@@ -74,7 +74,7 @@ async function login() {
 
         beforeSend: function (request) {
             //设置header值
-            request.setRequestHeader("_grecaptcha", window.localStorage.getItem("_grecaptcha"));
+            request.setRequestHeader("grecaptcha", grecaptcha.getResponse());
         },
 
         success: function (result) {
@@ -90,13 +90,14 @@ async function login() {
             }
             else{
                 showErrorInfo(result.msg);
+                grecaptcha.reset();
             }
         },
 
         error: function () {
             $('.alert-danger').css("display", "none");
             showErrorInfo("Interface exception, please contact the administrator!");
-
+            grecaptcha.reset();
         }
     });
 }
@@ -173,23 +174,14 @@ function getCookie(name) {
         return null;
 }
 
-/**
- * 删除cookie
- * @param name
- */
-function delCookie(name) {
-    var exp = new Date();
-    exp.setTime(exp.getTime() - 1);
-    var cval = getCookie(name);
-    if (cval != null)
-        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-}
+
 
 /**
  * 检查cookie
  */
 function checkLogin() {
     if (window.localStorage.getItem("jwt") == null || window.localStorage.getItem("jwt") === ""){
+        alert("You are not logged in, please go to login first!")
         window.location.href = "login.html";
         return;
     }else {
@@ -199,7 +191,7 @@ function checkLogin() {
 
     let identifier = document.getElementById("identifierField");
     if (window.localStorage.getItem("isAdmin") === "0"){
-        identifier.textContent = "Member";
+        identifier.textContent = "Customer";
     } else {
         identifier.textContent = "Admin";
     }

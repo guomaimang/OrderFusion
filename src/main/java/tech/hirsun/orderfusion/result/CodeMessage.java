@@ -18,6 +18,7 @@ public class CodeMessage {
 
     // Login Message, like 5001x
     public static CodeMessage USER_NOT_EXIST = new CodeMessage(50010, "User not Exist");
+    public static CodeMessage USER_NOT_LOGIN = new CodeMessage(50012, "User not Login");
 
     // Goods Message, like 5002x
 
