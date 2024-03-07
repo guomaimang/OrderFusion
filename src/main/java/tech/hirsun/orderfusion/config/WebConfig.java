@@ -25,6 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
         // The larger the order, the later the interceptor is executed
         registry.addInterceptor(loginCheckInterceptor)
                 .addPathPatterns("/demo/proc/**")
+                .addPathPatterns("/userauth/refreshtoken")
                 .order(0);
 
         registry.addInterceptor(reCaptchaCheckInterceptor)

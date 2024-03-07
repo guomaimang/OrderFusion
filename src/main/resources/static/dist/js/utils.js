@@ -44,3 +44,52 @@ function getQueryString(name) {
     }
     return null;
 }
+
+/**
+ * 获取jqGrid选中的一条记录
+ * @returns {*}
+ */
+function getSelectedRow() {
+    let grid = $("#jqGrid");
+    let rowKey = grid.getGridParam("selrow");
+    if (!rowKey) {
+        swal("Please select one record!", {
+            icon: "error",
+        });
+        return;
+    }
+    let selectedIDs = grid.getGridParam("selarrrow");
+    if (selectedIDs.length > 1) {
+        swal("Please select one record!", {
+            icon: "error",
+        });
+        return;
+    }
+    return selectedIDs[0];
+}
+
+
+/**
+ * 获取jqGrid选中的多条记录
+ * @returns {*}
+ */
+function getSelectedRows() {
+    var grid = $("#jqGrid");
+    var rowKey = grid.getGridParam("selrow");
+    if (!rowKey) {
+        swal("Please select one record!", {
+            icon: "error",
+        });
+        return;
+    }
+    return grid.getGridParam("selarrrow");
+}
+
+/**
+ * display error info
+ * @param info
+ */
+function showErrorInfo(info) {
+    $('.alert-danger').css("display", "block");
+    $('.alert-danger').html(info);
+}

@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="hold-transition sidebar-mini" onLoad="checkLoginForAdmin();">
+<body class="hold-transition sidebar-mini" onLoad="checkLoggedInAdmin();">
 
 <div class="wrapper">
 
@@ -196,12 +196,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Forum</h1>
+                        <h1 class="m-0 text-dark">Users Management</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="breadcrumb-item active">Forum</li>
+                            <li class="breadcrumb-item active">Administration</li>
+                            <li class="breadcrumb-item active">Users</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -214,15 +215,16 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
+                            <!-- 顶部按钮 -->
                             <div class="grid-btn">
-                                <button class="btn btn-info" onclick="articleAdd()"><i
+                                <button class="btn btn-info" onclick="addUser()"><i
                                         class="fa fa-plus"></i>&nbsp;New
                                 </button>
-                                <button class="btn btn-info" onclick="articleEdit()"><i
+                                <button class="btn btn-info" onclick="editUser()"><i
                                         class="fa fa-pencil-square-o"></i>&nbsp;Preview
                                 </button>
-                                <button class="btn btn-danger" onclick="deleteArticle()"><i
-                                        class="fa fa-trash-o"></i>&nbsp;Delete
+                                <button class="btn btn-danger" onclick="lockSwitch()"><i
+                                        class="fa fa-lock"></i>&nbsp;Lock Switch
                                 </button>
                             </div>
                             <table id="jqGrid" class="table table-bordered">
@@ -235,31 +237,44 @@
         </div>
 
         <div class="content">
-            <div class="modal fade" id="articleModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel">
+            <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content" style="width: 800px;height: 880px;">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
-                            <h6 class="modal-title" id="articleModalLabel">Edit</h6>
+                            <h6 class="modal-title" id="userModalLabel">Edit</h6>
                         </div>
                         <div class="modal-body">
                             <form>
                                 <div class="form-group">
-                                    <div class="alert alert-danger">Error message display</div>
+                                    <div class="alert alert-danger">Unexpected errors!</div>
                                 </div>
-                                <input type="hidden" id="articleId" value="0">
+
+                                <!-- 编辑窗口的表单 -->
                                 <div class="form-group">
-                                    <label for="articleName" class="control-label">Title:</label>
-                                    <input type="text" class="form-control" style="width: 70%" id="articleName">
-                                </div>
-                                <div class="form-group">
-                                    <label for="articleAuthor" class="control-label">Author:</label>
-                                    <input type="text" class="form-control" style="width: 70%" id="articleAuthor">
+                                    <label for="modal-id" class="control-label">ID:</label>
+                                    <input type="text" class="form-control"  readonly style="width: 70%" id="modal-id">
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label">Content:</label>
-                                    <div id="wangEditor"></div>
+                                    <label for="modal-email" class="control-label">Email:</label>
+                                    <input type="text" class="form-control"  readonly style="width: 70%" id="modal-email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-name" class="control-label">Name:</label>
+                                    <input type="text" class="form-control" style="width: 70%" id="modal-name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-password" class="control-label">Password:</label>
+                                    <input type="password" class="form-control" style="width: 70%" id="modal-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-registerTime" class="control-label">Registration Time:</label>
+                                    <input type="text" class="form-control" readonly style="width: 70%" id="modal-registerTime">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-isFrozen" class="control-label">Frozen:</label>
+                                    <input type="text" class="form-control" readonly style="width: 70%" id="modal-isFrozen">
                                 </div>
                             </form>
                         </div>
@@ -298,7 +313,6 @@
 
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
 <script src="plugins/jqgrid-5.7.0/grid.locale-cn.js"></script>
 
 <!-- sweet alert -->

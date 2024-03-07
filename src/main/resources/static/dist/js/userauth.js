@@ -143,48 +143,27 @@ function oauth2Login() {
     });
 }
 
-<!-- cookie操作 start-->
-
-/**
- * 写入cookie
- *
- * @param name
- * @param value
- */
-function setCookie(name, value) {
-    var Days = 30;
-    var exp = new Date();
-    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-    document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + ";path=/";
-
-}
-
-/**
- * 读取cookie
- * @param name
- * @returns {null}
- */
-function getCookie(name) {
-    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if (arr = document.cookie.match(reg))
-        return unescape(arr[2]);
-    else
-        return null;
-}
-
-
 /**
  * Check if logged in
  */
-function checkLogin() {
+async function checkLogin() {
     if (window.localStorage.getItem("jwt") == null || window.localStorage.getItem("jwt") === ""){
         alert("You are not logged in, please go to login first!")
         // window.location.href = "login.html";
         return;
-    }else {
-        let name = document.getElementById("nameField");
-        name.textContent = window.localStorage.getItem("name");
     }
+
+    // Check if the token is expired
+    let jwtArr = localStorage.getItem('jwt').split(".");
+    let payload = JSON.parse(atob(jwtArr[1]));
+    if (payload.exp * 1000 < Date.now()) {
+        alert("Your login has expired, please log in again!")
+        window.location.href = "login.html";
+        return;
+    }
+
+    let name = document.getElementById("nameField");
+    name.textContent = window.localStorage.getItem("name");
 
     let identifier = document.getElementById("identifierField");
     if (window.localStorage.getItem("isAdmin") === "0"){
@@ -192,71 +171,52 @@ function checkLogin() {
     } else {
         identifier.textContent = "Admin";
     }
+
+    // check if there is any need for refresh token
+    // if the token is about to expire in 6 hours, refresh it
+    if (payload.exp * 1000 - Date.now() < 1000 * 60 * 60 * 6){
+        let data = {"jwt": window.localStorage.getItem("jwt")};
+        $.ajax({
+            type: "PUT",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "userauth/refreshtoken",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
+            beforeSend: function (request) {
+                //设置header值
+                request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+            },
+            success: function (result) {
+                if (result.code === 0) {
+                    window.localStorage.setItem("jwt", result.data);
+                }
+            },
+            error: function () {
+                console.log("Failed to refresh token.")
+            }
+        });
+    }
+
+
+
 }
 
 /**
  * Check if you are a logged in administrator
- * @returns {boolean}
  */
-function checkLoginForAdmin() {
-        return (window.localStorage.getItem("isAdmin") === "0") && checkLogin();
+async function checkLoggedInAdmin() {
+    await checkLogin();
+    if (window.localStorage.getItem("isAdmin") !== "1") {
+       window.alert("You are not an administrator, please log in as an administrator and then do this action!")
+       window.location.href = "index.html";
+    }
 }
 
-/**
- * 检查cookie
- */
-function checkResultCode(code) {
-    if (code == 402) {
+function afterResponseAction(result) {
+    if (result.code === 50012){
+        alert("You are not logged in, please go to login first!")
         window.location.href = "login.html";
+    }else if (result.code === 0 && ("jwt" in result.data && result.data.jwt !== null && result.data.jwt === undefined && result.data.jwt !== "")){
+        window.localStorage.setItem("jwt", result.data.jwt);
     }
-}
-
-<!-- cookie操作 end-->
-
-/**
- * 获取jqGrid选中的一条记录
- * @returns {*}
- */
-function getSelectedRow() {
-    var grid = $("#jqGrid");
-    var rowKey = grid.getGridParam("selrow");
-    if (!rowKey) {
-        swal("Please select one record!", {
-            icon: "error",
-        });
-        return;
-    }
-    var selectedIDs = grid.getGridParam("selarrrow");
-    if (selectedIDs.length > 1) {
-        swal("Please select one record!", {
-            icon: "error",
-        });
-        return;
-    }
-    return selectedIDs[0];
-}
-
-/**
- * 获取jqGrid选中的多条记录
- * @returns {*}
- */
-function getSelectedRows() {
-    var grid = $("#jqGrid");
-    var rowKey = grid.getGridParam("selrow");
-    if (!rowKey) {
-        swal("Please select one record!", {
-            icon: "error",
-        });
-        return;
-    }
-    return grid.getGridParam("selarrrow");
-}
-
-/**
- * display error info
- * @param info
- */
-function showErrorInfo(info) {
-    $('.alert-danger').css("display", "block");
-    $('.alert-danger').html(info);
 }

@@ -1,6 +1,8 @@
 package tech.hirsun.orderfusion.pojo;
 import lombok.*;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +15,7 @@ public class User {
     private String avatarUri;
     private int isFrozen;
     private int isAdmin;
+    Date registerTime;
 
     // Return to Frontend
     public User(String name, String email, String avatarUri, int isAdmin) {

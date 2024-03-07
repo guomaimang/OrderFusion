@@ -7,6 +7,6 @@ import tech.hirsun.orderfusion.dao.GoodsDao;
 @Service
 public interface GoodsService {
 
-    @Autowired
-    GoodsDao goodsDao;
+//    @Autowired
+//    GoodsDao goodsDao;
 }

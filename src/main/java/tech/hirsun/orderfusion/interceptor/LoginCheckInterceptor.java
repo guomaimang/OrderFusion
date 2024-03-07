@@ -28,7 +28,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         String jwt = request.getHeader("jwt");
 
         // if the jwt is null, return false
-        if(!StringUtils.isNullOrEmpty(jwt)){
+        if(StringUtils.isNullOrEmpty(jwt)){
             log.info("The request header jwt is null, return not logged in information");
             Result result = Result.error(CodeMessage.USER_NOT_LOGIN);
 
