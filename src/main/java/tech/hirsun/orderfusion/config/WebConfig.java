@@ -4,13 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import tech.hirsun.orderfusion.Interceptor.LoginCheckInterceptor;
+import tech.hirsun.orderfusion.interceptor.LoginCheckInterceptor;
+import tech.hirsun.orderfusion.interceptor.ReCaptchaCheckInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private LoginCheckInterceptor loginCheckInterceptor;
+
+    @Autowired
+    private ReCaptchaCheckInterceptor reCaptchaCheckInterceptor;
 
     /**
      * Add the interceptor. The method will be called when the application starts.
@@ -22,6 +26,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginCheckInterceptor)
                 .addPathPatterns("/demo/proc/**")
                 .order(0);
-    }
 
+        registry.addInterceptor(reCaptchaCheckInterceptor)
+                .addPathPatterns("/userauth/login")
+                .order(1);
+    }
 }

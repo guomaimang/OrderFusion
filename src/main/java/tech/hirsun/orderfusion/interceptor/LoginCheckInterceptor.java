@@ -1,4 +1,4 @@
-package tech.hirsun.orderfusion.Interceptor;
+package tech.hirsun.orderfusion.interceptor;
 
 import com.alibaba.fastjson2.JSON;
 import com.mysql.cj.util.StringUtils;

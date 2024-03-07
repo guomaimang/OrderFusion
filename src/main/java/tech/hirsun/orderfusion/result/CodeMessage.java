@@ -13,12 +13,13 @@ public class CodeMessage {
     // Common Message
     public static CodeMessage SUCCESS = new CodeMessage(0, "Success");
 
-    // Server Internal Message, like 5000x
+    // Server Message, like 5000x
     public static CodeMessage SERVER_ERROR = new CodeMessage(50001, "Server Error");
+    public static CodeMessage RECAPTCHA_ERROR = new CodeMessage(50002, "Recaptcha Error");
 
     // Login Message, like 5001x
-    public static CodeMessage USER_NOT_EXIST = new CodeMessage(50010, "User not Exist");
-    public static CodeMessage USER_NOT_LOGIN = new CodeMessage(50012, "User not Login");
+    public static CodeMessage USER_NOT_EXIST = new CodeMessage(50010, "No match found. Please try again.");
+    public static CodeMessage USER_NOT_LOGIN = new CodeMessage(50012, "User not Login. Please login first.");
 
     // Goods Message, like 5002x
 
@@ -27,6 +28,8 @@ public class CodeMessage {
     // User Message, like 5004x
 
     // Seckill Message, like 5005x
+
+
 
     //constructor
     private CodeMessage() {

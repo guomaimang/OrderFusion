@@ -34,9 +34,7 @@ function validPassword(password) {
     return pattern.test(password.trim());
 }
 
-
 <!-- 正则验证 end-->
-
 async function login() {
 
     let email = $("#email").val();
@@ -60,7 +58,7 @@ async function login() {
     }
 
     if (grecaptcha.getResponse() == null || grecaptcha.getResponse() === ""){
-        showErrorInfo("Please verify the captcha!");
+        showErrorInfo("Please verify the reCaptcha!");
         return;
     }
 
@@ -74,7 +72,7 @@ async function login() {
 
         beforeSend: function (request) {
             //设置header值
-            request.setRequestHeader("grecaptcha", grecaptcha.getResponse());
+            request.setRequestHeader("recaptchaToken", grecaptcha.getResponse());
         },
 
         success: function (result) {
