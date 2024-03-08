@@ -99,3 +99,9 @@ function utcToLocalReadable(s) {
     return date.toLocaleString();
 }
 
+function toggleDisplay(elementId, displayStyle) {
+    let element = document.getElementById(elementId);
+    if (element) {
+        element.style.display = displayStyle;
+    }
+}

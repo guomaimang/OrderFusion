@@ -170,6 +170,7 @@ async function checkLogin() {
         identifier.textContent = "Customer";
     } else {
         identifier.textContent = "Admin";
+        toggleDisplay("adminMenu", "block");
     }
 
     // check if there is any need for refresh token
@@ -196,9 +197,6 @@ async function checkLogin() {
             }
         });
     }
-
-
-
 }
 
 /**

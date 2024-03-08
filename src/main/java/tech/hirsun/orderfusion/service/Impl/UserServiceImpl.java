@@ -1,5 +1,6 @@
 package tech.hirsun.orderfusion.service.Impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.hirsun.orderfusion.dao.UserDao;
@@ -7,9 +8,12 @@ import tech.hirsun.orderfusion.pojo.PageBean;
 import tech.hirsun.orderfusion.pojo.User;
 import tech.hirsun.orderfusion.service.UserService;
 import tech.hirsun.orderfusion.utils.HashUtil;
+import tech.hirsun.orderfusion.utils.SaltUtils;
 
+import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -17,10 +21,10 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     public User login(User user) {
         User dbUser = userDao.getUserByEmail(user.getEmail());
+
         if (dbUser == null) {
             return null;
         }
-
         String saltedPassword = HashUtil.formPlainPassToDBPass(user.getPassword(), dbUser.getRandomSalt());
 
         if(dbUser.getPassword().equals(saltedPassword)) {
@@ -47,7 +51,10 @@ public class UserServiceImpl implements UserService {
 
         if (user.getPassword() != null){
             if (user.getPassword().length() > 0){
-                draftUser.setPassword(user.getPassword());
+                String randomSalt = SaltUtils.getRandomSalt(6);
+
+                draftUser.setRandomSalt(randomSalt);
+                draftUser.setPassword(HashUtil.formPlainPassToDBPass(user.getPassword(), randomSalt));
             }
         }
 
@@ -71,18 +78,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void add(User user) {
-        userDao.insert(user);
+        User draftUser = new User();
+
+        draftUser.setName(user.getName());
+        draftUser.setEmail(user.getEmail());
+
+        String randomSalt = SaltUtils.getRandomSalt(6);
+        draftUser.setRandomSalt(randomSalt);
+        draftUser.setPassword(HashUtil.formPlainPassToDBPass(user.getPassword(), randomSalt));
+
+        draftUser.setRegisterTime(new Date());
+
+        userDao.insert(draftUser);
     }
 
     @Override
     public void lockSwitch(User user) {
+        User draftUser = new User();
+        draftUser.setId(user.getId());
         if (user.getIsFrozen() == 0) {
-            user.setIsFrozen(1);
+            draftUser.setIsFrozen(1);
         } else {
-            user.setIsFrozen(0);
+            draftUser.setIsFrozen(0);
         }
-        userDao.update(user);
+        userDao.update(draftUser);
     }
-
-
 }

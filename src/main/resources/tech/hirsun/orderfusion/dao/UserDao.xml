@@ -9,6 +9,7 @@
         <set>
             <if test="name != null">name = #{name},</if>
             <if test="password != null">password = #{password},</if>
+            <if test="randomSalt != null">random_salt = #{randomSalt},</if>
             <if test="isFrozen != null">is_frozen = #{isFrozen},</if>
             <if test="email != null">email = #{email},</if>
         </set>

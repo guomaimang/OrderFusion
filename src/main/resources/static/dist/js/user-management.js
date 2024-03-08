@@ -50,7 +50,7 @@ $(function () {
     $("#searchButton").click(function(){
         let searchEmail = $("#searchInput").val(); //获取输入框的值
         $("#jqGrid").jqGrid('setGridParam',{
-            postData: {'email': searchEmail}, //设置postData参数
+            postData: {'keyword': searchEmail}, //设置postData参数
             page: 1
         }).trigger("reloadGrid"); //重新加载JqGrid
     });
@@ -93,6 +93,7 @@ function validObject() {
             showErrorInfo("Password length cannot be larger than 20!");
             return false;}
     }
+
     return true;
 }
 
@@ -143,9 +144,9 @@ function lockSwitch() {
         if (flag) {
             $.ajax({
                 type: "PUT",
-                url: "admin/user/update",
+                url: "admin/user/lockswitch",
                 contentType: "application/json",
-                data: JSON.stringify(id),
+                data: JSON.stringify({"id": id, "isFrozen": $("#jqGrid").jqGrid('getRowData', id).isFrozen === "Normal" ? 0 : 1}),
                 success: function (r) {
                     if (r.code === 0) {
                         swal("Update Successfully", {
@@ -161,6 +162,8 @@ function lockSwitch() {
             });
         }
     });
+
+    reload();
 }
 
 //绑定 modal 表单上的 SAVE 按钮
@@ -181,13 +184,13 @@ $('#saveButton').click(async function () {
             "id": id,
             "name": name,
             "email": email,
-            "password": await sha256(password),
+            "password": password,
         };
         let url;
         let method;
 
         // 表示新增操作
-        if (id === null || id === undefined || id < 0) {
+        if (id === null || id === "" || id === undefined || id < 0) {
             url = 'admin/user/add';
             method = 'POST';
         }else {
@@ -231,10 +234,12 @@ function reset() {
     //隐藏错误提示框
     $('.alert-danger').css("display", "none");
     //清空数据
-    $('#articleId').val(0);
-    $('#articleName').val('');
-    $('#articleAuthor').val('');
-
+    $('#modal-id').val('');
+    $('#modal-email').val('');
+    $('#modal-name').val('');
+    $('#modal-password').val('');
+    $('#modal-registerTime').val('');
+    $('#modal-isFrozen').val('0');
 }
 /**
  * jqGrid 重新加载
