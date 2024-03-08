@@ -1,5 +1,6 @@
 package tech.hirsun.orderfusion.pojo;
 import lombok.*;
+import tech.hirsun.orderfusion.utils.SaltUtils;
 
 import java.util.Date;
 
@@ -7,14 +8,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private int id;
+    private Integer id;
     private String name;
     private String email;
     private String password;
     private String randomSalt;
     private String avatarUri;
-    private int isFrozen;
-    private int isAdmin;
+    private Integer isFrozen;
+    private Integer isAdmin;
     Date registerTime;
 
     // Return to Frontend
@@ -23,5 +24,14 @@ public class User {
         this.email = email;
         this.avatarUri = avatarUri;
         this.isAdmin = isAdmin;
+    }
+
+    // New User
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.randomSalt = SaltUtils.getRandomSalt(6);
+        this.registerTime = new Date();
     }
 }

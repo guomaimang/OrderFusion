@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.hirsun.orderfusion.dao.UserDao">
+
+    <update id="update">
+        update user
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="isFrozen != null">is_frozen = #{isFrozen},</if>
+            <if test="email != null">email = #{email},</if>
+        </set>
+            where id = #{id}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into user (name, password, email, random_salt, register_time)
+        values (#{name}, #{password}, #{email}, #{randomSalt}, #{registerTime})
+    </insert>
+
+    <select id="list" parameterType="java.util.Map" resultType="tech.hirsun.orderfusion.pojo.User">
+        SELECT id,name,email,register_time,is_frozen FROM user
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND email LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+
+
+</mapper>

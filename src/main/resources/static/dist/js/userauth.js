@@ -208,7 +208,7 @@ async function checkLoggedInAdmin() {
     await checkLogin();
     if (window.localStorage.getItem("isAdmin") !== "1") {
        window.alert("You are not an administrator, please log in as an administrator and then do this action!")
-       window.location.href = "index.html";
+       // window.location.href = "index.html";
     }
 }
 

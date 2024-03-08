@@ -42,6 +42,16 @@ $(function () {
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         },
     });
+
+    // 搜索功能
+    $("#searchButton").click(function(){
+        let searchEmail = $("#searchInput").val(); //获取输入框的值
+        $("#jqGrid").jqGrid('setGridParam',{
+            postData: {'email': searchEmail}, //设置postData参数
+            page: 1
+        }).trigger("reloadGrid"); //重新加载JqGrid
+    });
+
     $(window).resize(function () {
         $("#jqGrid").setGridWidth($(".card-body").width());
     });
@@ -53,7 +63,7 @@ $(function () {
  * 数据验证
  */
 function validObject() {
-    var articleName = $('#articleName').val();
+    let articleName = $('#articleName').val();
     if (isNull(articleName)) {
         showErrorInfo("The title can not be blank!");
         return false;
@@ -62,14 +72,9 @@ function validObject() {
         showErrorInfo("Title characters cannot be larger than 120!");
         return false;
     }
-    var articleAuthor = $('#articleAuthor').val();
+    let articleAuthor = $('#articleAuthor').val();
     if (isNull(articleAuthor)) {
         showErrorInfo("Author cannot be empty!");
-        return false;
-    }
-    var ariticleContent = editorD.txt.html();
-    if (isNull(ariticleContent) || ariticleContent == 'Please enter...') {
-        showErrorInfo("Content cannot be empty!");
         return false;
     }
     if (!validLength(ariticleContent, 3000)) {
@@ -159,16 +164,18 @@ $('#saveButton').click(async function () {
         // 获取表单数据
         let id = $("#modal-id").val();
         let name = $("#modal-name").val();
+        let email = await sha256($("#modal-email").val());
         let password = await sha256($("#modal-password").val());
 
         // 将即将发送数据封装为Json, 和 Pojo 对应
         let data = {
             "id": id,
             "name": name,
+            "email": email,
             "password": password,
         };
-        let url = "";
-        let method = "";
+        let url;
+        let method;
 
         // 表示新增操作
         if (id === null || id === undefined || id < 0) {
@@ -187,6 +194,19 @@ $('#saveButton').click(async function () {
             url: url,               //url
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
+            success: function (r) {
+                if (r.code === 0) {
+                    $('#userModal').modal('hide');
+                    swal("Operation success!", {
+                        icon: "success",
+                    });
+                    reload();
+                } else {
+                    swal(r.msg, {
+                        icon: "error",
+                    });
+                }
+            },
             error: function () {
                 swal("Operation failure, please contact the support!", {
                     icon: "error",

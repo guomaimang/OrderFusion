@@ -10,14 +10,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-    int id;
-    int userId;
+    Integer id;
+    Integer userId;
 
-    int goodId;
+    Integer goodId;
     String goodsName;
-    int goodsAmount;
+    Integer goodsAmount;
 
-    double payment;
+    Integer payment;
 
     String deliveryAddress;
     String deliveryPhone;
@@ -26,7 +26,7 @@ public class Order {
     String userRemark;
     String adminRemark;
 
-    int status;
+    Integer status;
 
     Date createTime;
     Date payTime;

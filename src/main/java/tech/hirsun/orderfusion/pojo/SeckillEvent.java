@@ -8,13 +8,13 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SeckillEvent {
-    int id;
-    int goodsId;
-    double seckillPrice;
-    int secKillStock;
+    Integer id;
+    Integer goodsId;
+    Double seckillPrice;
+    Integer secKillStock;
 
     Date startTime;
     Date endTime;
 
-    int isAvailable;
+    Integer isAvailable;
 }

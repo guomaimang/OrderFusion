@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Goods {
-    int id;
+    Integer id;
     String title;
     String name;
     String description;
     String imageUri;
-    double price;
-    int stock;
-    int iSAvailable;
+    Double price;
+    Integer stock;
+    Integer iSAvailable;
 }
 

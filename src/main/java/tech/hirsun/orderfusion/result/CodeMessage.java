@@ -20,7 +20,7 @@ public class CodeMessage {
     public static CodeMessage REFUSE_SERVICE = new CodeMessage(50004, "Access Limit Reached.");
 
     // Login Message, like 5001x
-    public static CodeMessage USER_NOT_EXIST = new CodeMessage(50010, "No match found. Please try again.");
+    public static CodeMessage USER_NOT_EXIST = new CodeMessage(50011, "No match found. Please try again.");
     public static CodeMessage USER_NOT_LOGIN = new CodeMessage(50012, "User not Login. Please login first.");
 
     // Goods Message, like 5002x
@@ -37,7 +37,7 @@ public class CodeMessage {
     private CodeMessage() {
     }
 
-    private CodeMessage(int code, String message) {
+    public CodeMessage(int code, String message) {
         this.code = code;
         this.message = message;
     }

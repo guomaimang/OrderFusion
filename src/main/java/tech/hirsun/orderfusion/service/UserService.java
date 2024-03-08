@@ -3,6 +3,7 @@ package tech.hirsun.orderfusion.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.hirsun.orderfusion.dao.UserDao;
+import tech.hirsun.orderfusion.pojo.PageBean;
 import tech.hirsun.orderfusion.pojo.User;
 
 @Service
@@ -12,6 +13,9 @@ public interface UserService {
 
     void update(User user);
 
-    void register(User user);
+    PageBean page(int start, int pageSize, String keyword);
 
+    void add(User user);
+
+    void lockSwitch(User user);
 }
