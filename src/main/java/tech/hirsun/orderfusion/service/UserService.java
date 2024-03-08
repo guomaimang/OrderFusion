@@ -11,6 +11,8 @@ public interface UserService {
 
     User login(User user);
 
+    User getUserInfo(Integer id);
+
     void update(User user);
 
     PageBean page(int start, int pageSize, String keyword);

@@ -212,11 +212,3 @@ async function checkLoggedInAdmin() {
     }
 }
 
-function afterResponseAction(result) {
-    if (result.code === 50012){
-        alert("You are not logged in, please go to login first!")
-        window.location.href = "login.html";
-    }else if (result.code === 0 && ("jwt" in result.data && result.data.jwt !== null && result.data.jwt === undefined && result.data.jwt !== "")){
-        window.localStorage.setItem("jwt", result.data.jwt);
-    }
-}

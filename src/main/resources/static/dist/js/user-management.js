@@ -7,14 +7,17 @@ $(function () {
     $("#jqGrid").jqGrid({
         // 设置API
         url: 'admin/user/list',
+        loadBeforeSend: function(jqXHR) {
+            jqXHR.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+        },
         datatype: "json",
         colModel: [
             // 设置列表表头
             {label: 'ID', name: 'id', index: 'id', width: 30, key: true, hidden: false},
             {label: 'Name', name: 'name', index: 'name', width: 50},
             {label: 'Email', name: 'email', index: 'email', width: 120},
-            {label: 'Registration Time', name: 'registerTime', index: 'registerTime', width: 120},
-            {label: 'Frozen', name: 'isFrozen', index: 'isFrozen', width: 30},
+            {label: 'Registration Time', name: 'registerTime', index: 'registerTime', width: 120, editable: true, formatter:utcToLocalFormatter},
+            {label: 'Frozen', name: 'isFrozen', index: 'isFrozen', width: 30, editable: true, formatter:isFrozenFormatter},
         ],
         height: 560,
         rowNum: 10,
@@ -27,14 +30,14 @@ $(function () {
         multiselect: true,
         pager: "#jqGridPager",
         jsonReader: {
-            root: "data.list",
-            page: "data.currPage",
+            root: "data.rows",
+            records: "data.count",
+            page: "data.currentPage",
             total: "data.totalPage",
-            records: "data.totalCount"
         },
         prmNames: {
-            page: "page",
-            rows: "limit",
+            page: "pagenum",
+            rows: "pagesize",
             order: "order",
         },
         gridComplete: function () {
@@ -63,23 +66,32 @@ $(function () {
  * 数据验证
  */
 function validObject() {
-    let articleName = $('#articleName').val();
-    if (isNull(articleName)) {
-        showErrorInfo("The title can not be blank!");
+    let email = $('#modal-email').val();
+    if (isNull(email))  {
+        showErrorInfo("The email can not be blank!");
         return false;
     }
-    if (!validLength(articleName, 120)) {
-        showErrorInfo("Title characters cannot be larger than 120!");
+    if (!validLength(email, 120)) {
+        showErrorInfo("Email length cannot be larger than 120!");
         return false;
     }
-    let articleAuthor = $('#articleAuthor').val();
-    if (isNull(articleAuthor)) {
-        showErrorInfo("Author cannot be empty!");
+
+
+    let name = $('#modal-name').val();
+    if (isNull(name)) {
+        showErrorInfo("Name cannot be empty!");
         return false;
     }
-    if (!validLength(ariticleContent, 3000)) {
-        showErrorInfo("Content characters cannot be larger than 3000!");
+    if (!validLength(name, 20)) {
+        showErrorInfo("Name length cannot be larger than 20!");
         return false;
+    }
+
+    let password = $('#modal-password').val();
+    if (!isNull(password)) {
+        if (!validLength(name, 20)) {
+            showErrorInfo("Password length cannot be larger than 20!");
+            return false;}
     }
     return true;
 }
@@ -87,10 +99,7 @@ function validObject() {
 /**
  * 重置 modal 表单数据
  */
-
-
 // Grid 顶部的操作按钮
-
 function addUser() {
     reset();
     $('.modal-title').html('Add');
@@ -105,14 +114,14 @@ function editUser() {
         return;
     }
     //请求数据
-    $.get("admin/user/info/" + id, function (r) {
+    $.get("admin/user/info?id=" + id, function (r) {
         if (r.code === 0 && r.data != null) {
             //填充数据 至 modal
             $('#modal-id').val(r.data.id);
             $('#modal-email').val(r.data.email);
             $('#modal-name').val(r.data.name);
-            $('#modal-registerTime').val(r.data.registerTime);
-            $('#modal-isFrozen').val(r.data.isFrozen);
+            $('#modal-registerTime').val(utcToLocalFormatter(r.data.registerTime));
+            $('#modal-isFrozen').val(isFrozenFormatter(r.data.isFrozen));
         }
     });
     //显示 modal
@@ -164,7 +173,7 @@ $('#saveButton').click(async function () {
         // 获取表单数据
         let id = $("#modal-id").val();
         let name = $("#modal-name").val();
-        let email = await sha256($("#modal-email").val());
+        let email = $("#modal-email").val();
         let password = await sha256($("#modal-password").val());
 
         // 将即将发送数据封装为Json, 和 Pojo 对应
@@ -172,7 +181,7 @@ $('#saveButton').click(async function () {
             "id": id,
             "name": name,
             "email": email,
-            "password": password,
+            "password": await sha256(password),
         };
         let url;
         let method;
@@ -183,7 +192,7 @@ $('#saveButton').click(async function () {
             method = 'POST';
         }else {
             // id>=0表示编辑操作
-            url = 'admin/user/update';
+            url = 'admin/user/edit';
             method = 'PUT';
         }
 
@@ -232,8 +241,26 @@ function reset() {
  */
 function reload() {
     reset();
-    var page = $("#jqGrid").jqGrid('getGridParam', 'page');
+    let page = $("#jqGrid").jqGrid('getGridParam', 'page');
     $("#jqGrid").jqGrid('setGridParam', {
         page: page
     }).trigger("reloadGrid");
+}
+
+/**
+ * jqGrid isFrozen formatter
+ * @returns {string}
+ */
+function isFrozenFormatter(cellValue) {
+    if (cellValue === 1) {
+        return "Locked";
+    } else {
+        return "Normal";
+    }
+}
+
+function utcToLocalFormatter(cellValue) {
+    let date = new Date(cellValue);
+    return date.toLocaleString();
+
 }

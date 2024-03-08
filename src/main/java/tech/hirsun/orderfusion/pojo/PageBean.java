@@ -12,4 +12,6 @@ import java.util.List;
 public class PageBean {
     private Integer total;
     private List rows;
+    private Integer totalPage;
+    private Integer currentPage;
 }

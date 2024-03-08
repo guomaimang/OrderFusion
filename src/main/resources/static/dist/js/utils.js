@@ -93,3 +93,9 @@ function showErrorInfo(info) {
     $('.alert-danger').css("display", "block");
     $('.alert-danger').html(info);
 }
+
+function utcToLocalReadable(s) {
+    let date = new Date(s);
+    return date.toLocaleString();
+}
+
