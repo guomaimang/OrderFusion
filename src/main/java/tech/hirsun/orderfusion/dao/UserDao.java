@@ -21,6 +21,8 @@ public interface UserDao {
     @Select("select count(*) from user")
     public int count();
 
+
+    // By XML
     /**
      *
      * @param start: the first row index
@@ -33,8 +35,6 @@ public interface UserDao {
                            @Param("pageSize") int pageSize,
                            @Param("keyword") String keyword);
 
-
-    // By XML
     public int update(User user);
 
     public int insert(User user);

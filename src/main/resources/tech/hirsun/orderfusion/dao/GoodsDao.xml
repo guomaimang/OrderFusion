@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.hirsun.orderfusion.dao.GoodsDao">
+
+    <update id="update">
+        update goods
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="isAvailable != null">is_available = #{isAvailable},</if>
+        </set>
+            where id = #{id}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into goods (title, name, description, price, stock, is_available)
+        values (#{title}, #{name}, #{description}, #{price}, #{stock}, #{isAvailable})
+    </insert>
+
+    <select id="list" parameterType="java.util.Map" resultType="tech.hirsun.orderfusion.pojo.Goods">
+        SELECT id,title,name,description,price,stock,is_available FROM goods
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+        ORDER BY id DESC LIMIT #{start}, #{pageSize}
+    </select>
+
+</mapper>

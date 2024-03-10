@@ -3,9 +3,11 @@ package tech.hirsun.orderfusion.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tech.hirsun.orderfusion.pojo.Goods;
 import tech.hirsun.orderfusion.pojo.User;
 import tech.hirsun.orderfusion.result.CodeMessage;
 import tech.hirsun.orderfusion.result.Result;
+import tech.hirsun.orderfusion.service.GoodsService;
 import tech.hirsun.orderfusion.service.UserService;
 
 
@@ -16,6 +18,10 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GoodsService goodsService;
+
 
     @GetMapping("/user/list")
     public Result page(@RequestParam(defaultValue = "1") Integer pagenum,
@@ -73,6 +79,30 @@ public class AdminController {
             return Result.success(userService.getUserInfo(id));
         } catch (Exception e) {
             log.error("Error when get user info");
+            return Result.error(new CodeMessage(50000, "Illegal Request"));
+        }
+    }
+
+    @PostMapping("/goods/add")
+    public Result addGoods(@RequestBody Goods goods) {
+        try {
+            log.info("Admin request add goods, name: {}", goods.getName());
+            goodsService.add(goods);
+            return Result.success("Success");
+        } catch (Exception e) {
+            log.error("Error when add goods");
+            return Result.error(new CodeMessage(50000, "Illegal Request"));
+        }
+    }
+
+    @PutMapping("/goods/edit")
+    public Result editGoods(@RequestBody Goods goods) {
+        try {
+            log.info("Admin request edit goods, id: {}", goods.getId());
+            goodsService.update(goods);
+            return Result.success("Success");
+        } catch (Exception e) {
+            log.error("Error when edit goods");
             return Result.error(new CodeMessage(50000, "Illegal Request"));
         }
     }

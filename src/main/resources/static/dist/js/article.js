@@ -47,7 +47,6 @@ $(function () {
     editorD.create();
 
     $('#articleModal').modal('hide');
-
     $("#jqGrid").jqGrid({
         url: 'articles/list',
         datatype: "json",

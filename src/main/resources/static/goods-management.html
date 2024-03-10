@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 <head>
     <meta charset="utf-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <title>Home</title>
-    <link href="plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Goods Management</title>
+    <!-- jqgrid ui -->
+    <link href="plugins/jqgrid-5.7.0/ui.jqgrid-bootstrap4.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.css">
     <link href="dist/css/main.css" rel="stylesheet"/>
     <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-    <link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
+    <!-- sweet alert -->
+    <link rel="stylesheet" href="plugins/sweetalert/sweetalert.css">
     <!-- Theme style -->
-    <link href="dist/css/adminlte.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <script src="dist/js/userauth.js"></script>
     <script src="dist/js/utils.js"></script>
 </head>
@@ -216,12 +219,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Notice</h1>
+                        <h1 class="m-0 text-dark">Goods Management</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Notice</li>
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active">Shopping</li>
+                            <li class="breadcrumb-item active">Goods Management</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -230,60 +234,96 @@
 
         <!-- Main content -->
         <div class="content">
-            <div class="container-fluid">
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">Course Information</h3>
-                    </div> <!-- /.card-body -->
-                    <div class="card-body">
-                        <div class="panel panel-default">
-                            <div style="padding: 10px 0 20px 10px;">
-                                <h3>&nbsp;&nbsp;&nbsp; COMP3334: Computer Systems Security</h3>
-                                <br>
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Topics to be covered</p>
-                                <ul>
-                                    <li>Overview: Security goals and policies, types of attacks, and threat models</li>
-                                    <li>Cryptography: Classical cryptography, public-key cryptography, and steganography</li>
-                                    <li>Authentication: Password systems, one-time passwords, strong password protocols, and password authentication protocols</li>
-                                    <li>Web Security: Input validation, SQL injection, cross-site scripting, cross-site request forgery, and non-validated redirects and forwards</li>
-                                    <li>Software Vulnerability: Buffer overflow, memory protection and corruption</li>
-                                    <li>Case study & Advanced topics: Blockchain, Merkle tree, zero-knowledge proof, and blind signatures</li>
-                                    <img alt="CleanShot 2023-04-12 at 13.26.03@2x.png" src="https://static-file.hirsun.tech/2023/04/12/509bc926272ca.png" title="CleanShot 2023-04-12 at 13.26.03@2x.png" width="300"/>
-                                </ul>
-                            </div>
-                        </div>
-                    </div><!-- /.card-body -->
-                </div>
-            </div><!-- /.container-fluid -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- 顶部按钮 -->
+                            <div class="grid-btn">
+                                <button class="btn btn-info" onclick="addGoods()"><i
+                                        class="fa fa-plus"></i>&nbsp;New
+                                </button>
+                                <button class="btn btn-info" onclick="editGoods()"><i
+                                        class="fa fa-pencil-square-o"></i>&nbsp;Edit
+                                </button>
+                                <button class="btn btn-info" onclick="previewGoods()"><i
+                                        class="fa fa-object-group"></i>&nbsp;Preview
+                                </button>
+                                <label for="searchInput"></label><input type="text" id="searchInput">
+                                <button id="searchButton">Search Name</button>
 
-            <div class="container-fluid">
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">Workshop2</h3>
-                    </div> <!-- /.card-body -->
-                    <div class="card-body">
-                        <div class="panel panel-default">
-                            <div style="padding: 10px 0 20px 10px;">
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Important Notice</p>
-                                <ul>
-                                    <p>
-                                        In the coming week, we will have our workshop 2 in PQ604ABC during the class time. <br> <br>
-                                        For Tuesday class, due to unavailability of PQ604ABC, it is rescheduled to: <br> <br>
-                                        6:30pm – 9:20pm, 30 March (Thu) <br> <br>
-                                        To allow certain flexibility, students of Tuesday class may join other sessions (subject to available seats) or review the workshop 2 video. You can work on the workshop tasks in your Intel-based laptop (by importing the VM image) or using the lab computers. <br> <br>
-                                        Regards, <br>
-                                    </p>
-                                </ul>
                             </div>
+                            <table id="jqGrid" class="table table-bordered">
+                            </table>
+                            <div id="jqGridPager"></div>
                         </div>
-                    </div><!-- /.card-body -->
+                    </div>
                 </div>
-            </div><!-- /.container-fluid -->
+            </div>
         </div>
-        <!-- /.content -->
-    </div>
 
+        <div class="content">
+            <div class="modal fade" id="goodsModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="width: 800px;height: 1100px;">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title" id="userModalLabel">Edit</h6>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <div class="alert alert-danger">Unexpected errors!</div>
+                                </div>
+
+                                <!-- 编辑窗口的表单 -->
+                                <div class="form-group">
+                                    <label for="modal-id" class="control-label">ID:</label>
+                                    <input type="text" class="form-control"  readonly style="width: 70%" id="modal-id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-name" class="control-label">Name:</label>
+                                    <input type="text" class="form-control" style="width: 70%" id="modal-name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-title" class="control-label">Title:</label>
+                                    <input type="text" class="form-control" style="width: 70%" id="modal-title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-price" class="control-label">Price:</label>
+                                    <input type="text" class="form-control" style="width: 70%" id="modal-price">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-stock" class="control-label">Stock:</label>
+                                    <input type="text" class="form-control" style="width: 70%" id="modal-stock">
+                                </div>
+                                <div class="form-isAvailable">
+                                    <label for="modal-isAvailable" class="control-label">Available:</label>
+                                    <select name="modal-isAvailable" class="form-control" style="width: 70%" id="modal-isAvailable">
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class="control-label">Description:</label>
+                                    <div id="wangEditor"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+                            <button type="button" class="btn btn-primary" id="saveButton">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal -->
+        </div>
+    </div>
     <!-- /.content-wrapper -->
+
     <footer class="main-footer">
         <strong>Copyright &copy; Hirsun 2024 - Present <a href="https://github.com/guomaimang/orderfusion"> Order Fusion Seckill</a>.</strong>
         at HKPU-COMP
@@ -292,23 +332,30 @@
         </div>
     </footer>
 
-    <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
     </aside>
-    <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
 
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="plugins/jQueryUI/jquery-ui.min.js"></script>
+
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="plugins/jqgrid-5.7.0/grid.locale-cn.js"></script>
+
+<!-- sweet alert -->
+<script src="plugins/sweetalert/sweetalert.min.js"></script>
+<script src="plugins/jqgrid-5.7.0/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+
+<script src="dist/js/goods-management.js"></script>
+
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
-
 </body>
 </html>

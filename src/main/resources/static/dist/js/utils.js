@@ -30,20 +30,6 @@ function validLength(obj, length) {
 
 }
 
-/**
- * 获取url参数
- * @param name
- * @returns {null|string}
- */
-
-function getQueryString(name) {
-    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    let r = window.location.search.substr(1).match(reg);
-    if (r != null) {
-        return decodeURIComponent(r[2]);
-    }
-    return null;
-}
 
 /**
  * 获取jqGrid选中的一条记录
@@ -74,8 +60,8 @@ function getSelectedRow() {
  * @returns {*}
  */
 function getSelectedRows() {
-    var grid = $("#jqGrid");
-    var rowKey = grid.getGridParam("selrow");
+    let grid = $("#jqGrid");
+    let rowKey = grid.getGridParam("selrow");
     if (!rowKey) {
         swal("Please select one record!", {
             icon: "error",
@@ -104,4 +90,19 @@ function toggleDisplay(elementId, displayStyle) {
     if (element) {
         element.style.display = displayStyle;
     }
+}
+
+/**
+ * 获取url参数
+ * @param name
+ * @returns {null|string}
+ */
+
+function getQueryParam(name) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    let r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return decodeURIComponent(r[2]);
+    }
+    return null;
 }
