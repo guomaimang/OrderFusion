@@ -17,7 +17,7 @@ public class Goods {
     Integer stock;
     Integer isAvailable;
 
-    public static Goods getDraftGoodsForDB(Goods goods){
+    public static Goods getDraftObjForDB(Goods goods){
         Goods draftGoods = new Goods();
 
         if (goods.getId() != null){

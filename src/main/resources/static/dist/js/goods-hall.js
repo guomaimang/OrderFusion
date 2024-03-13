@@ -74,7 +74,7 @@ $(function () {
         rownumbers: false,
         rownumWidth: 20,
         autowidth: true,
-        multiselect: true,
+        multiselect: false,
         pager: "#jqGridPager",
         jsonReader: {
             root: "data.rows",
@@ -90,6 +90,12 @@ $(function () {
         gridComplete: function () {
             //隐藏grid底部滚动条
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+        },
+        onSelectRow: function () {
+            //返回选中的id
+            selectedRowIndex = $("#" + this.id).getGridParam('selrow');
+            //返回点击这行xlmc的值
+            window.open("/goods-details.html?id=" + selectedRowIndex);
         },
     });
 

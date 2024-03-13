@@ -24,13 +24,13 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void update(Goods goods) {
-        Goods draftGoods = Goods.getDraftGoodsForDB(goods);
+        Goods draftGoods = Goods.getDraftObjForDB(goods);
         goodsDao.update(draftGoods);
     }
 
     @Override
     public PageBean page(Integer pageNum, Integer pageSize, String keyword) {
-        int count = goodsDao.count();
+        int count = goodsDao.count(keyword);
 
         int start = (pageNum-1) * pageSize;
         List<Goods> goods = goodsDao.list(start, pageSize, keyword);
@@ -40,8 +40,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void add(Goods goods) {
-        Goods draftGoods = Goods.getDraftGoodsForDB(goods);
-        log.info("Add goods: {}", draftGoods);
+        Goods draftGoods = Goods.getDraftObjForDB(goods);
         goodsDao.insert(draftGoods);
     }
 

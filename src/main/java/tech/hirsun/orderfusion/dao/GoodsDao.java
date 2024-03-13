@@ -17,8 +17,7 @@ public interface GoodsDao {
     /**
      * @return the number of users
      */
-    @Select("select count(*) from goods")
-    public int count();
+    public Integer count(@Param("keyword") String keyword);
 
     // By XML
     /**

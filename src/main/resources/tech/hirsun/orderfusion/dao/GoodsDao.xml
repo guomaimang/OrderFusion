@@ -12,14 +12,15 @@
             <if test="description != null">description = #{description},</if>
             <if test="price != null">price = #{price},</if>
             <if test="stock != null">stock = #{stock},</if>
+            <if test="imageUri != null">image_uri = #{imageUri},</if>
             <if test="isAvailable != null">is_available = #{isAvailable},</if>
         </set>
             where id = #{id}
     </update>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
-        insert into goods (title, name, description, price, stock, is_available)
-        values (#{title}, #{name}, #{description}, #{price}, #{stock}, #{isAvailable})
+        insert into goods (title, name, description, price, stock, image_uri, is_available)
+        values (#{title}, #{name}, #{description}, #{price}, #{stock}, #{imageUri}, #{isAvailable})
     </insert>
 
     <select id="list" parameterType="java.util.Map" resultType="tech.hirsun.orderfusion.pojo.Goods">
@@ -30,6 +31,15 @@
             </if>
         </where>
         ORDER BY id DESC LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="count" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*) FROM `goods`
+        <where>
+            <if test="keyword != null and keyword != ''">
+                name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
     </select>
 
 </mapper>

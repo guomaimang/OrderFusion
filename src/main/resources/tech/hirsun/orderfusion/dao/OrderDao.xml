@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.hirsun.orderfusion.dao.OrderDao">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into `order` (user_id, goods_id, goods_name, goods_amount, payment, delivery_address, delivery_phone, dedlivery_receiver, user_remark, status, create_time, channel)
+        values (#{userId}, #{goodsId}, #{goodsName}, #{goodsAmount}, #{payment}, #{deliveryAddress}, #{deliveryPhone}, #{deliveryReceiver}, #{userRemark}, #{status}, #{createTime}, #{channel})
+    </insert>
+
+    <update id="update">
+        update `order`
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="goodsName != null">goods_name = #{goodsName},</if>
+            <if test="goodsAmount != null">goods_amount = #{goodsAmount},</if>
+            <if test="payment != null">payment = #{payment},</if>
+            <if test="deliveryAddress != null">delivery_address = #{deliveryAddress},</if>
+            <if test="deliveryPhone != null">delivery_phone = #{deliveryPhone},</if>
+            <if test="deliveryReceiver != null">delivery_receiver = #{deliveryReceiver},</if>
+            <if test="userRemark != null">user_remark = #{userRemark},</if>
+            <if test="adminRemark != null">admin_remark = #{adminRemark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="sentTime != null">sent_time = #{sentTime},</if>
+            <if test="channel != null">channel = #{channel},</if>
+            <if test="payId != null">pay_id = #{payId},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="list" parameterType="java.util.Map" resultType="tech.hirsun.orderfusion.pojo.Order">
+        SELECT * FROM goods
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND goods_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="userid != null and userid != ''">
+                AND user_id = #{userid}
+            </if>
+        </where>
+        ORDER BY id DESC LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(*) FROM `order`
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND goods_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="userid != null and userid != ''">
+                AND user_id = #{userid}
+            </if>
+        </where>
+    </select>
+
+</mapper>

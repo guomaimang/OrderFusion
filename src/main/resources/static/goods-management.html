@@ -265,7 +265,7 @@
         <div class="content">
             <div class="modal fade" id="goodsModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content" style="width: 800px;height: 1100px;">
+                    <div class="modal-content" style="width: 800px;height: 1200px;">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
@@ -291,16 +291,20 @@
                                     <input type="text" class="form-control" style="width: 70%" id="modal-title">
                                 </div>
                                 <div class="form-group">
+                                    <label for="modal-imageUri" class="control-label">Image URI:</label>
+                                    <input type="text" class="form-control" style="width: 70%" id="modal-imageUri">
+                                </div>
+                                <div class="form-group">
                                     <label for="modal-price" class="control-label">Price:</label>
-                                    <input type="text" class="form-control" style="width: 70%" id="modal-price">
+                                    <input type="text" class="form-control" style="width: 30%" id="modal-price">
                                 </div>
                                 <div class="form-group">
                                     <label for="modal-stock" class="control-label">Stock:</label>
-                                    <input type="text" class="form-control" style="width: 70%" id="modal-stock">
+                                    <input type="number" class="form-control" style="width: 30%" id="modal-stock">
                                 </div>
                                 <div class="form-isAvailable">
                                     <label for="modal-isAvailable" class="control-label">Available:</label>
-                                    <select name="modal-isAvailable" class="form-control" style="width: 70%" id="modal-isAvailable">
+                                    <select name="modal-isAvailable" class="form-control" style="width: 30%" id="modal-isAvailable">
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
                                     </select>

@@ -232,52 +232,54 @@
             </div><!-- /.container-fluid -->
         </div>
 
+
         <!-- Main content -->
         <div class="content">
-            <div class="container mt-5">
+
+            <div class="container mt-6">
                 <div class="row">
                     <!-- 商品图片和描述 -->
                     <div class="col-md-6">
                         <div class="card">
-                            <img src="your-image-url.jpg" class="card-img-top" alt="商品图片">
+                            <br>
+                            <img src="https://pic.hanjiaming.com.cn/2024/03/11/745889d753016.jpg" class="card-img-top" alt="product picture" style="  margin-left: auto; margin-right: auto; width: 75%;">
                             <div class="card-body">
-                                <h5 class="card-title">商品名称</h5>
-                                <p class="card-text">这里是商品的详细描述。</p>
+                                <h5 class="card-title" id="card-name">Loading...</h5>
+                                <p class="card-text" id="card-title">Loading...</p>
                             </div>
                         </div>
                     </div>
-                    <!-- 商品规格 -->
+
                     <div class="col-md-6">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">规格名称</th>
-                                <th scope="col">规格详情</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>颜色</td>
-                                <td>红色</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>尺寸</td>
-                                <td>大</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>重量</td>
-                                <td>1.5kg</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <button class="btn btn-primary">Buy Now</button>
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h2>Fast Order</h2>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">ID：</h6>
+                                <p class="card-text" id="card-id" style="color:darkred;font-size:25px;">Loading...</p>
+                                <h6 class="card-title">Stock：</h6>
+                                <p class="card-text" id="card-stock" style="color:darkred;font-size:25px;">Loading...</p>
+                                <h6 class="card-title" >Unit Price：</h6>
+                                <p class="card-text" id="card-price" style="color:darkred;font-size:25px;">Loading...</p>
+                                <h6 class="card-title">Availability：</h6>
+                                <p class="card-text" id="card-isAvailable" style="color:darkred;font-size:25px;">Loading...</p>
+                                <br>
+                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Buy Now</button>
+                            </div>
+                        </div>
                     </div>
+
+
                 </div>
+                <br>
+                <br>
+                <div id="wangEditor"></div>
+
             </div>
+
+
+
         </div>
 
 
@@ -312,9 +314,10 @@
 <script src="plugins/jqgrid-5.7.0/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
 
-<script src="dist/js/goods-management.js"></script>
+<script src="dist/js/goods-details.js"></script>
 
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
+
 </body>
 </html>
