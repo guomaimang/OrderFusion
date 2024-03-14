@@ -1,17 +1,20 @@
 package tech.hirsun.orderfusion.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import tech.hirsun.orderfusion.pojo.Order;
 import tech.hirsun.orderfusion.pojo.User;
 import tech.hirsun.orderfusion.redis.RedisService;
 import tech.hirsun.orderfusion.redis.UserKey;
 import tech.hirsun.orderfusion.result.CodeMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.UserService;
+import tech.hirsun.orderfusion.utils.JwtUtils;
 
+@Slf4j
 @Controller
 @RequestMapping("/demo")
 public class DemoController {
@@ -64,6 +67,15 @@ public class DemoController {
     public Result<User> redisGet() {
         User user = redisService.get(UserKey.getById,"1", User.class);
         return Result.success(user);
+    }
+
+    @ResponseBody
+    @RequestMapping("/jwt")
+    public Result jwt(@RequestHeader String jwt, @RequestBody Order order) {
+        log.info("Request create order, order: {}, jwt: {}", order, jwt);
+        JwtUtils.parseJwt(jwt);
+        log.info("Logged in User id: {}", JwtUtils.parseJwt(jwt).get("id").toString());
+        return Result.success(jwt);
     }
 
 //    @ResponseBody

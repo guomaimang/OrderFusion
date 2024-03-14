@@ -23,7 +23,7 @@ public interface OrderDao {
 
     public void update(Order draftOrder);
 
-    public int insert(Order draftOrder);
+    public Integer insert(Order draftOrder);
 
     public Integer count(@Param("keyword") String keyword,
                      @Param("userid") Integer userid);

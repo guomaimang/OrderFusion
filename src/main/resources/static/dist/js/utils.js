@@ -106,3 +106,15 @@ function getQueryParam(name) {
     }
     return null;
 }
+
+/**
+ * 判断是否为空
+ * @param obj
+ * @returns {boolean}
+ */
+function isNull(obj) {
+    if (obj == null || obj == undefined || obj.trim() === "") {
+        return true;
+    }
+    return false;
+}

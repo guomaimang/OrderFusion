@@ -29,6 +29,8 @@ public class CodeMessage {
 
     // Order Message, like 5003x
 
+    public static CodeMessage ORDER_NO_PERMISSION_GENERATION = new CodeMessage(50031, "No Permission. It may be that there is insufficient stock or the product has been removed.");
+
     // User Message, like 5004x
 
     // Seckill Message, like 5005x

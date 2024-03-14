@@ -26,10 +26,21 @@ public class OrderServiceImpl implements OrderService {
     public int create(Order order) {
         //cp the template from frontend order
         Order draftOrder = Order.getDraftObjForDB(order);
+        Goods goods = goodsService.getGoodsInfo(draftOrder.getGoodsId());
+
+        // check the availability
+        if (goods.getIsAvailable() != 1) {
+            return -1;
+        }
+
+        // check the stock
+        if (goods.getStock() < draftOrder.getGoodsAmount()){
+            return -1;
+        }
 
         // set fields
-        draftOrder.setGoodsName(goodsService.getGoodsInfo(draftOrder.getGoodsId()).getName());
-        draftOrder.setPayment(goodsService.getGoodsInfo(draftOrder.getGoodsId()).getPrice() * draftOrder.getGoodsAmount());
+        draftOrder.setGoodsName(goods.getName());
+        draftOrder.setPayment(goods.getPrice() * draftOrder.getGoodsAmount());
         draftOrder.setAdminRemark(null);
         draftOrder.setStatus(0);
         draftOrder.setCreateTime(new Date());
@@ -37,17 +48,8 @@ public class OrderServiceImpl implements OrderService {
         draftOrder.setSentTime(null);
         draftOrder.setPayId(null);
 
-        // check the availability
-        if (goodsService.getGoodsInfo(draftOrder.getGoodsId()).getIsAvailable() != 1) {
-            return -1;
-        }
-
-        // check the stock
-        if (goodsService.getGoodsInfo(draftOrder.getGoodsId()).getStock() >= draftOrder.getGoodsAmount()){
-            return orderDao.insert(draftOrder);
-        }else {
-            return -1;
-        }
+        orderDao.insert(draftOrder);
+        return draftOrder.getId();
     }
 
     @Override

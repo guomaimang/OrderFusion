@@ -19,7 +19,8 @@ public class User {
     Date registerTime;
 
     // Return to Frontend
-    public User(String name, String email, String avatarUri, int isAdmin) {
+    public User(Integer id, String name, String email, String avatarUri, Integer isAdmin) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.avatarUri = avatarUri;

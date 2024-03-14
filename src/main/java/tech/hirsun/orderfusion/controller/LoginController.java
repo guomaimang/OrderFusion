@@ -24,9 +24,9 @@ public class LoginController {
     private RedisService redisService;
 
     @PostMapping("/login")
-    public Result login(@RequestBody User userAttemped){
-        log.info("User login api is requested, username: {}", userAttemped.getEmail());
-        User u = userService.login(userAttemped);
+    public Result login(@RequestBody User userAttempted){
+        log.info("User login api is requested, username: {}", userAttempted.getEmail());
+        User u = userService.login(userAttempted);
 
         // If user exists, create a JWT and return it
         if(u != null) {

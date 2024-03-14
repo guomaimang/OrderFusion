@@ -45,7 +45,7 @@ public class AdminController {
         try {
             log.info("Admin request add user, name: {}, email: {}", user.getName(), user.getEmail());
             userService.add(new User(user.getName(), user.getEmail(), user.getPassword()));
-            return Result.success("Success");
+            return Result.success(CodeMessage.SUCCESS);
         } catch (Exception e) {
             log.error("Error when add user");
             return Result.error(new CodeMessage(50000, "Illegal Request"));
@@ -57,7 +57,7 @@ public class AdminController {
         try {
             log.info("Admin request lock switch, id: {}", user.getId());
             userService.lockSwitch(user);
-            return Result.success("Success");
+            return Result.success(CodeMessage.SUCCESS);
         } catch (Exception e) {
             log.error("Error when lock switch");
             return Result.error(new CodeMessage(50000, "Illegal Request"));
@@ -69,7 +69,7 @@ public class AdminController {
         try {
             log.info("Admin request edit user, id: {}", user.getId());
             userService.update(user);
-            return Result.success("Success");
+            return Result.success(CodeMessage.SUCCESS);
         } catch (Exception e) {
             log.error("Error when edit user");
             return Result.error(new CodeMessage(50000, "Illegal Request"));
@@ -94,7 +94,7 @@ public class AdminController {
         try {
             log.info("Admin request add goods, name: {}", goods.getName());
             goodsService.add(goods);
-            return Result.success("Success");
+            return Result.success(CodeMessage.SUCCESS);
         } catch (Exception e) {
             log.error("Error when add goods");
             return Result.error(new CodeMessage(50000, "Illegal Request"));
@@ -106,7 +106,7 @@ public class AdminController {
         try {
             log.info("Admin request edit goods, id: {}", goods.getId());
             goodsService.update(goods);
-            return Result.success("Success");
+            return Result.success(CodeMessage.SUCCESS);
         } catch (Exception e) {
             log.error("Error when edit goods");
             return Result.error(new CodeMessage(50000, "Illegal Request"));
@@ -119,7 +119,7 @@ public class AdminController {
         try {
             log.info("Request update order under admin, order: {}", order);
             orderService.updateUnderAdmin(order);
-            return Result.success("Order updated successfully");
+            return Result.success(CodeMessage.SUCCESS);
         } catch (Exception e) {
             log.error("Error when admin request update order");
             return Result.error(new CodeMessage(50000, "Update failed, please try again."));

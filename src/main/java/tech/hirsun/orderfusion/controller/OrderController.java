@@ -17,25 +17,32 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("/general/create")
+    @PutMapping("/general/create")
     public Result create(@RequestHeader String jwt, @RequestBody Order order) {
         try {
             log.info("Request create order, order: {}, jwt: {}", order, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
             log.info("Logged in User id: {}", loggedInUserId);
+            order.setChannel(0);
 
             if (loggedInUserId != order.getUserId()) {
                 return Result.error(CodeMessage.USER_NO_PERMISSION);
             }else {
-                return Result.success(orderService.create(order));
+                int orderId = orderService.create(order);
+                if (orderId > 0) {
+                    return Result.success(orderId);
+                } else {
+                    return Result.error(new CodeMessage(50000, "Order failed, no payment will be deducted."));
+                }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("Error when user request create order");
             return Result.error(new CodeMessage(50000, "Order failed, no payment will be deducted. Please try again."));
         }
     }
 
-    @PutMapping("/general/update")
+    @PostMapping("/general/update")
     public Result update(@RequestHeader String jwt, @RequestBody Order order) {
         try {
             log.info("Request update order, order: {}, jwt: {}", order, jwt);
@@ -46,7 +53,7 @@ public class OrderController {
                 return Result.error(CodeMessage.USER_NO_PERMISSION);
             }else {
                 orderService.update(order);
-                return Result.success("Order updated successfully");
+                return Result.success(CodeMessage.SUCCESS);
             }
 
         } catch (Exception e) {
@@ -91,10 +98,5 @@ public class OrderController {
             return Result.error(new CodeMessage(50000, "Request failed, please try again."));
         }
     }
-
-
-
-
-
 
 }
