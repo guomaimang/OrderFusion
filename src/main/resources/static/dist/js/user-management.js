@@ -48,9 +48,9 @@ $(function () {
 
     // 搜索功能
     $("#searchButton").click(function(){
-        let searchEmail = $("#searchInput").val(); //获取输入框的值
+        let searchKeyword = $("#searchInput").val(); //获取输入框的值
         $("#jqGrid").jqGrid('setGridParam',{
-            postData: {'keyword': searchEmail}, //设置postData参数
+            postData: {'keyword': searchKeyword}, //设置postData参数
             page: 1
         }).trigger("reloadGrid"); //重新加载JqGrid
     });

@@ -14,6 +14,8 @@ public interface OrderService {
 
     public PageBean page(Integer pagenum, Integer pagesize, String keyword, String userid);
 
+    void orderPay(Integer id);
+
     // For Admin Only
     public void updateUnderAdmin(Order order);
 

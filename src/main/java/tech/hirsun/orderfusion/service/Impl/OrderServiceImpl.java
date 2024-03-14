@@ -90,6 +90,10 @@ public class OrderServiceImpl implements OrderService {
         return new PageBean(count, orders,Math.floorDiv(count, pageSize) + 1, pageNum);
     }
 
+    @Override
+    public void orderPay(Integer id) {
+    }
+
     // For Admin
     @Override
     public void updateUnderAdmin(Order order) {

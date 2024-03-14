@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageBean page(int pageNum, int pageSize, String keyword) {
-        int count = userDao.count();
+        int count = userDao.count(keyword);
 
         int start = (pageNum-1) * pageSize;
         List<User> users = userDao.list(start, pageSize, keyword);

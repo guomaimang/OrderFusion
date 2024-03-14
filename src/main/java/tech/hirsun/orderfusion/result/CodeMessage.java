@@ -19,7 +19,7 @@ public class CodeMessage {
     public static CodeMessage REQUEST_ILLEGAL = new CodeMessage(50003, "Request Illegal.");
     public static CodeMessage REFUSE_SERVICE = new CodeMessage(50004, "Access Limit Reached.");
 
-    // Login Message, like 5001x
+    // Login/User Message, like 5001x
     public static CodeMessage USER_NOT_EXIST = new CodeMessage(50011, "No match found. Please try again.");
     public static CodeMessage USER_NOT_LOGIN = new CodeMessage(50012, "User not Login. Please login first.");
 

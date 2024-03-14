@@ -15,13 +15,6 @@ public interface UserDao {
     @Select("select * from user where email = #{email}")
     public User getUserByEmail(@Param("email")String email);
 
-    /**
-     * @return the number of users
-     */
-    @Select("select count(*) from user")
-    public int count();
-
-
     // By XML
     /**
      *
@@ -38,5 +31,10 @@ public interface UserDao {
     public int update(User user);
 
     public int insert(User user);
+
+    /**
+     * @return the number of users
+     */
+    public int count(String keyword);
 
 }

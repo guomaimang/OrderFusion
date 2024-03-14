@@ -32,7 +32,7 @@ public class OrderController {
                 if (orderId > 0) {
                     return Result.success(orderId);
                 } else {
-                    return Result.error(new CodeMessage(50000, "Order failed, no payment will be deducted."));
+                    return Result.error(CodeMessage.ORDER_NO_PERMISSION_GENERATION);
                 }
             }
         } catch (Exception e) {

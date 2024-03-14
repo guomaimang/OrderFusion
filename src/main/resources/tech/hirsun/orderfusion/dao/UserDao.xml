@@ -25,10 +25,23 @@
         SELECT id,name,email,register_time,is_frozen FROM user
         <where>
             <if test="keyword != null and keyword != ''">
-                AND email LIKE CONCAT('%', #{keyword}, '%')
+                   email LIKE CONCAT('%', #{keyword}, '%')
+                OR name LIKE CONCAT('%', #{keyword}, '%')
+                OR id = #{keyword}
             </if>
         </where>
         ORDER BY register_time DESC LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="count" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*) FROM user
+        <where>
+            <if test="keyword != null and keyword != ''">
+                email LIKE CONCAT('%', #{keyword}, '%')
+                OR name LIKE CONCAT('%', #{keyword}, '%')
+                OR id = #{keyword}
+            </if>
+        </where>
     </select>
 
 </mapper>

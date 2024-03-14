@@ -27,7 +27,9 @@
         SELECT id,title,name,description,price,stock,is_available FROM goods
         <where>
             <if test="keyword != null and keyword != ''">
-                AND name LIKE CONCAT('%', #{keyword}, '%')
+                name LIKE CONCAT('%', #{keyword}, '%')
+                OR title LIKE CONCAT('%', #{keyword}, '%')
+                OR ID = #{keyword}
             </if>
         </where>
         ORDER BY id DESC LIMIT #{start}, #{pageSize}
@@ -38,6 +40,8 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 name LIKE CONCAT('%', #{keyword}, '%')
+                OR title LIKE CONCAT('%', #{keyword}, '%')
+                OR ID = #{keyword}
             </if>
         </where>
     </select>
