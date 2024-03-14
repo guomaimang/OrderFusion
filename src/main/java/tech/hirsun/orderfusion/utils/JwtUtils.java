@@ -2,9 +2,7 @@ package tech.hirsun.orderfusion.utils;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
@@ -18,7 +16,7 @@ public class JwtUtils {
      * @param claims What is stored in the JWT part 2 load payload
      * @return JWT token
      */
-    public static String createJWT(Map<String, Object> claims) {
+    public static String createJwt(Map<String, Object> claims) {
         String jwt = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + expirePeriod))
@@ -32,7 +30,7 @@ public class JwtUtils {
      * @param jwt JWT token
      * @return The payload of the JWT token
      */
-    public static Map<String, Object> parseJWT(String jwt) {
+    public static Map<String, Object> parseJwt(String jwt) {
         Map<String, Object> claims = Jwts.parser()
                 .setSigningKey(signKey)
                 .parseClaimsJws(jwt)

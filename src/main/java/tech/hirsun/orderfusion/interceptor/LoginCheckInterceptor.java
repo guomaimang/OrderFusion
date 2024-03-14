@@ -40,7 +40,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         // parse the jwt, if the jwt is invalid, return false
         try {
-            JwtUtils.parseJWT(jwt);
+            JwtUtils.parseJwt(jwt);
         }catch (Exception e){
             log.info("The request header jwt is invalid, return not logged in information");
             Result result = Result.error(CodeMessage.USER_NOT_LOGIN);

@@ -23,6 +23,8 @@ public class CodeMessage {
     public static CodeMessage USER_NOT_EXIST = new CodeMessage(50011, "No match found. Please try again.");
     public static CodeMessage USER_NOT_LOGIN = new CodeMessage(50012, "User not Login. Please login first.");
 
+    public static CodeMessage USER_NO_PERMISSION = new CodeMessage(50013, "No Permission. Please try again.");
+
     // Goods Message, like 5002x
 
     // Order Message, like 5003x

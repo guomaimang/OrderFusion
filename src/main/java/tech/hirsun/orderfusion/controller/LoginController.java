@@ -1,6 +1,5 @@
 package tech.hirsun.orderfusion.controller;
 
-import com.alibaba.fastjson2.JSON;
 import com.mysql.cj.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class LoginController {
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", u.getId());
             claims.put("email", u.getEmail());
-            String jwt = JwtUtils.createJWT(claims);
+            String jwt = JwtUtils.createJwt(claims);
             Map<String, Object> map = new HashMap<>();
             map.put("jwt", jwt);
             map.put("user", u);
@@ -60,7 +59,7 @@ public class LoginController {
             }
 
             // parse the jwt, if the jwt is invalid, return false
-            Map<String, Object> oldClaims = JwtUtils.parseJWT(oldJwt);
+            Map<String, Object> oldClaims = JwtUtils.parseJwt(oldJwt);
 
             if(Long.parseLong(oldClaims.get("exp").toString()) * 1000 - new Date().getTime() > 1000 * 60 * 60 * 6 ){
                 log.info("No need to refresh the token");
@@ -69,7 +68,7 @@ public class LoginController {
                 Map<String, Object> newClaims = new HashMap<>();
                 newClaims.put("id", oldClaims.get("id"));
                 newClaims.put("email", oldClaims.get("email"));
-                String jwt = JwtUtils.createJWT(newClaims);
+                String jwt = JwtUtils.createJwt(newClaims);
                 log.info("Jwt refreshed");
                 return Result.success(jwt);
             }

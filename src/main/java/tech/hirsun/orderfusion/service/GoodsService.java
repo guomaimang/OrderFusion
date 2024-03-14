@@ -13,7 +13,6 @@ public interface GoodsService {
 
     public void update(Goods goods);
 
-
     public PageBean page(Integer pagenum, Integer pagesize, String keyword);
 
     public void add(Goods goods);

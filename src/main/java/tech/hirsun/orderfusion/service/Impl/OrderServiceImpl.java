@@ -19,7 +19,6 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
 
     // For Customer
-
     @Autowired
     private GoodsService goodsService;
 
@@ -37,6 +36,11 @@ public class OrderServiceImpl implements OrderService {
         draftOrder.setPayTime(null);
         draftOrder.setSentTime(null);
         draftOrder.setPayId(null);
+
+        // check the availability
+        if (goodsService.getGoodsInfo(draftOrder.getGoodsId()).getIsAvailable() != 1) {
+            return -1;
+        }
 
         // check the stock
         if (goodsService.getGoodsInfo(draftOrder.getGoodsId()).getStock() >= draftOrder.getGoodsAmount()){
@@ -85,7 +89,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     // For Admin
-
     @Override
     public void updateUnderAdmin(Order order) {
         Order draftOrder = Order.getDraftObjForDB(order);
