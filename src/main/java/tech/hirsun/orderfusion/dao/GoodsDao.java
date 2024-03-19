@@ -3,6 +3,7 @@ package tech.hirsun.orderfusion.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import tech.hirsun.orderfusion.pojo.Goods;
 import java.util.List;
 
@@ -34,4 +35,7 @@ public interface GoodsDao {
     public int update(Goods goods);
 
     public int insert(Goods goods);
+
+    @Update("update goods set stock = stock - #{amount} where id = #{id} and stock >= #{amount}")
+    public int generalMinusStock(@Param("id") int id, @Param("amount") int amount);
 }

@@ -3,6 +3,8 @@ package tech.hirsun.orderfusion.service.Impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tech.hirsun.orderfusion.dao.GoodsDao;
 import tech.hirsun.orderfusion.dao.OrderDao;
 import tech.hirsun.orderfusion.pojo.Goods;
 import tech.hirsun.orderfusion.pojo.Order;
@@ -20,12 +22,21 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
-    // For Customer
+    @Autowired
+    private GoodsDao goodsDao;
+
     @Autowired
     private GoodsService goodsService;
 
+    // For Customer
+    /**
+     * Create a new order (non seckill)
+     * @param order
+     * @return
+     */
     @Override
-    public int create(Order order) {
+    @Transactional
+    public int generalCreate(Order order) {
         //cp the template from frontend order
         Order draftOrder = Order.getDraftObjForDB(order);
         Goods goods = goodsService.getGoodsInfo(draftOrder.getGoodsId());
@@ -51,7 +62,14 @@ public class OrderServiceImpl implements OrderService {
         draftOrder.setPayId(null);
 
         orderDao.insert(draftOrder);
-        return draftOrder.getId();
+
+        // update the stock
+        if (goodsDao.generalMinusStock(draftOrder.getGoodsId(), draftOrder.getGoodsAmount()) > 0) {
+            return draftOrder.getId();
+        } else {
+            return -1;
+        }
+
     }
 
     @Override

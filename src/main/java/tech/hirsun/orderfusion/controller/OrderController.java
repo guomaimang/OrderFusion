@@ -26,7 +26,7 @@ public class OrderController {
             order.setUserId(loggedInUserId);
             order.setChannel(0);
 
-            int orderId = orderService.create(order);
+            int orderId = orderService.generalCreate(order);
             if (orderId > 0) {
                 return Result.success(orderId);
             } else {

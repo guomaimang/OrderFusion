@@ -6,7 +6,7 @@ import tech.hirsun.orderfusion.pojo.PageBean;
 public interface OrderService {
 
     // For Customer
-    public int create(Order order);
+    public int generalCreate(Order order);
 
     public void update(Order order);
 
