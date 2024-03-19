@@ -32,44 +32,33 @@ function validPassword(password) {
 
 async function login() {
 
-    document.getElementById("loginButton").disabled = true;
-    document.getElementById("loginButton").innerHTML = "Loading...";
-
-
     let email = $("#email").val();
     let password = $("#password").val();
 
     if (isNull(email)) {
         showErrorInfo("Please enter your email!");
-        document.getElementById("loginButton").disabled = false;
-        document.getElementById("loginButton").innerHTML = "Login";
         return;
     }
     if (!validUserName(email)) {
         showErrorInfo("Please enter the correct email!");
-        document.getElementById("loginButton").disabled = false;
-        document.getElementById("loginButton").innerHTML = "Login";
         return;
     }
     if (isNull(password)) {
         showErrorInfo("Please enter your password!");
-        document.getElementById("loginButton").disabled = false;
-        document.getElementById("loginButton").innerHTML = "Login";
         return;
     }
     if (!validPassword(password)) {
         showErrorInfo("Please enter the correct password!");
-        document.getElementById("loginButton").disabled = false;
-        document.getElementById("loginButton").innerHTML = "Login";
         return;
     }
 
     if (grecaptcha.getResponse() == null || grecaptcha.getResponse() === ""){
         showErrorInfo("Please verify the reCaptcha!");
-        document.getElementById("loginButton").disabled = false;
-        document.getElementById("loginButton").innerHTML = "Login";
         return;
     }
+
+    document.getElementById("loginButton").disabled = true;
+    document.getElementById("loginButton").innerHTML = "Loading...";
 
     let data = {"email": email, "password":await sha256(password)};
     $.ajax({

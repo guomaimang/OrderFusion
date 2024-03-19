@@ -18,24 +18,21 @@ public class OrderController {
     private OrderService orderService;
 
     // General means general shopping and not seckill
-    @PutMapping("/general/create")
+    @PostMapping("/general/create")
     public Result create(@RequestHeader String jwt, @RequestBody Order order) {
         try {
             log.info("Request create order, order: {}, jwt: {}", order, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
-            log.info("Logged in User id: {}", loggedInUserId);
+            order.setUserId(loggedInUserId);
             order.setChannel(0);
 
-            if (loggedInUserId != order.getUserId()) {
-                return Result.error(ErrorMessage.USER_NO_PERMISSION);
-            }else {
-                int orderId = orderService.create(order);
-                if (orderId > 0) {
-                    return Result.success(orderId);
-                } else {
-                    return Result.error(ErrorMessage.ORDER_NO_PERMISSION_GENERATION);
-                }
+            int orderId = orderService.create(order);
+            if (orderId > 0) {
+                return Result.success(orderId);
+            } else {
+                return Result.error(ErrorMessage.ORDER_NO_PERMISSION_GENERATION);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             log.error("Error when user request create order");
@@ -44,7 +41,7 @@ public class OrderController {
     }
 
     // General means general shopping and not seckill
-    @PostMapping("/general/update")
+    @PutMapping("/general/update")
     public Result update(@RequestHeader String jwt, @RequestBody Order order) {
         try {
             log.info("Request update order, order: {}, jwt: {}", order, jwt);

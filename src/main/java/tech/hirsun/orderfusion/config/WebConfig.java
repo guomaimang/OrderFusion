@@ -30,6 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(reCaptchaCheckInterceptor)
                 .addPathPatterns("/userauth/login")
+                .addPathPatterns("/general/order/create")
                 .order(1);
     }
 }
