@@ -3,7 +3,7 @@ package tech.hirsun.orderfusion.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import tech.hirsun.orderfusion.result.CodeMessage;
+import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.GoodsService;
 
@@ -25,7 +25,7 @@ public class GoodsController {
         } catch (Exception e) {
             e.printStackTrace();
             log.error("Error when admin request goods list");
-            return Result.error(new CodeMessage(50000, "Illegal Request"));
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }
 
@@ -36,7 +36,7 @@ public class GoodsController {
                 return Result.success(goodsService.getGoodsInfo(id));
             } catch (Exception e) {
                 log.error("Error when admin request goods info");
-                return Result.error(new CodeMessage(50000, "Illegal Request"));
+                return Result.error(new ErrorMessage(50000, "Illegal Request"));
             }
         }
 }

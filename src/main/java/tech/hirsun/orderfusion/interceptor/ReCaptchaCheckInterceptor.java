@@ -10,7 +10,7 @@ import okhttp3.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import tech.hirsun.orderfusion.result.CodeMessage;
+import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -33,7 +33,7 @@ public class ReCaptchaCheckInterceptor implements HandlerInterceptor {
         // if the recaptchaToken is null, return false
         if(StringUtils.isNullOrEmpty(recaptchaToken)){
             log.info("The request header recaptchaToken is null");
-            Result result = Result.error(CodeMessage.RECAPTCHA_ERROR);
+            Result result = Result.error(ErrorMessage.RECAPTCHA_ERROR);
 
             String rcErrorJson = JSON.toJSONString(result);
             response.getWriter().write(rcErrorJson);
@@ -45,7 +45,7 @@ public class ReCaptchaCheckInterceptor implements HandlerInterceptor {
         boolean outcome = verifyReCaptchaToken(recaptchaToken);
         if(!outcome){
             log.info("The request header recaptchaToken is invalid");
-            Result result = Result.error(CodeMessage.RECAPTCHA_ERROR);
+            Result result = Result.error(ErrorMessage.RECAPTCHA_ERROR);
 
             String rcErrorJson = JSON.toJSONString(result);
             response.getWriter().write(rcErrorJson);

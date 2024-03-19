@@ -33,10 +33,11 @@
     </update>
 
     <select id="list" parameterType="java.util.Map" resultType="tech.hirsun.orderfusion.pojo.Order">
-        SELECT * FROM goods
+        SELECT * FROM `order`
         <where>
             <if test="keyword != null and keyword != ''">
-                AND goods_name LIKE CONCAT('%', #{keyword}, '%')
+                goods_name LIKE CONCAT('%', #{keyword}, '%')
+                OR id = #{keyword}
             </if>
             <if test="userid != null and userid != ''">
                 AND user_id = #{userid}

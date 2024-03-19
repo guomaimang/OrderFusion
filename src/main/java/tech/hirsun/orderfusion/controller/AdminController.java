@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import tech.hirsun.orderfusion.pojo.Goods;
 import tech.hirsun.orderfusion.pojo.Order;
 import tech.hirsun.orderfusion.pojo.User;
-import tech.hirsun.orderfusion.result.CodeMessage;
+import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.GoodsService;
 import tech.hirsun.orderfusion.service.OrderService;
@@ -29,14 +29,14 @@ public class AdminController {
     // For User
     @GetMapping("/user/list")
     public Result pageUser(@RequestParam(defaultValue = "1") Integer pagenum,
-                       @RequestParam(defaultValue = "10") Integer pagesize,
-                       String keyword) {
+                           @RequestParam(defaultValue = "10") Integer pagesize,
+                           String keyword) {
         try {
             log.info("Admin request user list, pageNum: {}, pageSize: {}, keyword: {}", pagenum, pagesize, keyword);
             return Result.success(userService.page(pagenum, pagesize, keyword));
         } catch (Exception e) {
             log.error("Error when admin request user list");
-            return Result.error(new CodeMessage(50000, "Illegal Request"));
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }
 
@@ -45,10 +45,10 @@ public class AdminController {
         try {
             log.info("Admin request add user, name: {}, email: {}", user.getName(), user.getEmail());
             userService.add(new User(user.getName(), user.getEmail(), user.getPassword()));
-            return Result.success(CodeMessage.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             log.error("Error when add user");
-            return Result.error(new CodeMessage(50000, "Illegal Request"));
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }
 
@@ -57,10 +57,10 @@ public class AdminController {
         try {
             log.info("Admin request lock switch, id: {}", user.getId());
             userService.lockSwitch(user);
-            return Result.success(CodeMessage.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             log.error("Error when lock switch");
-            return Result.error(new CodeMessage(50000, "Illegal Request"));
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }
 
@@ -69,10 +69,10 @@ public class AdminController {
         try {
             log.info("Admin request edit user, id: {}", user.getId());
             userService.update(user);
-            return Result.success(CodeMessage.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             log.error("Error when edit user");
-            return Result.error(new CodeMessage(50000, "Illegal Request"));
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }
 
@@ -83,7 +83,7 @@ public class AdminController {
             return Result.success(userService.getUserInfo(id));
         } catch (Exception e) {
             log.error("Error when get user info");
-            return Result.error(new CodeMessage(50000, "Illegal Request"));
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }
 
@@ -94,10 +94,10 @@ public class AdminController {
         try {
             log.info("Admin request add goods, name: {}", goods.getName());
             goodsService.add(goods);
-            return Result.success(CodeMessage.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             log.error("Error when add goods");
-            return Result.error(new CodeMessage(50000, "Illegal Request"));
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }
 
@@ -106,10 +106,10 @@ public class AdminController {
         try {
             log.info("Admin request edit goods, id: {}", goods.getId());
             goodsService.update(goods);
-            return Result.success(CodeMessage.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             log.error("Error when edit goods");
-            return Result.error(new CodeMessage(50000, "Illegal Request"));
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }
 
@@ -119,10 +119,10 @@ public class AdminController {
         try {
             log.info("Request update order under admin, order: {}", order);
             orderService.updateUnderAdmin(order);
-            return Result.success(CodeMessage.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             log.error("Error when admin request update order");
-            return Result.error(new CodeMessage(50000, "Update failed, please try again."));
+            return Result.error(new ErrorMessage(50000, "Update failed, please try again."));
         }
     }
 
@@ -133,7 +133,7 @@ public class AdminController {
             return Result.success(orderService.getOrderInfoUnderAdmin(id));
         } catch (Exception e) {
             log.error("Error when admin request order info");
-            return Result.error(new CodeMessage(50000, "Illegal Request"));
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }
 
@@ -147,7 +147,7 @@ public class AdminController {
             return Result.success(orderService.page(pageNum, pageSize, keyword, userId));
         } catch (Exception e) {
             log.error("Error when user request order list");
-            return Result.error(new CodeMessage(50000, "Request failed, please try again."));
+            return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
         }
     }
 

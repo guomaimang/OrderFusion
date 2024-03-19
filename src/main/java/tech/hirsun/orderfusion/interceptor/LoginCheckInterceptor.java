@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import tech.hirsun.orderfusion.result.CodeMessage;
+import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.utils.JwtUtils;
 
@@ -30,7 +30,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         // if the jwt is null, return false
         if(StringUtils.isNullOrEmpty(jwt)){
             log.info("The request header jwt is null, return not logged in information");
-            Result result = Result.error(CodeMessage.USER_NOT_LOGIN);
+            Result result = Result.error(ErrorMessage.USER_NOT_LOGIN);
 
             String notLoginJson = JSON.toJSONString(result);
             response.getWriter().write(notLoginJson);
@@ -43,7 +43,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             JwtUtils.parseJwt(jwt);
         }catch (Exception e){
             log.info("The request header jwt is invalid, return not logged in information");
-            Result result = Result.error(CodeMessage.USER_NOT_LOGIN);
+            Result result = Result.error(ErrorMessage.USER_NOT_LOGIN);
 
             String notLoginJson = JSON.toJSONString(result);
             response.getWriter().write(notLoginJson);

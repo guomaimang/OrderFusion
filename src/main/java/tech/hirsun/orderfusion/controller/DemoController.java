@@ -9,7 +9,7 @@ import tech.hirsun.orderfusion.pojo.Order;
 import tech.hirsun.orderfusion.pojo.User;
 import tech.hirsun.orderfusion.redis.RedisService;
 import tech.hirsun.orderfusion.redis.UserKey;
-import tech.hirsun.orderfusion.result.CodeMessage;
+import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.UserService;
 import tech.hirsun.orderfusion.utils.JwtUtils;
@@ -52,7 +52,7 @@ public class DemoController {
     @ResponseBody
     @RequestMapping("/error")
     public Result<String> error() {
-        return Result.error(CodeMessage.SERVER_ERROR);
+        return Result.error(ErrorMessage.SERVER_ERROR);
     }
 
 //    @ResponseBody

@@ -1,5 +1,6 @@
 package tech.hirsun.orderfusion.service.Impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.hirsun.orderfusion.dao.OrderDao;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -86,6 +88,7 @@ public class OrderServiceImpl implements OrderService {
 
         int start = (pageNum-1) * pageSize;
         List<Order> orders = orderDao.list(start, pageSize, keyword, Integer.parseInt(userId));
+        log.info(start + " " + pageSize + " " + keyword + " " + Integer.parseInt(userId));
 
         return new PageBean(count, orders,Math.floorDiv(count, pageSize) + 1, pageNum);
     }

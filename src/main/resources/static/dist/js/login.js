@@ -1,6 +1,10 @@
 function checkLoginInStatus(){
     if (!isNull(window.localStorage.getItem("jwt"))){
-        window.location.href = "/";
+        let jwtArr = localStorage.getItem('jwt').split(".");
+        let payload = JSON.parse(atob(jwtArr[1]));
+        if (payload.exp * 1000 > Date.now()) {
+            window.location.href = "index.html";
+        }
     }
 }
 

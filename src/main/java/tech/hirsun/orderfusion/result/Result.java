@@ -23,16 +23,19 @@ public class Result<T> {
     public static <T> Result<T> success(T data) {
         return new Result<>(data);
     }
+    public static <T> Result<T> success() {
+        return new Result<>(null);
+    }
 
     // For error result
-    public static Result error(CodeMessage codeMessage) {
-        if (codeMessage == null) {
+    public static Result error(ErrorMessage errorMessage) {
+        if (errorMessage == null) {
             return null;
         }
 
-        Result errResult = new Result<>(codeMessage);
-        errResult.code = codeMessage.getCode();
-        errResult.msg = codeMessage.getMessage();
+        Result errResult = new Result<>(errorMessage);
+        errResult.code = errorMessage.getCode();
+        errResult.msg = errorMessage.getMessage();
         errResult.data = null;
         return errResult;
     }
