@@ -39,10 +39,10 @@
                 AND user_id = #{userId}
             </if>
             <if test="searchId != null">
-                AND (id = #{searchId} OR user_id = #{userId} OR goods_id = #{searchId})
+                AND (id = #{searchId} OR user_id = #{searchId} OR goods_id = #{searchId})
             </if>
-            <if test="searchName != null">
-                AND (goods_name LIKE CONCAT('%', #{keyword}, '%') OR (delivery_receiver LIKE CONCAT('%', #{keyword}, '%'))
+            <if test="searchName != null and searchName !='' " >
+                AND (goods_name LIKE CONCAT('%', #{searchName}, '%') OR delivery_receiver LIKE CONCAT('%', #{searchName}, '%'))
             </if>
             <if test="selectStatus != null">
                 AND status = #{selectStatus}
@@ -61,10 +61,10 @@
                 AND user_id = #{userId}
             </if>
             <if test="searchId != null">
-                AND (id = #{searchId} OR user_id = #{userId} OR goods_id = #{searchId})
+                AND (id = #{searchId} OR user_id = #{searchId} OR goods_id = #{searchId})
             </if>
-            <if test="searchName != null">
-                AND (goods_name LIKE CONCAT('%', #{keyword}, '%') OR (delivery_receiver LIKE CONCAT('%', #{keyword}, '%'))
+            <if test="searchName != null and searchName !='' " >
+                AND (goods_name LIKE CONCAT('%', #{searchName}, '%') OR delivery_receiver LIKE CONCAT('%', #{searchName}, '%'))
             </if>
             <if test="selectStatus != null">
                 AND status = #{selectStatus}

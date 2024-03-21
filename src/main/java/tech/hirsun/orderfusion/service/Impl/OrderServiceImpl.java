@@ -99,11 +99,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageBean page(Integer pageNum, Integer pageSize, Integer userId, String searchId, String searchName, String selectStatus, String selectChannel) {
-        int count = orderDao.count(userId, Integer.parseInt(searchId), searchName, Integer.parseInt(selectStatus), Integer.parseInt(selectChannel));
+    public PageBean page(Integer pageNum, Integer pageSize, Integer userId, Integer searchId, String searchName, Integer selectStatus, Integer selectChannel) {
+        int count = orderDao.count(
+                userId,
+                searchId,
+                searchName,
+                selectStatus,
+                selectChannel
+        );
 
         int start = (pageNum-1) * pageSize;
-        List<Order> orders = orderDao.list(start, pageSize,userId, Integer.parseInt(searchId), searchName, Integer.parseInt(selectStatus), Integer.parseInt(selectChannel));
+        List<Order> orders = orderDao.list(
+                start,
+                pageSize,
+                userId,
+                searchId,
+                searchName,
+                selectStatus,
+                selectChannel
+        );
 
         return new PageBean(count, orders,Math.floorDiv(count, pageSize) + 1, pageNum);
     }

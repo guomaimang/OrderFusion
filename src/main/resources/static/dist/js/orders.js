@@ -7,7 +7,7 @@ $(function () {
 
     $("#jqGrid").jqGrid({
         // 设置API
-        url: '/admin/order/list',
+        url: '/order/list',
         loadBeforeSend: function(jqXHR) {
             jqXHR.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
@@ -59,14 +59,12 @@ $(function () {
 
     // 搜索功能
     $("#applyButton").click(function(){
-        let searchId = $("#searchId").val();
         let searchName = $("#searchName").val();
         let selectStatus = $("#selectStatus").val();
         let selectChannel = $("#selectChannel").val();
 
         $("#jqGrid").jqGrid('setGridParam',{
             postData: {
-                'searchId': searchId,
                 'searchName': searchName,
                 'selectStatus': selectStatus,
                 'selectChannel': selectChannel

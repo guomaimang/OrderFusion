@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Orders</title>
+  <!-- jqgrid ui -->
+  <link href="plugins/jqgrid-5.7.0/ui.jqgrid-bootstrap4.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.css">
+  <link href="dist/css/main.css" rel="stylesheet"/>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
+  <!-- sweet alert -->
+  <link rel="stylesheet" href="plugins/sweetalert/sweetalert.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <script src="dist/js/userauth.js"></script>
+  <script src="dist/js/utils.js"></script>
+</head>
+
+<body class="hold-transition sidebar-mini" onLoad="checkLogin();">
+
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" href="index.html">Home</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" href="notice.html">Notice</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" href="recommendation.html">Recommendation</a>
+      </li>
+    </ul>
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" href="faq.html">FAQ</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" href="https://docs.orderfusion.hirsun.tech">About</a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fa fa-user">&nbsp;User</i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">
+            <i class="fa fa-user-o mr-2"></i>
+            <span class="float-right text-muted text-sm" id = "nameField">Guest User</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">
+            <i class="fa fa-user-secret mr-2"> Organization</i>
+            <span class="float-right text-muted text-sm">PolyU Member</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">
+            <i class="fa fa-address-card mr-2"> Identifier</i>
+            <span class="float-right text-muted text-sm" id="identifierField"></span>
+          </a>
+          <a class="dropdown-item" href="#">
+            <button class="btn btn-primary btn-block btn-flat" onclick="logout()" type="button">Logout
+            </button>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a class="brand-link" href="index.html">
+      <img alt="ssm-cluster Logo" class="brand-image img-circle elevation-3" src="dist/img/logo.png"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">Order Fusion</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview"
+            role="menu">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+
+          <li class="nav-header">Home</li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <i class="nav-icon fa fa-inbox"></i>
+              <p>
+                Notice
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="recommendation.html">
+              <i class="fa fa-star nav-icon"></i>
+              <p>Recommendation</p>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview"
+            role="menu">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+
+          <li class="nav-header">Shopping</li>
+          <li class="nav-item">
+            <a class="nav-link" href="goods-hall.html">
+              <i class="nav-icon fa fa-shopping-bag"></i>
+              <p>
+                Goods Hall
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="seckill.html">
+              <i class="fa fa-diamond nav-icon"></i>
+              <p>Second Killing</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="orders.html">
+              <i class="nav-icon fa fa-shopping-cart"></i>
+              <p>Orders</p>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview"
+            role="menu">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+
+          <li class="nav-header">Others</li>
+          <li class="nav-item">
+            <a class="nav-link" href="faq.html">
+              <i class="nav-icon fa fa-comments-o"></i>
+              <p>
+                FAQ
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://docs.orderfusion.hirsun.tech/">
+              <i class="fa fa-globe nav-icon"></i>
+              <p>About</p>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="nav nav-pills nav-sidebar flex-column" id="adminMenu" data-accordion="false" data-widget="treeview"
+            role="menu" style="display: none">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+
+          <li class="nav-header">Administration</li>
+          <li class="nav-item">
+            <a class="nav-link" href="user-management.html">
+              <i class="nav-icon fa fa-address-book"></i>
+              <p>
+                Users Management
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="goods-management.html">
+              <i class="fa fa-cubes nav-icon"></i>
+              <p>Goods Management</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="seckill-management.html">
+              <i class="nav-icon fa fa-tachometer"></i>
+              <p>Seckill Events</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="order-process.html">
+              <i class="nav-icon fa fa-paper-plane"></i>
+              <p>Orders Process</p>
+            </a>
+          </li>
+        </ul>
+
+
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+  <!-- /.Main Sidebar Container -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Orders</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active">Shopping</li>
+              <li class="breadcrumb-item active">Orders</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <!-- 顶部按钮 -->
+              <div class="grid-btn">
+                <label for="searchName"></label>
+                <input type="text" id="searchName" placeholder="Search Goods/Receiver Name" size="25">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <select name="status" id="selectStatus">
+                  <option value="">All Statuses</option>
+                  <option value="0">Not Paid</option>
+                  <option value="1">Paid</option>
+                  <option value="2">Sent Out</option>
+                  <option value="3">Finished</option>
+                  <option value="4">Refunded</option>
+                  <option value="5">Cancelled</option>
+                </select>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <select name="channel" id="selectChannel">
+                  <option value="">All Channels</option>
+                  <option value="0">General</option>
+                  <option value="1">Seckill</option>
+                  <option value="2">Admin Create</option>
+                </select>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-info" id="applyButton"><i
+                        class="fa fa-refresh"></i>&nbsp;Apply & Refresh
+                </button>
+
+              </div>
+              <table id="jqGrid" class="table table-bordered">
+              </table>
+              <div id="jqGridPager"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer">
+    <strong>Copyright &copy; Hirsun 2024 - Present <a href="https://github.com/guomaimang/orderfusion"> Order Fusion Seckill</a>.</strong>
+    at HKPU-COMP
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.1
+    </div>
+  </footer>
+
+  <aside class="control-sidebar control-sidebar-dark">
+  </aside>
+</div>
+<!-- ./wrapper -->
+
+
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jQueryUI/jquery-ui.min.js"></script>
+
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="plugins/jqgrid-5.7.0/grid.locale-cn.js"></script>
+
+<!-- sweet alert -->
+<script src="plugins/sweetalert/sweetalert.min.js"></script>
+<script src="plugins/jqgrid-5.7.0/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+
+<script src="dist/js/orders.js"></script>
+
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+</body>
+</html>

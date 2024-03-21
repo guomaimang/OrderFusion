@@ -12,7 +12,7 @@ public interface OrderService {
 
     public Order getOrderInfo(Integer id);
 
-    public PageBean page(Integer pageNum, Integer pageSize, Integer userId, String searchId, String searchName, String selectStatus, String selectChannel);
+    public PageBean page(Integer pageNum, Integer pageSize, Integer userId, Integer searchId, String searchName, Integer selectStatus, Integer selectChannel);
 
     void orderPay(Integer id);
 

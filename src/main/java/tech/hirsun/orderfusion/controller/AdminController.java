@@ -141,16 +141,18 @@ public class AdminController {
     public Result list(
             @RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum,
             @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize,
-            @RequestParam(name = "searchId" ,defaultValue = "") String searchId,
-            @RequestParam(name = "searchName", defaultValue = "") String searchName,
-            @RequestParam(name = "selectStatus", defaultValue = "") String selectStatus,
-            @RequestParam(name = "selectChannel", defaultValue = "") String selectChannel){
+            @RequestParam(name = "searchId",required = false) Integer searchId,
+            @RequestParam(name = "searchName", required = false) String searchName,
+            @RequestParam(name = "selectStatus", required = false) Integer selectStatus,
+            @RequestParam(name = "selectChannel", required = false) Integer selectChannel){
         try {
             log.info("Request order list under admin, pageNum: {}, pageSize: {}, searchId: {}, searchName: {}, selectStatus: {}, selectChannel: {}", pageNum, pageSize, searchId, searchName, selectStatus, selectChannel);
             return Result.success(orderService.page(pageNum, pageSize,null, searchId ,searchName, selectStatus, selectChannel));
         } catch (Exception e) {
             log.error("Error when user request order list");
+            e.printStackTrace();
             return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
         }
+
     }
 }

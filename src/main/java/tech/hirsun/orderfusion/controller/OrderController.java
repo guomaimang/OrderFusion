@@ -86,12 +86,11 @@ public class OrderController {
     public Result list(@RequestHeader String jwt,
                        @RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum,
                        @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize,
-                       @RequestParam(name = "userId",defaultValue = "") String userId,
-                       @RequestParam(name = "searchName", defaultValue = "") String searchName,
-                       @RequestParam(name = "selectStatus", defaultValue = "") String selectStatus,
-                       @RequestParam(name = "selectChannel", defaultValue = "") String selectChannel) {
+                       @RequestParam(name = "searchName", required = false) String searchName,
+                       @RequestParam(name = "selectStatus", required = false) Integer selectStatus,
+                       @RequestParam(name = "selectChannel", required = false) Integer selectChannel) {
         try {
-            log.info("Request order list, pageNum: {}, pageSize: {}, userId: {}, searchName: {}, selectStatus: {}, selectChannel: {}", pageNum, pageSize, userId, searchName, selectStatus, selectChannel);
+            log.info("Request order list, pageNum: {}, pageSize: {}, searchName: {}, selectStatus: {}, selectChannel: {}", pageNum, pageSize, searchName, selectStatus, selectChannel);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
             log.info("Logged in User id: {}", loggedInUserId);
             return Result.success(orderService.page(pageNum, pageSize, loggedInUserId, null, searchName, selectStatus, selectChannel));
