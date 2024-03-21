@@ -17,15 +17,21 @@ public interface OrderDao {
 
     // By XML
     public List<Order> list(@Param("start") int start,
-                     @Param("pageSize") int pageSize,
-                     @Param("keyword") String keyword,
-                     @Param("userid") Integer userid);
+                             @Param("pageSize") int pageSize,
+                             @Param("userId") Integer userId,
+                            @Param("searchId") Integer searchId,
+                            @Param("searchName") String searchName,
+                            @Param("selectStatus") Integer selectStatus,
+                            @Param("selectChannel") Integer selectChannel);
 
     public void update(Order draftOrder);
 
     public Integer insert(Order draftOrder);
 
-    public Integer count(@Param("keyword") String keyword,
-                     @Param("userid") Integer userid);
+    public Integer count(@Param("userId") Integer userId,
+                         @Param("searchId") Integer searchId,
+                         @Param("searchName") String searchName,
+                         @Param("selectStatus") Integer selectStatus,
+                         @Param("selectChannel") Integer selectChannel);
 
 }

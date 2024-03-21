@@ -35,12 +35,20 @@
     <select id="list" parameterType="java.util.Map" resultType="tech.hirsun.orderfusion.pojo.Order">
         SELECT * FROM `order`
         <where>
-            <if test="keyword != null and keyword != ''">
-                goods_name LIKE CONCAT('%', #{keyword}, '%')
-                OR id = #{keyword}
+            <if test="userId != null">
+                AND user_id = #{userId}
             </if>
-            <if test="userid != null and userid != ''">
-                AND user_id = #{userid}
+            <if test="searchId != null">
+                AND (id = #{searchId} OR user_id = #{userId} OR goods_id = #{searchId})
+            </if>
+            <if test="searchName != null">
+                AND (goods_name LIKE CONCAT('%', #{keyword}, '%') OR (delivery_receiver LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="selectStatus != null">
+                AND status = #{selectStatus}
+            </if>
+            <if test="selectChannel != null">
+                AND channel = #{selectChannel}
             </if>
         </where>
         ORDER BY id DESC LIMIT #{start}, #{pageSize}
@@ -49,11 +57,20 @@
     <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT count(*) FROM `order`
         <where>
-            <if test="keyword != null and keyword != ''">
-                AND goods_name LIKE CONCAT('%', #{keyword}, '%')
+            <if test="userId != null">
+                AND user_id = #{userId}
             </if>
-            <if test="userid != null and userid != ''">
-                AND user_id = #{userid}
+            <if test="searchId != null">
+                AND (id = #{searchId} OR user_id = #{userId} OR goods_id = #{searchId})
+            </if>
+            <if test="searchName != null">
+                AND (goods_name LIKE CONCAT('%', #{keyword}, '%') OR (delivery_receiver LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="selectStatus != null">
+                AND status = #{selectStatus}
+            </if>
+            <if test="selectChannel != null">
+                AND channel = #{selectChannel}
             </if>
         </where>
     </select>

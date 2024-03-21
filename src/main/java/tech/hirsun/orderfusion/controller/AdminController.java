@@ -138,18 +138,19 @@ public class AdminController {
     }
 
     @GetMapping("/order/list")
-    public Result list(@RequestParam("pageNum") Integer pageNum,
-                       @RequestParam("pageSize") Integer pageSize,
-                       @RequestParam("keyword") String keyword,
-                       @RequestParam("userid") String userId){
+    public Result list(
+            @RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum,
+            @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "searchId" ,defaultValue = "") String searchId,
+            @RequestParam(name = "searchName", defaultValue = "") String searchName,
+            @RequestParam(name = "selectStatus", defaultValue = "") String selectStatus,
+            @RequestParam(name = "selectChannel", defaultValue = "") String selectChannel){
         try {
-            log.info("Request order list under admin, pageNum: {}, pageSize: {}, keyword: {}, userId: {}", pageNum, pageSize, keyword, userId);
-            return Result.success(orderService.page(pageNum, pageSize, keyword, userId));
+            log.info("Request order list under admin, pageNum: {}, pageSize: {}, searchId: {}, searchName: {}, selectStatus: {}, selectChannel: {}", pageNum, pageSize, searchId, searchName, selectStatus, selectChannel);
+            return Result.success(orderService.page(pageNum, pageSize,null, searchId ,searchName, selectStatus, selectChannel));
         } catch (Exception e) {
             log.error("Error when user request order list");
             return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
         }
     }
-
-
 }

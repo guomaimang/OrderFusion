@@ -48,7 +48,7 @@ $(function () {
         },
         onSelectRow: function () {
             //返回选中的id
-            selectedRowIndex = $("#" + this.id).getGridParam('selrow');
+            let selectedRowIndex = $("#" + this.id).getGridParam('selrow');
             //返回点击这行xlmc的值
             window.open("/goods-details.html?id=" + selectedRowIndex);
         },

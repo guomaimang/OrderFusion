@@ -31,8 +31,6 @@ public class OrderServiceImpl implements OrderService {
     // For Customer
     /**
      * Create a new order (non seckill)
-     * @param order
-     * @return
      */
     @Override
     @Transactional
@@ -101,12 +99,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageBean page(Integer pageNum, Integer pageSize, String keyword, String userId) {
-        int count = orderDao.count(keyword, Integer.parseInt(userId));
+    public PageBean page(Integer pageNum, Integer pageSize, Integer userId, String searchId, String searchName, String selectStatus, String selectChannel) {
+        int count = orderDao.count(userId, Integer.parseInt(searchId), searchName, Integer.parseInt(selectStatus), Integer.parseInt(selectChannel));
 
         int start = (pageNum-1) * pageSize;
-        List<Order> orders = orderDao.list(start, pageSize, keyword, Integer.parseInt(userId));
-        log.info(start + " " + pageSize + " " + keyword + " " + Integer.parseInt(userId));
+        List<Order> orders = orderDao.list(start, pageSize,userId, Integer.parseInt(searchId), searchName, Integer.parseInt(selectStatus), Integer.parseInt(selectChannel));
 
         return new PageBean(count, orders,Math.floorDiv(count, pageSize) + 1, pageNum);
     }
