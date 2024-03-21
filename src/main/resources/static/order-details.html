@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Goods Detail</title>
+    <title>Order Details</title>
     <!-- jqgrid ui -->
     <link href="plugins/jqgrid-5.7.0/ui.jqgrid-bootstrap4.css" rel="stylesheet"/>
     <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.css">
@@ -187,7 +187,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="goods-management.html">
                             <i class="fa fa-cubes nav-icon"></i>
-                            <p>Goods Details</p>
+                            <p>Goods Management</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -219,13 +219,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Goods Details</h1>
+                        <h1 class="m-0 text-dark">Order Details</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                             <li class="breadcrumb-item active">Shopping</li>
-                            <li class="breadcrumb-item active">Goods Details</li>
+                            <li class="breadcrumb-item active">Order Details</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -241,11 +241,105 @@
                     <!-- 商品图片和描述 -->
                     <div class="col-md-6">
                         <div class="card">
-                            <br>
+                            <br />
                             <img src="https://pic.hanjiaming.com.cn/2024/03/11/745889d753016.jpg" class="card-img-top" alt="product picture" style="  margin-left: auto; margin-right: auto; width: 75%;">
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h2>Goods Info</h2>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title" id="card-name">Loading...</h5>
-                                <p class="card-text" id="card-title">Loading...</p>
+                                <h6 class="card-title">ID：</h6>
+                                <p class="card-text" id="card-goodsId" style="color:darkred;font-size:25px;">Loading...</p>
+                                <h6 class="card-title">Name：</h6>
+                                <p class="card-text" id="card-goodsName" style="color:darkred;font-size:25px;">Loading...</p>
+                                <h6 class="card-title" >Title：</h6>
+                                <p class="card-text" id="card-goodsTitle" style="color:darkred;font-size:25px;">Loading...</p>
+                                <br />
+                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Check Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h2>Order Info</h2>
+                            </div>
+                            <div class="card-body">
+
+                                <form id="orderForm">
+                                    <div class="form-group">
+                                        <label for="goodsAmount">Amount</label>
+                                        <input type="number" class="form-control" oninput="calculatePrice()" id="goodsAmount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="goodsAmount">Payment</label>
+                                        <input type="number" class="form-control" oninput="calculatePrice()" id="goodsAmount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="goodsId">Channel</label>
+                                        <input type="text" class="form-control" id="goodsId" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="goodsId">Status</label>
+                                        <input type="text" class="form-control" id="goodsId" readonly>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="goodsId">Create Time</label>
+                                        <input type="text" class="form-control" id="goodsId" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="goodsId">Pay Time：</label>
+                                        <input type="text" class="form-control" id="goodsId" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="goodsId">Sent Time：</label>
+                                        <input type="text" class="form-control" id="goodsId" readonly>
+                                    </div>
+                                    <hr />
+                                    <div class="mt-3">
+                                        <h6><span>Prices are fluctuating so please order and pay asap. Overtime may result in order cancellation.</span></h6>
+                                    </div>
+                                </form>
+                                <br />
+                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Update</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h2>Payment Info</h2>
+                            </div>
+                            <div class="card-body">
+
+                                <form id="orderForm">
+                                    <div class="form-group">
+                                        <label for="goodsAmount">Transaction Id</label>
+                                        <input type="number" class="form-control" oninput="calculatePrice()" id="goodsAmount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="goodsAmount">Method</label>
+                                        <input type="number" class="form-control" oninput="calculatePrice()" id="goodsAmount">
+                                    </div>
+                                    <hr />
+                                    <div class="mt-3">
+                                        <h6><span>Prices are fluctuating so please order and pay asap. Overtime may result in order cancellation.</span></h6>
+                                    </div>
+                                </form>
+                                <br />
+                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Pay Now</button>
+
                             </div>
                         </div>
                     </div>
@@ -253,28 +347,55 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h2>Fast Order</h2>
+                                <h2>Receiver Info</h2>
                             </div>
                             <div class="card-body">
-                                <h6 class="card-title">ID：</h6>
-                                <p class="card-text" id="card-id" style="color:darkred;font-size:25px;">Loading...</p>
-                                <h6 class="card-title">Stock：</h6>
-                                <p class="card-text" id="card-stock" style="color:darkred;font-size:25px;">Loading...</p>
-                                <h6 class="card-title" >Unit Price：</h6>
-                                <p class="card-text" id="card-price" style="color:darkred;font-size:25px;">Loading...</p>
-                                <h6 class="card-title">Availability：</h6>
-                                <p class="card-text" id="card-isAvailable" style="color:darkred;font-size:25px;">Loading...</p>
-                                <br>
-                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Buy Now</button>
+                                <div class="form-group">
+                                    <label for="deliveryReceiver">Receiver Name</label>
+                                    <input type="text" class="form-control" id="deliveryReceiver">
+                                </div>
+                                <div class="form-group">
+                                    <label for="deliveryPhone">Receiver's Phone</label>
+                                    <input type="text" class="form-control" id="deliveryPhone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="deliveryAddress">Delivery Address</label>
+                                    <textarea rows="3" cols="20" class="form-control" id="deliveryAddress" placeholder="Please be as specific as possible; if you are not in HKSAR, you need to state your country or region."></textarea>
+                                </div>
+                                <hr />
+                                <div class="form-group">
+                                    <label for="userRemark">User Remark</label>
+                                    <textarea rows="3" cols="20" class="form-control" id="userRemark" placeholder="If you have any needs, such as printing customs tax returns, etc., please make a note here."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userRemark">Admin Remark</label>
+                                    <textarea rows="3" cols="20" class="form-control" id="userRemark" placeholder="If you have any needs, such as printing customs tax returns, etc., please make a note here."></textarea>
+                                </div>
+                                <br />
+                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Update</button>
                             </div>
                         </div>
+
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h2>Seckill Info</h2>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">Event Id：</h6>
+                                <p class="card-text" id="card-goodsId" style="color:darkred;font-size:25px;">Loading...</p>
+                                <h6 class="card-title">Event Name：</h6>
+                                <p class="card-text" id="card-goodsName" style="color:darkred;font-size:25px;">Loading...</p>
+                                <br />
+                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Check Details</button>
+                            </div>
+                        </div>
+
                     </div>
 
 
+
+
                 </div>
-                <br>
-                <br>
-                <div id="wangEditor"></div>
                 <br>
             </div>
 
