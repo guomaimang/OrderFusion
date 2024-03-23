@@ -8,6 +8,7 @@ import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.OrderService;
 import tech.hirsun.orderfusion.utils.JwtUtils;
+import tech.hirsun.orderfusion.vo.GoodsDetails;
 
 @Slf4j
 @RestController
@@ -107,7 +108,12 @@ public class OrderController {
             log.info("Request order details, id: {}, jwt: {}", goodsId, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
             log.info("Logged in User id: {}", loggedInUserId);
-            return Result.success(orderService.details(loggedInUserId, goodsId));
+            GoodsDetails goodsDetails = orderService.details(loggedInUserId, goodsId);
+            if (goodsDetails == null) {
+                return Result.error(ErrorMessage.USER_NO_PERMISSION);
+            }else{
+                return Result.success(goodsDetails);
+            }
         } catch (Exception e) {
             log.error("Error when user request order details");
             return Result.error(new ErrorMessage(50000, "Request failed, please try again."));

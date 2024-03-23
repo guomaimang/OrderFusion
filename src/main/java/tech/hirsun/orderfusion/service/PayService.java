@@ -4,9 +4,7 @@ import tech.hirsun.orderfusion.pojo.Pay;
 
 public interface PayService {
 
-    public void create(Pay pay);
-
-    public void finishPay(Integer id, Integer method, String transactionId);
+    public Pay virtualPay();
 
     public Pay getPayInfo(Integer id);
 }

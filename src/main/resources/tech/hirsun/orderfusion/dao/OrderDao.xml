@@ -28,6 +28,7 @@
             <if test="sentTime != null">sent_time = #{sentTime},</if>
             <if test="channel != null">channel = #{channel},</if>
             <if test="payId != null">pay_id = #{payId},</if>
+            <if test="seckillEventId != null">seckill_event_id = #{seckillEventId},</if>
         </set>
         where id = #{id}
     </update>

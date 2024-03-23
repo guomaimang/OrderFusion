@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import tech.hirsun.orderfusion.pojo.Goods;
 import tech.hirsun.orderfusion.pojo.Order;
 import tech.hirsun.orderfusion.pojo.Pay;
+import tech.hirsun.orderfusion.pojo.SeckillEvent;
 
 @Data
 @NoArgsConstructor
@@ -14,4 +15,5 @@ public class GoodsDetails {
     private Goods goods;
     private Order order;
     private Pay pay;
+    private SeckillEvent seckillEvent;
 }

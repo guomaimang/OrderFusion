@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pay {
@@ -13,5 +14,5 @@ public class Pay {
     Integer status;
     Integer method;
     String transactionId;
-    Date createTime;
+    Date payTime;
 }

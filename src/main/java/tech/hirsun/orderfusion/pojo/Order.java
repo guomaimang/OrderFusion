@@ -34,6 +34,7 @@ public class Order {
 
     Integer channel;
     Integer payId;
+    Integer SeckillEventId;
 
     public static Order getDraftObjForDB(Order order){
         Order draftOrder = new Order();
@@ -51,7 +52,7 @@ public class Order {
         }
 
         if (order.getGoodsName() != null){
-            if (order.getGoodsName().length() > 0){
+            if (!order.getGoodsName().isEmpty()){
                 draftOrder.setGoodsName(order.getGoodsName());
             }
         }
@@ -65,31 +66,31 @@ public class Order {
         }
 
         if (order.getDeliveryAddress() != null) {
-            if (order.getDeliveryAddress().length() > 0) {
+            if (!order.getDeliveryAddress().isEmpty()) {
                 draftOrder.setDeliveryAddress(order.getDeliveryAddress());
             }
         }
 
         if (order.getDeliveryPhone() != null) {
-            if (order.getDeliveryPhone().length() > 0) {
+            if (!order.getDeliveryPhone().isEmpty()) {
                 draftOrder.setDeliveryPhone(order.getDeliveryPhone());
             }
         }
 
         if (order.getDeliveryReceiver() != null) {
-            if (order.getDeliveryReceiver().length() > 0) {
+            if (!order.getDeliveryReceiver().isEmpty()) {
                 draftOrder.setDeliveryReceiver(order.getDeliveryReceiver());
             }
         }
 
         if (order.getUserRemark() != null) {
-            if (order.getUserRemark().length() > 0) {
+            if (!order.getUserRemark().isEmpty()) {
                 draftOrder.setUserRemark(order.getUserRemark());
             }
         }
 
         if (order.getAdminRemark() != null) {
-            if (order.getAdminRemark().length() > 0) {
+            if (!order.getAdminRemark().isEmpty()) {
                 draftOrder.setAdminRemark(order.getAdminRemark());
             }
         }
@@ -112,6 +113,9 @@ public class Order {
 
         if (order.getPayId() != null){
             draftOrder.setPayId(order.getPayId());
+        }
+        if (order.getSeckillEventId() != null){
+            draftOrder.setSeckillEventId(order.getSeckillEventId());
         }
 
         return draftOrder;

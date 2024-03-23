@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.hirsun.orderfusion.dao.PayDao">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into pay (method, status, transaction_id, pay_time)
+        values (#{method}, #{status}, #{transactionId}, #{payTime})
+    </insert>
+
+    <update id="update">
+        update pay
+        <set>
+            <if test="method != null">method = #{method},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="transactionId != null">transaction_id = #{transactionId},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+</mapper>

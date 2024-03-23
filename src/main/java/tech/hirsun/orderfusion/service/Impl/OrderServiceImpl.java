@@ -6,13 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.hirsun.orderfusion.dao.GoodsDao;
 import tech.hirsun.orderfusion.dao.OrderDao;
-import tech.hirsun.orderfusion.pojo.Goods;
-import tech.hirsun.orderfusion.pojo.Order;
-import tech.hirsun.orderfusion.pojo.PageBean;
-import tech.hirsun.orderfusion.pojo.Pay;
-import tech.hirsun.orderfusion.service.GoodsService;
-import tech.hirsun.orderfusion.service.OrderService;
-import tech.hirsun.orderfusion.service.PayService;
+import tech.hirsun.orderfusion.pojo.*;
+import tech.hirsun.orderfusion.service.*;
 import tech.hirsun.orderfusion.vo.GoodsDetails;
 
 import java.util.Date;
@@ -33,6 +28,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private PayService payService;
+
+    @Autowired
+    private SeckillEventService seckillEventService;
 
     // For Customer
     /**
@@ -128,8 +126,19 @@ public class OrderServiceImpl implements OrderService {
         return new PageBean(count, orders,Math.floorDiv(count, pageSize) + 1, pageNum);
     }
 
+    @Transactional
     @Override
-    public void orderPay(Integer id) {
+    public Pay orderPay(Integer id) {
+        Order order = orderDao.getOrderById(id);
+        if (order == null || order.getStatus() != 0) {
+            return null;
+        }
+
+        Pay pay = payService.virtualPay();
+        order.setPayId(pay.getId());
+        order.setPayTime(pay.getPayTime());
+        order.setStatus(1);
+        return pay;
     }
 
     // For Admin
@@ -145,17 +154,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public GoodsDetails details(Integer loggedInUserId, Integer goodsId) {
-        Order order = orderDao.getOrderById(goodsId);
+    public GoodsDetails details(Integer loggedInUserId, Integer orderId) {
+        Order order = orderDao.getOrderById(orderId);
         if(order == null || order.getUserId() != loggedInUserId){
             return null;
         }
-        Goods goods = goodsDao.getGoodsById(goodsId);
+        Goods goods = goodsDao.getGoodsById(order.getGoodsId());
         if (goods == null) {
             return null;
         }
-        Pay pay = payService.getPayInfo(order.getPayId());
-        return new GoodsDetails(goods, order, pay);
+
+        Pay pay = null;
+        SeckillEvent seckillEvent = null;
+
+        if (order.getPayId() != null) {
+            pay = payService.getPayInfo(order.getPayId());
+        }
+        if (order.getSeckillEventId() != null) {
+            seckillEvent = seckillEventService.getSeckillEventInfo(order.getSeckillEventId());
+        }
+        return new GoodsDetails(goods, order, pay, seckillEvent);
     }
 
 }
