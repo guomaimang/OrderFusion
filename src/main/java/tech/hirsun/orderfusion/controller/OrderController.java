@@ -95,8 +95,21 @@ public class OrderController {
             log.info("Logged in User id: {}", loggedInUserId);
             return Result.success(orderService.page(pageNum, pageSize, loggedInUserId, null, searchName, selectStatus, selectChannel));
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("Error when user request order list");
+            return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
+        }
+    }
+
+    @GetMapping("/details/{id}")
+    public Result details(@RequestHeader String jwt,
+                          @PathVariable("id") Integer goodsId) {
+        try {
+            log.info("Request order details, id: {}, jwt: {}", goodsId, jwt);
+            int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
+            log.info("Logged in User id: {}", loggedInUserId);
+            return Result.success(orderService.details(loggedInUserId, goodsId));
+        } catch (Exception e) {
+            log.error("Error when user request order details");
             return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
         }
     }

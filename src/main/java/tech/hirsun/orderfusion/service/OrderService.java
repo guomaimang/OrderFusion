@@ -2,6 +2,7 @@ package tech.hirsun.orderfusion.service;
 
 import tech.hirsun.orderfusion.pojo.Order;
 import tech.hirsun.orderfusion.pojo.PageBean;
+import tech.hirsun.orderfusion.vo.GoodsDetails;
 
 public interface OrderService {
 
@@ -20,4 +21,6 @@ public interface OrderService {
     public void updateUnderAdmin(Order order);
 
     public Order getOrderInfoUnderAdmin(Integer id);
+
+    GoodsDetails details(Integer loggedInUserId, Integer goodsId);
 }

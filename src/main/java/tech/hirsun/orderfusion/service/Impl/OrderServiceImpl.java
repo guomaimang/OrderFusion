@@ -9,8 +9,11 @@ import tech.hirsun.orderfusion.dao.OrderDao;
 import tech.hirsun.orderfusion.pojo.Goods;
 import tech.hirsun.orderfusion.pojo.Order;
 import tech.hirsun.orderfusion.pojo.PageBean;
+import tech.hirsun.orderfusion.pojo.Pay;
 import tech.hirsun.orderfusion.service.GoodsService;
 import tech.hirsun.orderfusion.service.OrderService;
+import tech.hirsun.orderfusion.service.PayService;
+import tech.hirsun.orderfusion.vo.GoodsDetails;
 
 import java.util.Date;
 import java.util.List;
@@ -27,6 +30,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private GoodsService goodsService;
+
+    @Autowired
+    private PayService payService;
 
     // For Customer
     /**
@@ -136,6 +142,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getOrderInfoUnderAdmin(Integer id) {
         return orderDao.getOrderById(id);
+    }
+
+    @Override
+    public GoodsDetails details(Integer loggedInUserId, Integer goodsId) {
+        Order order = orderDao.getOrderById(goodsId);
+        if(order == null || order.getUserId() != loggedInUserId){
+            return null;
+        }
+        Goods goods = goodsDao.getGoodsById(goodsId);
+        if (goods == null) {
+            return null;
+        }
+        Pay pay = payService.getPayInfo(order.getPayId());
+        return new GoodsDetails(goods, order, pay);
     }
 
 }

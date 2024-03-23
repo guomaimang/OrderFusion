@@ -246,91 +246,91 @@
                             <br />
                         </div>
                     </div>
-
                     <div class="col-md-6">
-                        <div class="card">
+                        <div class="card" id="card-goodsInfo">
                             <div class="card-header text-center">
                                 <h2>Goods Info</h2>
                             </div>
                             <div class="card-body">
-                                <h6 class="card-title">ID：</h6>
-                                <p class="card-text" id="card-goodsId" style="color:darkred;font-size:25px;">Loading...</p>
+                                <h6 class="card-title" >ID：</h6>
+                                <p class="card-text" id="goodsInfo-id" style="color:darkred;font-size:25px;">Loading...</p>
                                 <h6 class="card-title">Name：</h6>
-                                <p class="card-text" id="card-goodsName" style="color:darkred;font-size:25px;">Loading...</p>
+                                <p class="card-text" id="goodsInfo-name" style="color:darkred;font-size:25px;">Loading...</p>
                                 <h6 class="card-title" >Title：</h6>
-                                <p class="card-text" id="card-goodsTitle" style="color:darkred;font-size:25px;">Loading...</p>
+                                <p class="card-text" id="goodsInfo-title" style="color:darkred;font-size:25px;">Loading...</p>
                                 <br />
-                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Check Details</button>
+                                <button class="btn btn-primary" id="goodsInfoButton" disabled onclick="goodsInfoButtonClick()">Check Details</button>
                             </div>
                         </div>
                     </div>
 
-
-
-
                 </div>
                 <div class="row">
-
                     <div class="col-md-6">
-                        <div class="card">
+                        <div class="card" id="orderInfo">
                             <div class="card-header text-center">
                                 <h2>Order Info</h2>
                             </div>
                             <div class="card-body">
-
-                                <form id="orderForm">
+                                <form>
                                     <div class="form-group">
-                                        <label for="goodsAmount">Amount</label>
-                                        <input type="number" class="form-control" oninput="calculatePrice()" id="goodsAmount">
+                                        <label for="orderInfo-amount">Amount</label>
+                                        <input type="text" class="form-control" id="orderInfo-amount" readonly />
                                     </div>
                                     <div class="form-group">
-                                        <label for="goodsAmount">Payment</label>
-                                        <input type="number" class="form-control" oninput="calculatePrice()" id="goodsAmount">
+                                        <label for="orderInfo-payment">Payment</label>
+                                        <input type="number" class="form-control" id="orderInfo-payment" step="0.01" readonly />
                                     </div>
                                     <div class="form-group">
-                                        <label for="goodsId">Channel</label>
-                                        <input type="text" class="form-control" id="goodsId" readonly>
+                                        <label for="orderInfo-channel">Channel</label>
+                                        <select class="form-control" id="orderInfo-channel" readonly disabled>
+                                            <option value="0">General</option>
+                                            <option value="1">Seckill</option>
+                                            <option value="2">Admin Create</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="goodsId">Status</label>
-                                        <input type="text" class="form-control" id="goodsId" readonly>
-                                    </div>
-                                    <hr />
-                                    <div class="form-group">
-                                        <label for="goodsId">Create Time</label>
-                                        <input type="text" class="form-control" id="goodsId" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="goodsId">Pay Time：</label>
-                                        <input type="text" class="form-control" id="goodsId" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="goodsId">Sent Time：</label>
-                                        <input type="text" class="form-control" id="goodsId" readonly>
+                                        <label for="orderInfo-status">Status</label>
+                                        <select class="form-control" id="orderInfo-status" readonly disabled>
+                                            <option value="0">Not Paid</option>
+                                            <option value="1">Paid</option>
+                                            <option value="2">Sent Out</option>
+                                            <option value="3">Finished</option>
+                                            <option value="4">Refunded</option>
+                                            <option value="5">Cancelled</option>
+                                        </select>
                                     </div>
                                     <hr />
-                                    <div class="mt-3">
-                                        <h6><span>Prices are fluctuating so please order and pay asap. Overtime may result in order cancellation.</span></h6>
+                                    <div class="form-group">
+                                        <label for="orderInfo-createTime">Create Time</label>
+                                        <input type="text" class="form-control" id="orderInfo-createTime" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orderInfo-payTime">Pay Time</label>
+                                        <input type="text" class="form-control" id="orderInfo-payTime" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orderInfo-sentTime">Sent Time</label>
+                                        <input type="text" class="form-control" id="orderInfo-sentTime" readonly>
                                     </div>
                                 </form>
                                 <br />
-                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Update</button>
+                                <button class="btn btn-primary" id="orderInfoButton" disabled onclick="orderInfoButtonClick()">Update</button>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card" id="paymentInfo">
                             <div class="card-header text-center">
                                 <h2>Payment Info</h2>
                             </div>
                             <div class="card-body">
-
-                                <form id="orderForm">
+                                <form>
                                     <div class="form-group">
-                                        <label for="goodsAmount">Transaction Id</label>
-                                        <input type="number" class="form-control" oninput="calculatePrice()" id="goodsAmount">
+                                        <label for="paymentInfo-transactionId">Transaction Id</label>
+                                        <input type="text" class="form-control" id="paymentInfo-transactionId" readonly>
                                     </div>
                                     <div class="form-group">
-                                        <label for="goodsAmount">Method</label>
-                                        <input type="number" class="form-control" oninput="calculatePrice()" id="goodsAmount">
+                                        <label for="paymentInfo-method">Method</label>
+                                        <input type="text" class="form-control" id="paymentInfo-method" readonly>
                                     </div>
                                     <hr />
                                     <div class="mt-3">
@@ -338,69 +338,59 @@
                                     </div>
                                 </form>
                                 <br />
-                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Pay Now</button>
-
+                                <button class="btn btn-primary" id="paymentInfoButton" disabled onclick="paymentInfoButtonClick()">Pay Now</button>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-6">
-                        <div class="card">
+                        <div class="card" id="receiverInfo">
                             <div class="card-header text-center">
                                 <h2>Receiver Info</h2>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="deliveryReceiver">Receiver Name</label>
-                                    <input type="text" class="form-control" id="deliveryReceiver">
+                                    <label for="receiverInfo-deliveryReceiver">Receiver Name</label>
+                                    <input type="text" class="form-control" id="receiverInfo-deliveryReceiver" readonly/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="deliveryPhone">Receiver's Phone</label>
-                                    <input type="text" class="form-control" id="deliveryPhone">
+                                    <label for="receiverInfo-deliveryPhone">Receiver's Phone</label>
+                                    <input type="text" class="form-control" id="receiverInfo-deliveryPhone" readonly/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="deliveryAddress">Delivery Address</label>
-                                    <textarea rows="3" cols="20" class="form-control" id="deliveryAddress" placeholder="Please be as specific as possible; if you are not in HKSAR, you need to state your country or region."></textarea>
+                                    <label for="receiverInfo-deliveryAddress">Delivery Address</label>
+                                    <textarea rows="3" cols="20" class="form-control" id="receiverInfo-deliveryAddress" readonly placeholder="Please be as specific as possible; if you are not in HKSAR, you need to state your country or region."></textarea>
                                 </div>
                                 <hr />
                                 <div class="form-group">
-                                    <label for="userRemark">User Remark</label>
-                                    <textarea rows="3" cols="20" class="form-control" id="userRemark" placeholder="If you have any needs, such as printing customs tax returns, etc., please make a note here."></textarea>
+                                    <label for="receiverInfo-userRemark">User Remark</label>
+                                    <textarea rows="3" cols="20" class="form-control" id="receiverInfo-userRemark" readonly placeholder="If you have any needs, such as printing customs tax returns, etc., please make a note here."></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="userRemark">Admin Remark</label>
-                                    <textarea rows="3" cols="20" class="form-control" id="userRemark" placeholder="If you have any needs, such as printing customs tax returns, etc., please make a note here."></textarea>
+                                    <label for="receiverInfo-adminRemark">Admin Remark</label>
+                                    <textarea rows="3" cols="20" class="form-control" id="receiverInfo-adminRemark" readonly ></textarea>
                                 </div>
                                 <br />
-                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Update</button>
+                                <button class="btn btn-primary" id="receiverInfoButton" disabled onclick="receiverInfoButtonClick()">Update</button>
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card" id="seckillInfo" style="display: none">
                             <div class="card-header text-center">
                                 <h2>Seckill Info</h2>
                             </div>
                             <div class="card-body">
                                 <h6 class="card-title">Event Id：</h6>
-                                <p class="card-text" id="card-goodsId" style="color:darkred;font-size:25px;">Loading...</p>
+                                <p class="card-text" id="seckillInfo-eventId" style="color:darkred;font-size:25px;">Loading...</p>
                                 <h6 class="card-title">Event Name：</h6>
-                                <p class="card-text" id="card-goodsName" style="color:darkred;font-size:25px;">Loading...</p>
+                                <p class="card-text" id="seckillInfo-eventName" style="color:darkred;font-size:25px;">Loading...</p>
                                 <br />
-                                <button class="btn btn-primary" id="buyButton" disabled onclick="buyButtonClick()">Check Details</button>
+                                <button class="btn btn-primary" id="seckillInfoButton" disabled onclick="seckillInfoButtonClick()">Check Details</button>
                             </div>
                         </div>
-
                     </div>
-
-
-
-
                 </div>
                 <br>
             </div>
-
-
-
         </div>
 
 
