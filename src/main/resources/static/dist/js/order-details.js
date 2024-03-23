@@ -1,86 +1,157 @@
 function contentsPreparation(){
     let id = getQueryParam("id");
 
-    //请求数据
-    $.get("goods/info?id=" + id, function (r) {
-        if (r.code === 0 && r.data != null) {
-            //填充数据 至 card
-            $('#card-id').text(r.data.id);
-            $('#card-name').text(r.data.name);
-            $('#card-title').text(r.data.title);
-            $('#card-price').text(priceFormatter(r.data.price));
-            $('#card-stock').text(r.data.stock);
-            $('#card-isAvailable').text(isAvailableFormatter(r.data.isAvailable));
-            $('#card-imageUri').text(r.data.imageUri);
-            editorD.txt.html(r.data.description);
-            if (r.data.isAvailable == 1){
-                let buyButton = document.getElementById("buyButton");
-                buyButton.disabled = false;
+    $.ajax({
+        type: "GET",           //方法类型
+        dataType: "json",       //预期服务器返回的数据类型
+        url: "/order/details/"+id,     //url
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function (request) {
+            //设置header值
+            request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+        },
+        success: function (r) {
+            if (r.code === 0) {
+                // load data
+
+                document.getElementById("goodsInfo-id").innerHTML = r.data.goods.id;
+                document.getElementById("goodsInfo-name").innerHTML = r.data.goods.name;
+                document.getElementById("goodsInfo-title").innerHTML = r.data.goods.title;
+
+                document.getElementById("orderInfo-id").value = r.data.order.id;
+                document.getElementById("orderInfo-amount").value = r.data.order.goodsAmount;
+                document.getElementById("orderInfo-payment").value = r.data.order.payment;
+                document.getElementById("orderInfo-channel").value = r.data.order.channel;
+                document.getElementById("orderInfo-status").value = r.data.order.status;
+                document.getElementById("orderInfo-createTime").value = r.data.order.createTime === null? "":utcToLocalFormatter(r.data.order.createTime);
+                document.getElementById("orderInfo-payTime").value = r.data.order.payTime === null ? "":utcToLocalFormatter(r.data.order.payTime);
+                document.getElementById("orderInfo-sentTime").value = r.data.order.sentTime === null ? "":utcToLocalFormatter(r.data.order.sentTime);
+
+                if (r.data.pay !== null){
+                    document.getElementById("paymentInfo-transactionId").value = r.data.pay.transactionId;
+                    document.getElementById("paymentInfo-method").value = r.data.pay.method;
+                }
+
+                document.getElementById("receiverInfo-deliveryReceiver").value = r.data.order.deliveryReceiver;
+                document.getElementById("receiverInfo-deliveryPhone").value = r.data.order.deliveryPhone;
+                document.getElementById("receiverInfo-deliveryAddress").value = r.data.order.deliveryAddress;
+                document.getElementById("receiverInfo-userRemark").value = r.data.order.userRemark;
+                document.getElementById("receiverInfo-adminRemark").value = r.data.order.adminRemark;
+
+                if (r.data.seckillEvent !== null){
+                    document.getElementById("seckillInfo").style.display = "block";
+                    document.getElementById("seckillInfo-id").innerHTML = r.data.seckillEvent.id;
+                    document.getElementById("seckillInfo-eventTitle").innerHTML = r.data.seckillEvent.title;
+                }
+
+                // if not pay, can edit
+                if (r.data.order.status == 0){
+                    document.getElementById("receiverInfo-deliveryReceiver").readOnly = false;
+                    document.getElementById("receiverInfo-deliveryPhone").readOnly = false;
+                    document.getElementById("receiverInfo-deliveryAddress").readOnly = false;
+                    document.getElementById("receiverInfo-userRemark").readOnly = false;
+                    document.getElementById("receiverInfoButton").disabled = false;
+                    document.getElementById("paymentInfoButton").disabled = false;
+                    alert("Please note that the order has not been paid yet, please pay as soon as possible! Overtime may result in order cancellation.");
+                }
+            } else {
+                swal(r.msg, {
+                    icon: "error",
+                });
             }
+        },
+        error: function () {
+            swal("Operation failure, please contact the support!", {
+                icon: "error",
+            });
         }
+
     });
-}
 
-
-let editorD;
-//富文本编辑器
-const E = window.wangEditor;
-editorD = new E('#wangEditor')
-// 设置编辑区域高度为 400px
-editorD.config.height = 260
-//配置服务端图片上传地址
-editorD.config.uploadImgServer = 'images/upload'
-editorD.config.uploadFileName = 'file'
-//限制图片大小 2M
-editorD.config.uploadImgMaxSize = 2 * 1024 * 1024
-//限制一次最多能传几张图片 一次最多上传 1 个图片
-editorD.config.uploadImgMaxLength = 1
-//插入网络图片的功能
-editorD.config.showLinkImg = true
-editorD.config.uploadImgHooks = {
-    // 图片上传并返回了结果，图片插入已成功
-    success: function (xhr) {
-        console.log('success', xhr)
-    },
-    // 图片上传并返回了结果，但图片插入时出错了
-    fail: function (xhr, editor, resData) {
-        console.log('fail', resData)
-    },
-    // 上传图片出错，一般为 http 请求的错误
-    error: function (xhr, editor, resData) {
-        console.log('error', xhr, resData)
-    },
-    // 上传图片超时
-    timeout: function (xhr) {
-        console.log('timeout')
-    },
-    customInsert: function (insertImgFn, result) {
-        if (result != null && result.resultCode == 200) {
-            // insertImgFn 可把图片插入到编辑器，传入图片 src ，执行函数即可
-            insertImgFn(result.data)
-        } else {
-            alert("error");
-        }
-    }
 }
-editorD.create();
-editorD.disable();
 
 function buyButtonClick() {
     let id = getQueryParam("id");
     window.location.href = "order-submission.html?id=" + id;
 }
 
-/**
- * isFrozen formatter
- * @returns {string}
- */
-function priceFormatter(cellValue) {
-    return "HKD " + cellValue;
+function goodsInfoButtonClick() {
+let id = document.getElementById("goodsInfo-id").innerHTML;
+    window.open("/goods-details.html?id=" + id);
 }
 
-function isAvailableFormatter(cellValue) {
-    return cellValue == 1 ? "Yes" : "No";
+function receiverInfoButtonClick() {
+    let deliveryReceiver = $("#receiverInfo-deliveryReceiver").val();
+    let deliveryAddress = $("#receiverInfo-deliveryAddress").val();
+    let deliveryPhone = $("#receiverInfo-deliveryPhone").val();
+    let userRemark = $("#receiverInfo-userRemark").val();
+    if (isNull(deliveryReceiver) || deliveryReceiver.length > 20) {
+        alert("Please enter the consignee name within 20 characters!");
+        return;
+    }
+    if (isNull(deliveryAddress) || deliveryAddress.length > 60) {
+        alert("Please enter the shipping address within 60 characters!");
+        return;
+    }
+    if (isNull(deliveryPhone)) {
+        alert("Please enter the phone number!");
+        return;
+    }
+
+    let data = {
+        "deliveryAddress": deliveryAddress,
+        "deliveryPhone": deliveryPhone,
+        "deliveryReceiver": deliveryReceiver,
+    };
+
+    let url = "order/update";
+    let method = "PUT";
+
+    document.getElementById("receiverInfoButton").disabled = true;
+    document.getElementById("receiverInfoButton").innerHTML = "Submitting...";
+
+    // 执行方法
+    $.ajax({
+        type: method,           //方法类型
+        dataType: "json",       //预期服务器返回的数据类型
+        url: url,               //url
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data),
+        beforeSend: function (request) {
+            //设置header值
+            request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+        },
+        success: function (r) {
+            if (r.code === 0) {
+                alert("Update success!");
+                window.reload();
+            } else {
+                swal(r.msg, {
+                    icon: "error",
+                });
+            }
+        },
+        error: function () {
+            swal("Operation failure, please contact the support!", {
+                icon: "error",
+            });
+        },
+        finally: function () {
+            document.getElementById("receiverInfoButton").disabled = false;
+            document.getElementById("receiverInfoButton").innerHTML = "Submit";
+
+        }
+    });
+
+
 }
+
+
+function utcToLocalFormatter(cellValue) {
+    let date = new Date(cellValue);
+    return date.toLocaleString();
+
+}
+
 
 contentsPreparation();

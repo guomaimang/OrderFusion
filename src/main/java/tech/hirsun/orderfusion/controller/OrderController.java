@@ -42,7 +42,7 @@ public class OrderController {
     }
 
     // General means general shopping and not seckill
-    @PutMapping("/general/update")
+    @PutMapping("/update")
     public Result update(@RequestHeader String jwt, @RequestBody Order order) {
         try {
             log.info("Request update order, order: {}, jwt: {}", order, jwt);

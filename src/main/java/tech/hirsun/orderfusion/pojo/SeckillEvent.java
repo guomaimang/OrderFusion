@@ -10,6 +10,7 @@ import java.util.Date;
 public class SeckillEvent {
     Integer id;
     Integer goodsId;
+    String Title;
     Double seckillPrice;
     Integer secKillStock;
 
