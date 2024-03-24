@@ -11,6 +11,8 @@ public interface UserService {
 
     User login(User user);
 
+    User ssoLogin(String email, String displayName);
+
     User getUserInfo(Integer id);
 
     void update(User user);

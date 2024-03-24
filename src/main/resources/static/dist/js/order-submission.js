@@ -60,7 +60,7 @@ function submitButtonClick() {
         success: function (r) {
             if (r.code === 0) {
                 alert("Order submitted successfully! Now you will be redirected to pay the order.");
-                window.location.href = "/orders.html?id=" + r.data;
+                window.location.href = "/order-details.html?id=" + r.data;
             } else {
                 swal(r.msg, {
                     icon: "error",
@@ -78,6 +78,8 @@ function submitButtonClick() {
         }
 
     });
+
+    grecaptcha.reset();
 }
 
 function calculatePrice(){

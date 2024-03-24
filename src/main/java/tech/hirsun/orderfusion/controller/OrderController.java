@@ -35,6 +35,7 @@ public class OrderController {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("Error when user request create order");
             return Result.error(new ErrorMessage(50000, "Order failed, no payment will be deducted. Please try again."));
         }

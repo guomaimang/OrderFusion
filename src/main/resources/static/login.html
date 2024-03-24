@@ -44,19 +44,15 @@
                     <label for="password" class="fa fa-lock form-control-feedback"> Password</label>
                     <input type="password" id="password" class="form-control" placeholder="Demo: cp4931stu">
                 </div>
-
                 <div class="row">
-
                     <div class="g-recaptcha" data-sitekey="6Le6mowpAAAAAMFjhoVkXAQx1lFAiIC0AHVF1LoK"></div>
-
                     <div class="col-12">
                         <br>
                         <button type="submit" onclick="login()" id="loginButton" class="btn btn-primary btn-block btn-flat">Login</button>
                     </div>
-
-                    <div class="sso-link">
+                    <div>
                         <br>
-                        <a href="/oauth2/authorize">SSO For PolyU (ADFS)</a>
+                        <a id="sso-link" href="">SSO For PolyU/Enterprise (Oauth)</a>
                     </div>
                 </div>
             </form>

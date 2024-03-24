@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.hirsun.orderfusion.pojo.User;
-import tech.hirsun.orderfusion.redis.RedisService;
 import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.UserService;
@@ -20,8 +19,6 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private RedisService redisService;
 
     @PostMapping("/login")
     public Result login(@RequestBody User userAttempted){
@@ -74,7 +71,6 @@ public class LoginController {
             }
 
         }catch (Exception e){
-            e.printStackTrace();
             log.info("The request header jwt is invalid, return not logged in information");
             return Result.error(ErrorMessage.USER_NOT_LOGIN);
         }

@@ -2,6 +2,7 @@ package tech.hirsun.orderfusion.service.Impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tech.hirsun.orderfusion.dao.UserDao;
 import tech.hirsun.orderfusion.pojo.PageBean;
@@ -19,19 +20,46 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Value("${orderfusion.fixedSalt}")
+    private String fixedSalt;
+
     public User login(User user) {
         User dbUser = userDao.getUserByEmail(user.getEmail());
 
         if (dbUser == null) {
             return null;
         }
-        String saltedPassword = HashUtil.formPlainPassToDBPass(user.getPassword(), dbUser.getRandomSalt());
+        String saltedPassword = HashUtil.formPlainPassToDBPass(user.getPassword(), dbUser.getRandomSalt(),fixedSalt);
 
         if(dbUser.getPassword().equals(saltedPassword)) {
             return new User(dbUser.getId(), dbUser.getName(), dbUser.getEmail(), dbUser.getAvatarUri(), dbUser.getIsAdmin());
         }else {
             return null;
         }
+    }
+
+    @Override
+    public User ssoLogin(String email, String displayName) {
+        User dbUser = userDao.getUserByEmail(email);
+        if (dbUser != null) {
+            return dbUser;
+        }
+
+        User draftUser = new User();
+
+        draftUser.setName(displayName);
+        draftUser.setEmail(email);
+
+        String randomSalt = SaltUtils.getRandomSalt(6);
+        draftUser.setRandomSalt(randomSalt);
+        draftUser.setPassword(HashUtil.formPlainPassToDBPass(SaltUtils.getRandomSalt(6), randomSalt, fixedSalt));
+
+        draftUser.setRegisterTime(new Date());
+
+        userDao.insert(draftUser);
+
+        return draftUser;
     }
 
     @Override
@@ -54,7 +82,7 @@ public class UserServiceImpl implements UserService {
                 String randomSalt = SaltUtils.getRandomSalt(6);
 
                 draftUser.setRandomSalt(randomSalt);
-                draftUser.setPassword(HashUtil.formPlainPassToDBPass(user.getPassword(), randomSalt));
+                draftUser.setPassword(HashUtil.formPlainPassToDBPass(user.getPassword(), randomSalt, fixedSalt));
             }
         }
 
@@ -85,7 +113,7 @@ public class UserServiceImpl implements UserService {
 
         String randomSalt = SaltUtils.getRandomSalt(6);
         draftUser.setRandomSalt(randomSalt);
-        draftUser.setPassword(HashUtil.formPlainPassToDBPass(user.getPassword(), randomSalt));
+        draftUser.setPassword(HashUtil.formPlainPassToDBPass(user.getPassword(), randomSalt, fixedSalt));
 
         draftUser.setRegisterTime(new Date());
 

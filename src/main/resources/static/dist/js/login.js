@@ -8,6 +8,22 @@ function checkLoginInStatus(){
     }
 }
 
+function prepareSSOLink(){
+    let clientId = "45792ac5-5f4c-49a7-ba2d-1845333171a1";
+    let redirectUri = window.location.protocol + "//" + window.location.host + "/oauth2.html";
+
+    document.getElementById("sso-link").href =
+        "https://login.microsoftonline.com/common/" +
+        "oauth2/v2.0/authorize"+
+        "?client_id=" + clientId +
+        "&response_type=code" +
+        "&redirect_uri=" + redirectUri +
+        "&response_mode=query" +
+        "&scope=openid+profile+email" +
+        "&state=12345";
+}
+
+
 /**
  * 用户名称验证,限制输入为邮箱
  *
@@ -103,3 +119,4 @@ async function login() {
 }
 
 checkLoginInStatus();
+prepareSSOLink();
