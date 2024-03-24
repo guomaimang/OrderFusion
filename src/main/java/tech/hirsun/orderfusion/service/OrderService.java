@@ -8,7 +8,7 @@ import tech.hirsun.orderfusion.vo.OrderVo;
 public interface OrderService {
 
     // For Customer
-    public int generalCreate(Order order);
+    public int generalCreate(Integer loggedInUserId, Order order);
 
     public void update(Order order);
 

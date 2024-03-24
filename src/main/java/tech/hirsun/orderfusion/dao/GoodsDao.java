@@ -15,12 +15,12 @@ public interface GoodsDao {
     @Select("select * from goods where id = #{id}")
     public Goods getGoodsById(@Param("id") int id);
 
+    // By XML
     /**
      * @return the number of users
      */
     public Integer count(@Param("keyword") String keyword);
 
-    // By XML
     /**
      *
      * @param start: the first row index

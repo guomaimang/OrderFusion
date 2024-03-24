@@ -23,7 +23,6 @@ public class GoodsController {
             log.info("Request goods list, pageNum: {}, pageSize: {}, keyword: {}", pagenum, pagesize, keyword);
             return Result.success(goodsService.page(pagenum, pagesize, keyword));
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("Error when admin request goods list");
             return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }

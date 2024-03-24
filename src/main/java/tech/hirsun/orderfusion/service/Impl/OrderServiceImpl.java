@@ -38,7 +38,10 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @Transactional
-    public int generalCreate(Order order) {
+    public int generalCreate(Integer loggedInUserId, Order order) {
+        order.setUserId(loggedInUserId);
+        order.setChannel(0);
+
         //cp the template from frontend order
         Order draftOrder = Order.getDraftObjForDB(order);
         Goods goods = goodsService.getGoodsInfo(draftOrder.getGoodsId());

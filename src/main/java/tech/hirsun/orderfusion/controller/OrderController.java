@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.hirsun.orderfusion.pojo.Order;
+import tech.hirsun.orderfusion.pojo.SeckillEvent;
 import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.OrderService;
@@ -20,20 +21,41 @@ public class OrderController {
 
     // General means general shopping and not seckill
     @PostMapping("/general/create")
-    public Result create(@RequestHeader String jwt, @RequestBody Order order) {
+    public Result generalCreate(@RequestHeader String jwt, @RequestBody Order order) {
         try {
             log.info("Request create order, order: {}, jwt: {}", order, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
-            order.setUserId(loggedInUserId);
-            order.setChannel(0);
-
-            int orderId = orderService.generalCreate(order);
+            int orderId = orderService.generalCreate(loggedInUserId, order);
             if (orderId > 0) {
                 return Result.success(orderId);
             } else {
                 return Result.error(ErrorMessage.ORDER_NO_PERMISSION_GENERATION);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("Error when user request create order");
+            return Result.error(new ErrorMessage(50000, "Order failed, no payment will be deducted. Please try again."));
+        }
+    }
 
+    @PostMapping("/seckill/create")
+    public Result seckillCreate(@RequestHeader String jwt, @RequestBody SeckillEvent seckillEvent) {
+        try {
+            log.info("Request create seckill order, event: {}, jwt: {}", seckillEvent, jwt);
+            int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
+
+            int orderId = orderService.seckillCreate(loggedInUserId, seckillEvent);
+            if (orderId > 0) {
+                return Result.success(orderId);
+            } else if(orderId == -1){
+                return Result.error(ErrorMessage.SECKILL_NO_PERMISSION);
+            }else if(orderId == -2) {
+                return Result.error(ErrorMessage.SECKILL_NO_STOCK);
+            }else if(orderId == -3) {
+                return Result.error(ErrorMessage.SECKILL_REPEATED);
+            }else {
+                return Result.error(ErrorMessage.ORDER_NO_PERMISSION_GENERATION);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             log.error("Error when user request create order");
