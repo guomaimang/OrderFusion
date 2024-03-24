@@ -32,6 +32,7 @@ function contentsPreparation(){
                     document.getElementById("paymentInfo-method").value = r.data.pay.method;
                 }
 
+                document.getElementById("receiverInfo-userId").value = r.data.order.userId;
                 document.getElementById("receiverInfo-deliveryReceiver").value = r.data.order.deliveryReceiver;
                 document.getElementById("receiverInfo-deliveryPhone").value = r.data.order.deliveryPhone;
                 document.getElementById("receiverInfo-deliveryAddress").value = r.data.order.deliveryAddress;
@@ -46,14 +47,12 @@ function contentsPreparation(){
 
                 // if not pay, can edit
                 if (r.data.order.status === 0){
-                    document.getElementById("receiverInfo-userId").value = r.data.order.userId;
                     document.getElementById("receiverInfo-deliveryReceiver").readOnly = false;
                     document.getElementById("receiverInfo-deliveryPhone").readOnly = false;
                     document.getElementById("receiverInfo-deliveryAddress").readOnly = false;
                     document.getElementById("receiverInfo-userRemark").readOnly = false;
                     document.getElementById("receiverInfoButton").disabled = false;
                     document.getElementById("receiverInfoButton").style.display = "block";
-                    document.getElementById("paymentInfoButton").disabled = false;
                     alert("Please note that the order has not been paid yet, please pay as soon as possible! Overtime may result in order cancellation.");
                 }
             } else {
@@ -72,17 +71,13 @@ function contentsPreparation(){
 
 }
 
-function buyButtonClick() {
-    let id = getQueryParam("id");
-    window.location.href = "order-submission.html?id=" + id;
-}
-
 function goodsInfoButtonClick() {
 let id = document.getElementById("goodsInfo-id").innerHTML;
     window.open("/goods-details.html?id=" + id);
 }
 
 function receiverInfoButtonClick() {
+
     let id = $("#orderInfo-id").val();
     let deliveryReceiver = $("#receiverInfo-deliveryReceiver").val();
     let deliveryAddress = $("#receiverInfo-deliveryAddress").val();
@@ -101,6 +96,20 @@ function receiverInfoButtonClick() {
         return;
     }
 
+    let virtualPayConfirm = confirm(
+        "Please confirm that the payment information is correct and the payment is successful! \n" +
+        "Payment amount: " + document.getElementById("orderInfo-payment").value + " HKD" + "\n" +
+        "Payment Method: Virtual Payment" + "\n" +
+        "Click OK to confirm payment, or Cancel to cancel payment."
+    );
+
+    if (!virtualPayConfirm) {
+        return;
+    }
+
+    document.getElementById("receiverInfoButton").disabled = true;
+    document.getElementById("receiverInfoButton").innerHTML = "Submitting...";
+
     let data = {
         "id": id,
         "deliveryAddress": deliveryAddress,
@@ -111,9 +120,6 @@ function receiverInfoButtonClick() {
 
     let url = "/order/update";
     let method = "PUT";
-
-    document.getElementById("receiverInfoButton").disabled = true;
-    document.getElementById("receiverInfoButton").innerHTML = "Submitting...";
 
     // 执行方法
     $.ajax({
@@ -127,26 +133,54 @@ function receiverInfoButtonClick() {
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         success: function (r) {
-            if (r.code === 0) {
-                alert("Update success!");
+            if (r.code !== 0) {
+                alert(r.msg);
                 window.location.reload();
-            } else {
-                swal(r.msg, {
-                    icon: "error",
-                });
             }
         },
         error: function () {
             swal("Operation failure, please contact the support!", {
                 icon: "error",
             });
+            document.getElementById("receiverInfoButton").disabled = false;
+            document.getElementById("receiverInfoButton").innerHTML = "Submit & Pay";
         },
     });
-    document.getElementById("receiverInfoButton").disabled = false;
-    document.getElementById("receiverInfoButton").innerHTML = "Update";
+
+    $.ajax({
+        type: "POST",           //方法类型
+        dataType: "json",       //预期服务器返回的数据类型
+        url: "/order/pay/"+id,     //url
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function (request) {
+            //设置header值
+            request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+        },
+        success: function (r) {
+            if (r.code === 0) {
+                alert("Payment success!");
+                window.location.reload();
+            } else {
+                swal(r.msg, {
+                    icon: "error",
+                });
+            }
+            document.getElementById("receiverInfoButton").disabled = false;
+            document.getElementById("receiverInfoButton").innerHTML = "Submit & Pay";
+        },
+        error: function () {
+            swal("Operation failure, please contact the support!", {
+                icon: "error",
+            });
+            document.getElementById("receiverInfoButton").disabled = false;
+            document.getElementById("receiverInfoButton").innerHTML = "Submit & Pay";
+        }
+
+    });
+
+
 
 }
-
 
 function utcToLocalFormatter(cellValue) {
     let date = new Date(cellValue);

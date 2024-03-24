@@ -171,11 +171,16 @@ public class OrderServiceImpl implements OrderService {
         if (order == null || order.getStatus() != 0) {
             return null;
         }
+        if (order.getDeliveryAddress() == null || order.getDeliveryPhone() == null || order.getDeliveryReceiver() == null ||
+                order.getDeliveryAddress().isEmpty() || order.getDeliveryPhone().isEmpty() || order.getDeliveryReceiver().isEmpty()) {
+            return null;
+        }
 
         Pay pay = payService.virtualPay();
         order.setPayId(pay.getId());
         order.setPayTime(pay.getPayTime());
         order.setStatus(1);
+        orderDao.update(order);
         return pay;
     }
 

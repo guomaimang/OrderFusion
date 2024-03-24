@@ -99,4 +99,23 @@ public class OrderController {
         }
     }
 
+    @PostMapping("/pay/{id}")
+    public Result pay(@RequestHeader String jwt, @PathVariable("id") Integer orderId) {
+        try {
+            log.info("Request order payment, id: {}, jwt: {}", orderId, jwt);
+            int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
+            log.info("Logged in User id: {}", loggedInUserId);
+            Order order = orderService.getOrderInfo(loggedInUserId, orderId);
+
+            if (order == null || order.getStatus() != 0) {
+                return Result.error(ErrorMessage.USER_NO_PERMISSION);
+            }else{
+                return Result.success(orderService.orderPay(orderId));
+            }
+        } catch (Exception e) {
+            log.error("Error when user request order payment");
+            return Result.error(new ErrorMessage(50000, "Payment failed, please try again."));
+        }
+    }
+
 }
