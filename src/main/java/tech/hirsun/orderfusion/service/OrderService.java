@@ -3,7 +3,7 @@ package tech.hirsun.orderfusion.service;
 import tech.hirsun.orderfusion.pojo.Order;
 import tech.hirsun.orderfusion.pojo.PageBean;
 import tech.hirsun.orderfusion.pojo.Pay;
-import tech.hirsun.orderfusion.vo.GoodsDetails;
+import tech.hirsun.orderfusion.vo.OrderVo;
 
 public interface OrderService {
 
@@ -12,7 +12,9 @@ public interface OrderService {
 
     public void update(Order order);
 
-    public Order getOrderInfo(Integer id);
+    public OrderVo getOrderVo(Integer loggedInUserId, Integer orderId);
+
+    public Order getOrderInfo(Integer loggedInUserId, Integer orderId);
 
     public PageBean page(Integer pageNum, Integer pageSize, Integer userId, Integer searchId, String searchName, Integer selectStatus, Integer selectChannel);
 
@@ -21,7 +23,4 @@ public interface OrderService {
     // For Admin Only
     public void updateUnderAdmin(Order order);
 
-    public Order getOrderInfoUnderAdmin(Integer id);
-
-    GoodsDetails details(Integer loggedInUserId, Integer orderId);
 }

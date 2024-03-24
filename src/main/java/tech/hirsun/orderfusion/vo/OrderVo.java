@@ -11,7 +11,7 @@ import tech.hirsun.orderfusion.pojo.SeckillEvent;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoodsDetails {
+public class OrderVo {
     private Goods goods;
     private Order order;
     private Pay pay;

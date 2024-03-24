@@ -12,9 +12,6 @@
     <update id="update">
         update `order`
         <set>
-            <if test="userId != null">user_id = #{userId},</if>
-            <if test="goodsId != null">goods_id = #{goodsId},</if>
-            <if test="goodsName != null">goods_name = #{goodsName},</if>
             <if test="goodsAmount != null">goods_amount = #{goodsAmount},</if>
             <if test="payment != null">payment = #{payment},</if>
             <if test="deliveryAddress != null">delivery_address = #{deliveryAddress},</if>

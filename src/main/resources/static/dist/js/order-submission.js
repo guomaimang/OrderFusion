@@ -23,27 +23,9 @@ function submitButtonClick() {
     let goodsId = $("#goodsId").val();
     let goodsAmount = $("#goodsAmount").val();
 
-    let deliveryReceiver = $("#deliveryReceiver").val();
-    let deliveryAddress = $("#deliveryAddress").val();
-    let deliveryPhone = $("#deliveryPhone").val();
-
-    let userRemark = $("#userRemark").val();
-
     //验证数据
     if (goodsAmount == null || goodsAmount <=0 || goodsAmount > stock) {
         alert("Please enter the correct quantity!");
-        return;
-    }
-    if (isNull(deliveryReceiver) || deliveryReceiver.length > 20) {
-        alert("Please enter the consignee name within 20 characters!");
-        return;
-    }
-    if (isNull(deliveryAddress) || deliveryAddress.length > 60) {
-        alert("Please enter the shipping address within 60 characters!");
-        return;
-    }
-    if (isNull(deliveryPhone)) {
-        alert("Please enter the phone number!");
         return;
     }
     if (grecaptcha.getResponse() == null || grecaptcha.getResponse() === ""){
@@ -55,12 +37,6 @@ function submitButtonClick() {
     let data = {
         "goodsId": goodsId,
         "goodsAmount": goodsAmount,
-
-        "deliveryAddress": deliveryAddress,
-        "deliveryPhone": deliveryPhone,
-        "deliveryReceiver": deliveryReceiver,
-
-        "userRemark": userRemark
     };
 
     let url = "order/general/create";

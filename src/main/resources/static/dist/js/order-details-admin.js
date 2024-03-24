@@ -4,7 +4,7 @@ function contentsPreparation(){
     $.ajax({
         type: "GET",           //方法类型
         dataType: "json",       //预期服务器返回的数据类型
-        url: "/order/info/"+id,     //url
+        url: "/admin/order/info/"+id,     //url
         contentType: "application/json; charset=utf-8",
         beforeSend: function (request) {
             //设置header值
@@ -31,7 +31,7 @@ function contentsPreparation(){
                     document.getElementById("paymentInfo-transactionId").value = r.data.pay.transactionId;
                     document.getElementById("paymentInfo-method").value = r.data.pay.method;
                 }
-
+                document.getElementById("receiverInfo-userId").value = r.data.order.userId;
                 document.getElementById("receiverInfo-deliveryReceiver").value = r.data.order.deliveryReceiver;
                 document.getElementById("receiverInfo-deliveryPhone").value = r.data.order.deliveryPhone;
                 document.getElementById("receiverInfo-deliveryAddress").value = r.data.order.deliveryAddress;
@@ -46,7 +46,6 @@ function contentsPreparation(){
 
                 // if not pay, can edit
                 if (r.data.order.status === 0){
-                    document.getElementById("receiverInfo-userId").value = r.data.order.userId;
                     document.getElementById("receiverInfo-deliveryReceiver").readOnly = false;
                     document.getElementById("receiverInfo-deliveryPhone").readOnly = false;
                     document.getElementById("receiverInfo-deliveryAddress").readOnly = false;
@@ -54,7 +53,6 @@ function contentsPreparation(){
                     document.getElementById("receiverInfoButton").disabled = false;
                     document.getElementById("receiverInfoButton").style.display = "block";
                     document.getElementById("paymentInfoButton").disabled = false;
-                    alert("Please note that the order has not been paid yet, please pay as soon as possible! Overtime may result in order cancellation.");
                 }
             } else {
                 swal(r.msg, {
@@ -72,14 +70,57 @@ function contentsPreparation(){
 
 }
 
-function buyButtonClick() {
-    let id = getQueryParam("id");
-    window.location.href = "order-submission.html?id=" + id;
+function goodsInfoButtonClick() {
+    let id = document.getElementById("goodsInfo-id").innerHTML;
+    window.open("/goods-details.html?id=" + id);
 }
 
-function goodsInfoButtonClick() {
-let id = document.getElementById("goodsInfo-id").innerHTML;
-    window.open("/goods-details.html?id=" + id);
+function orderInfoButtonClick() {
+    let id = $("#orderInfo-id").val();
+    let payment = $("#orderInfo-payment").val();
+    let status = $("#orderInfo-status").val();
+
+    let data = {
+        "id": id,
+        "payment": payment,
+        "status": status,
+    };
+
+    let url = "/admin/order/update";
+    let method = "PUT";
+
+    document.getElementById("orderInfoButton").disabled = true;
+    document.getElementById("orderInfoButton").innerHTML = "Submitting...";
+
+    // 执行方法
+    $.ajax({
+        type: method,           //方法类型
+        dataType: "json",       //预期服务器返回的数据类型
+        url: url,               //url
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data),
+        beforeSend: function (request) {
+            //设置header值
+            request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+        },
+        success: function (r) {
+            if (r.code === 0) {
+                alert("Update success!");
+                window.location.reload();
+            } else {
+                swal(r.msg, {
+                    icon: "error",
+                });
+            }
+        },
+        error: function () {
+            swal("Operation failure, please contact the support!", {
+                icon: "error",
+            });
+        },
+    });
+    document.getElementById("orderInfoButton").disabled = false;
+    document.getElementById("orderInfoButton").innerHTML = "Update";
 }
 
 function receiverInfoButtonClick() {
@@ -88,6 +129,8 @@ function receiverInfoButtonClick() {
     let deliveryAddress = $("#receiverInfo-deliveryAddress").val();
     let deliveryPhone = $("#receiverInfo-deliveryPhone").val();
     let userRemark = $("#receiverInfo-userRemark").val();
+    let adminRemark = $("#receiverInfo-adminRemark").val();
+
     if (isNull(deliveryReceiver) || deliveryReceiver.length > 20) {
         alert("Please enter the consignee name within 20 characters!");
         return;
@@ -107,9 +150,10 @@ function receiverInfoButtonClick() {
         "deliveryPhone": deliveryPhone,
         "deliveryReceiver": deliveryReceiver,
         "userRemark": userRemark,
+        "adminRemark": adminRemark,
     };
 
-    let url = "/order/update";
+    let url = "/admin/order/update";
     let method = "PUT";
 
     document.getElementById("receiverInfoButton").disabled = true;
@@ -147,12 +191,10 @@ function receiverInfoButtonClick() {
 
 }
 
-
 function utcToLocalFormatter(cellValue) {
     let date = new Date(cellValue);
     return date.toLocaleString();
 
 }
-
 
 contentsPreparation();

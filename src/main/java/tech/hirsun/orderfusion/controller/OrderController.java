@@ -8,7 +8,7 @@ import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.OrderService;
 import tech.hirsun.orderfusion.utils.JwtUtils;
-import tech.hirsun.orderfusion.vo.GoodsDetails;
+import tech.hirsun.orderfusion.vo.OrderVo;
 
 @Slf4j
 @RestController
@@ -35,23 +35,22 @@ public class OrderController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("Error when user request create order");
             return Result.error(new ErrorMessage(50000, "Order failed, no payment will be deducted. Please try again."));
         }
     }
 
-    // General means general shopping and not seckill
     @PutMapping("/update")
     public Result update(@RequestHeader String jwt, @RequestBody Order order) {
         try {
             log.info("Request update order, order: {}, jwt: {}", order, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
             log.info("Logged in User id: {}", loggedInUserId);
+            Order dbOrder = orderService.getOrderInfo(loggedInUserId, order.getId());
 
-            if (loggedInUserId != order.getUserId()) {
+            if (dbOrder == null || dbOrder.getStatus() != 0){
                 return Result.error(ErrorMessage.USER_NO_PERMISSION);
-            }else {
+            }else{
                 orderService.update(order);
                 return Result.success();
             }
@@ -63,23 +62,21 @@ public class OrderController {
     }
 
     @GetMapping("/info/{id}")
-    public Result getOrderInfo(@RequestHeader String jwt, @PathVariable("id") Integer id) {
+    public Result getOrderInfo(@RequestHeader String jwt, @PathVariable("id") Integer orderId) {
         try {
-            log.info("Request order info, id: {}, jwt: {}", id, jwt);
+            log.info("Request order details, id: {}, jwt: {}", orderId, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
             log.info("Logged in User id: {}", loggedInUserId);
+            OrderVo OrderVo = orderService.getOrderVo(loggedInUserId, orderId);
 
-            Order order = orderService.getOrderInfo(id);
-
-            if (loggedInUserId != order.getUserId()) {
+            if (OrderVo == null) {
                 return Result.error(ErrorMessage.USER_NO_PERMISSION);
-            }else {
-                return Result.success(order);
+            }else{
+                return Result.success(OrderVo);
             }
-
         } catch (Exception e) {
-            log.error("Error when user request update order");
-            return Result.error(new ErrorMessage(50000, "Update failed, please try again."));
+            log.error("Error when user request order details");
+            return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
         }
     }
 
@@ -97,25 +94,6 @@ public class OrderController {
             return Result.success(orderService.page(pageNum, pageSize, loggedInUserId, null, searchName, selectStatus, selectChannel));
         } catch (Exception e) {
             log.error("Error when user request order list");
-            return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
-        }
-    }
-
-    @GetMapping("/details/{id}")
-    public Result details(@RequestHeader String jwt,
-                          @PathVariable("id") Integer goodsId) {
-        try {
-            log.info("Request order details, id: {}, jwt: {}", goodsId, jwt);
-            int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
-            log.info("Logged in User id: {}", loggedInUserId);
-            GoodsDetails goodsDetails = orderService.details(loggedInUserId, goodsId);
-            if (goodsDetails == null) {
-                return Result.error(ErrorMessage.USER_NO_PERMISSION);
-            }else{
-                return Result.success(goodsDetails);
-            }
-        } catch (Exception e) {
-            log.error("Error when user request order details");
             return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
         }
     }

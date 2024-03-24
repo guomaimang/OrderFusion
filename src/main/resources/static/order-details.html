@@ -317,7 +317,7 @@
                                     </div>
                                 </form>
                                 <br />
-                                <button class="btn btn-primary" id="orderInfoButton" disabled onclick="orderInfoButtonClick()">Update</button>
+                                <button class="btn btn-primary" id="orderInfoButton" disabled onclick="orderInfoButtonClick()" style="display: none">Update</button>
                             </div>
                         </div>
                         <div class="card" id="paymentInfo">
@@ -351,6 +351,10 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
+                                    <label for="receiverInfo-userId">User Id</label>
+                                    <input type="text" class="form-control" id="receiverInfo-userId" readonly/>
+                                </div>
+                                <div class="form-group">
                                     <label for="receiverInfo-deliveryReceiver">Receiver Name</label>
                                     <input type="text" class="form-control" id="receiverInfo-deliveryReceiver" readonly/>
                                 </div>
@@ -376,7 +380,7 @@
                                     <h6><span>You can only edit Receiver Info before payment. </span></h6>
                                 </div>
                                 <br />
-                                <button class="btn btn-primary" id="receiverInfoButton" disabled onclick="receiverInfoButtonClick()">Update</button>
+                                <button class="btn btn-primary" id="receiverInfoButton" disabled onclick="receiverInfoButtonClick()" style="display: none">Update</button>
                             </div>
                         </div>
 

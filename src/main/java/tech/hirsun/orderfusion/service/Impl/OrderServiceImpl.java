@@ -8,7 +8,7 @@ import tech.hirsun.orderfusion.dao.GoodsDao;
 import tech.hirsun.orderfusion.dao.OrderDao;
 import tech.hirsun.orderfusion.pojo.*;
 import tech.hirsun.orderfusion.service.*;
-import tech.hirsun.orderfusion.vo.GoodsDetails;
+import tech.hirsun.orderfusion.vo.OrderVo;
 
 import java.util.Date;
 import java.util.List;
@@ -84,9 +84,6 @@ public class OrderServiceImpl implements OrderService {
         draftOrder.setGoodsName(null);
         draftOrder.setGoodsAmount(null);
         draftOrder.setPayment(null);
-        draftOrder.setDeliveryAddress(null);
-        draftOrder.setDeliveryPhone(null);
-        draftOrder.setDeliveryReceiver(null);
         draftOrder.setAdminRemark(null);
         draftOrder.setStatus(null);
         draftOrder.setCreateTime(null);
@@ -97,9 +94,50 @@ public class OrderServiceImpl implements OrderService {
         orderDao.update(draftOrder);
     }
 
+    /**
+     * Get the order view for frontend
+     * @param loggedInUserId: if = 0, release directly
+     */
     @Override
-    public Order getOrderInfo(Integer id) {
-        return orderDao.getOrderById(id);
+    public OrderVo getOrderVo(Integer loggedInUserId, Integer orderId) {
+        Order order = orderDao.getOrderById(orderId);
+        if(order == null){
+            return null;
+        }
+        if (loggedInUserId != order.getUserId() && loggedInUserId != 0){
+            return null;
+        }
+        Goods goods = goodsDao.getGoodsById(order.getGoodsId());
+        if (goods == null) {
+            return null;
+        }
+
+        Pay pay = null;
+        SeckillEvent seckillEvent = null;
+
+        if (order.getPayId() != null) {
+            pay = payService.getPayInfo(order.getPayId());
+        }
+        if (order.getSeckillEventId() != null) {
+            seckillEvent = seckillEventService.getSeckillEventInfo(order.getSeckillEventId());
+        }
+        return new OrderVo(goods, order, pay, seckillEvent);
+    }
+
+    /**
+     * Get the order view for frontend
+     * @param loggedInUserId: if = 0, release directly
+     */
+    @Override
+    public Order getOrderInfo(Integer loggedInUserId, Integer orderId) {
+        Order order = orderDao.getOrderById(orderId);
+        if(order == null){
+            return null;
+        }
+        if (loggedInUserId != order.getUserId() && loggedInUserId != 0){
+            return null;
+        }
+        return order;
     }
 
     @Override
@@ -146,34 +184,6 @@ public class OrderServiceImpl implements OrderService {
     public void updateUnderAdmin(Order order) {
         Order draftOrder = Order.getDraftObjForDB(order);
         orderDao.update(draftOrder);
-    }
-
-    @Override
-    public Order getOrderInfoUnderAdmin(Integer id) {
-        return orderDao.getOrderById(id);
-    }
-
-    @Override
-    public GoodsDetails details(Integer loggedInUserId, Integer orderId) {
-        Order order = orderDao.getOrderById(orderId);
-        if(order == null || order.getUserId() != loggedInUserId){
-            return null;
-        }
-        Goods goods = goodsDao.getGoodsById(order.getGoodsId());
-        if (goods == null) {
-            return null;
-        }
-
-        Pay pay = null;
-        SeckillEvent seckillEvent = null;
-
-        if (order.getPayId() != null) {
-            pay = payService.getPayInfo(order.getPayId());
-        }
-        if (order.getSeckillEventId() != null) {
-            seckillEvent = seckillEventService.getSeckillEventInfo(order.getSeckillEventId());
-        }
-        return new GoodsDetails(goods, order, pay, seckillEvent);
     }
 
 }

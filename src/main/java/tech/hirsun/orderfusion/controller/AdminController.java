@@ -11,6 +11,7 @@ import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.GoodsService;
 import tech.hirsun.orderfusion.service.OrderService;
 import tech.hirsun.orderfusion.service.UserService;
+import tech.hirsun.orderfusion.vo.OrderVo;
 
 
 @Slf4j
@@ -127,18 +128,23 @@ public class AdminController {
     }
 
     @GetMapping("/order/info/{id}")
-    public Result infoOrder(@PathVariable("id") Integer id){
+    public Result infoOrder(@PathVariable("id") Integer orderId){
         try {
-            log.info("Request order info under admin, id: {}", id);
-            return Result.success(orderService.getOrderInfoUnderAdmin(id));
+            log.info("Admin request order details, id: {}", orderId);
+            OrderVo OrderVo = orderService.getOrderVo(0, orderId);
+            if (OrderVo == null) {
+                return Result.error(ErrorMessage.USER_NO_PERMISSION);
+            }else{
+                return Result.success(OrderVo);
+            }
         } catch (Exception e) {
-            log.error("Error when admin request order info");
-            return Result.error(new ErrorMessage(50000, "Illegal Request"));
+            log.error("Error when user request order details");
+            return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
         }
     }
 
     @GetMapping("/order/list")
-    public Result list(
+    public Result listOrder(
             @RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum,
             @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize,
             @RequestParam(name = "searchId",required = false) Integer searchId,
@@ -150,7 +156,6 @@ public class AdminController {
             return Result.success(orderService.page(pageNum, pageSize,null, searchId ,searchName, selectStatus, selectChannel));
         } catch (Exception e) {
             log.error("Error when user request order list");
-            e.printStackTrace();
             return Result.error(new ErrorMessage(50000, "Request failed, please try again."));
         }
 
