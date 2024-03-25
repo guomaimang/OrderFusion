@@ -99,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
 
         // check the time
         Date currentTime = new Date();
-        if (!(seckillEvent.getStartTime().after(currentTime) || seckillEvent.getEndTime().before(currentTime))) {
+        if (seckillEvent.getStartTime().after(currentTime) || seckillEvent.getEndTime().before(currentTime)) {
             return -1;
         }
 
@@ -119,6 +119,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // set fields
+        draftOrder.setGoodsId(seckillEvent.getGoodsId());
         draftOrder.setGoodsName(seckillEvent.getTitle());
         draftOrder.setPayment(seckillEvent.getSeckillPrice() * draftOrder.getGoodsAmount());
         draftOrder.setAdminRemark(null);

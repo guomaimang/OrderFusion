@@ -5,8 +5,8 @@
 <mapper namespace="tech.hirsun.orderfusion.dao.OrderDao">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into `order` (user_id, goods_id, goods_name, goods_amount, payment, delivery_address, delivery_phone, delivery_receiver, user_remark, status, create_time, channel)
-        values (#{userId}, #{goodsId}, #{goodsName}, #{goodsAmount}, #{payment}, #{deliveryAddress}, #{deliveryPhone}, #{deliveryReceiver}, #{userRemark}, #{status}, #{createTime}, #{channel})
+        insert into `order` (user_id, goods_id, goods_name, goods_amount, payment, delivery_address, delivery_phone, delivery_receiver, user_remark, status, create_time, channel,seckill_event_id)
+        values (#{userId}, #{goodsId}, #{goodsName}, #{goodsAmount}, #{payment}, #{deliveryAddress}, #{deliveryPhone}, #{deliveryReceiver}, #{userRemark}, #{status}, #{createTime}, #{channel},#{seckillEventId})
     </insert>
 
     <update id="update">

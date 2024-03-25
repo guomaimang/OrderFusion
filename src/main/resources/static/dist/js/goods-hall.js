@@ -72,7 +72,6 @@ $(function () {
  * jqGrid 重新加载
  */
 function reload() {
-    reset();
     let page = $("#jqGrid").jqGrid('getGridParam', 'page');
     $("#jqGrid").jqGrid('setGridParam', {
         page: page

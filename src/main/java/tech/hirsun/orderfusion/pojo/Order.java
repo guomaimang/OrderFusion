@@ -34,7 +34,7 @@ public class Order {
 
     Integer channel;
     Integer payId;
-    Integer SeckillEventId;
+    Integer seckillEventId;
 
     public static Order getDraftObjForDB(Order order){
         Order draftOrder = new Order();
