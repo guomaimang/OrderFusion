@@ -40,7 +40,7 @@ function contentsPreparation(){
 
                 if (r.data.seckillEvent !== null){
                     document.getElementById("seckillInfo").style.display = "block";
-                    document.getElementById("seckillInfo-id").innerHTML = r.data.seckillEvent.id;
+                    document.getElementById("seckillInfo-eventId").innerHTML = r.data.seckillEvent.id;
                     document.getElementById("seckillInfo-eventTitle").innerHTML = r.data.seckillEvent.title;
                 }
 

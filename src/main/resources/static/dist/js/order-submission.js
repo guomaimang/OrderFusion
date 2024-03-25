@@ -4,17 +4,37 @@ function contentsPreparation()
 {
     let id = getQueryParam("id");
     //请求数据
-    $.get("goods/info?id=" + id, function (r) {
-        if (r.code === 0 && r.data != null) {
-            //填充数据
-            $('#goodsId').val(r.data.id);
-            $('#goodsName').val(r.data.name);
-            $('#goodsTitle').val(r.data.title);
-            $('#goodsPrice').val(r.data.price);
-            stock = r.data.stock;
-            document.getElementById("goodsAmount").placeholder = "Current Stock: " + stock;
+    $.ajax({
+        url: "/goods/info",
+        type: 'GET',
+        data: {
+            id: id
+        },
+        beforeSend: function (request) {
+            //设置header值
+            request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+        },
+        success: function (r) {
+            if (r.code === 0 && r.data != null) {
+                //填充数据
+                $('#goodsId').val(r.data.id);
+                $('#goodsName').val(r.data.name);
+                $('#goodsTitle').val(r.data.title);
+                $('#goodsPrice').val(r.data.price);
+                stock = r.data.stock;
+                document.getElementById("goodsAmount").placeholder = "Current Stock: " + stock;
+            }else {
+                swal(r.msg, {
+                    icon: "error",
+                });
+            }
+        },
+        error: function (request, status, error) {
+            //处理错误
+            console.log("Error: " + error);
         }
     });
+
 }
 
 
@@ -39,7 +59,7 @@ function submitButtonClick() {
         "goodsAmount": goodsAmount,
     };
 
-    let url = "order/general/create";
+    let url = "/order/general/create";
     let method = "POST";
 
     document.getElementById("submitButton").disabled = true;

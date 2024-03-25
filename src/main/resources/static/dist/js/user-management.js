@@ -146,6 +146,10 @@ function lockSwitch() {
                 type: "PUT",
                 url: "admin/user/lockswitch",
                 contentType: "application/json",
+                beforeSend: function (request) {
+                    //设置header值
+                    request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+                },
                 data: JSON.stringify({"id": id, "isFrozen": $("#jqGrid").jqGrid('getRowData', id).isFrozen === "Normal" ? 0 : 1}),
                 success: function (r) {
                     if (r.code === 0) {

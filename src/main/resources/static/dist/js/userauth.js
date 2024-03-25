@@ -1,50 +1,11 @@
 
-
-// function oauth2Login() {
-//     const queryParams = new URLSearchParams(window.location.search);
-//     const code = queryParams.get("code");
-//     var data = {"code": code}
-//
-//     $.ajax({
-//         type: "POST",//方法类型
-//         dataType: "json",//预期服务器返回的数据类型
-//         url: "oauth2/callback",
-//         contentType: "application/json; charset=utf-8",
-//         data: JSON.stringify(data),
-//
-//         success: function (result) {
-//             if (result.resultCode == 200) {
-//                 setCookie("token", result.data.userToken);
-//                 setCookie("userName", result.data.userName);
-//                 setCookie("isStudent", result.data.isStudent);
-//                 window.location.href = "/";
-//             }
-//             ;
-//             if (result.resultCode == 406) {
-//                 alert("Login failed! The account is not authenticated!")
-//                 window.location.href = "/login.html";
-//                 return;
-//             }
-//             if (result.resultCode == 500) {
-//                 alert("Server Error!")
-//                 window.location.href = "/login.html";
-//                 return;
-//             }
-//         },
-//         error: function () {
-//             alert("Interface exception, please contact the administrator!")
-//             return;
-//         }
-//     });
-// }
-
 /**
  * Check if logged in
  */
 async function checkLogin() {
     if (window.localStorage.getItem("jwt") == null || window.localStorage.getItem("jwt") === ""){
         alert("You are not logged in, please go to login first!")
-        // window.location.href = "login.html";
+        window.location.href = "login.html";
         return;
     }
 

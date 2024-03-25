@@ -7,7 +7,7 @@ $(function () {
 
     $("#jqGrid").jqGrid({
         // 设置API
-        url: 'goods/list',
+        url: '/goods/list',
         loadBeforeSend: function(jqXHR) {
             jqXHR.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },

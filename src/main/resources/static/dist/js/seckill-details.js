@@ -12,35 +12,55 @@ function contentsPreparation(){
     id = getQueryParam("id");
 
     //请求数据
-    $.get("/seckill/info?id=" + id, function (r) {
-        if (r.code === 0 && r.data != null) {
-            // 获取数据
-            id = r.data.id;
-            goodsId = r.data.goodsId;
-            title = r.data.title;
-            seckillPrice = r.data.seckillPrice;
-            seckillStock = r.data.seckillStock;
-            startTime = r.data.startTime;
-            endTime = r.data.endTime;
-            isAvailable = r.data.isAvailable;
-            purchaseLimitNum = r.data.purchaseLimitNum;
+    $.ajax({
+        url: "/seckill/info",
+        type: "GET",
+        data: {
+            id: id
+        },
+        beforeSend: function (request) {
+            //设置header值
+            request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+        },
+        success: function(r) {
+            if (r.code === 0 && r.data != null) {
+                // 获取数据
+                id = r.data.id;
+                goodsId = r.data.goodsId;
+                title = r.data.title;
+                seckillPrice = r.data.seckillPrice;
+                seckillStock = r.data.seckillStock;
+                startTime = r.data.startTime;
+                endTime = r.data.endTime;
+                isAvailable = r.data.isAvailable;
+                purchaseLimitNum = r.data.purchaseLimitNum;
 
-            //填充数据
-            $('#seckill-id').text(id);
-            $('#seckill-title').text(title);
-            $('#seckill-goodsId').text(goodsId);
-            $('#seckill-price').text(priceFormatter(seckillPrice));
-            $('#seckill-stoke').text(seckillStock);
-            $('#seckill-purchaseLimitNum').text(purchaseLimitNum);
-            $('#seckill-isAvailable').text(isAvailableFormatter(isAvailable));
-            $('#seckill-startTime').text(utcToLocalFormatter(startTime));
-            $('#seckill-endTime').text(utcToLocalFormatter(endTime));
+                //填充数据
+                $('#seckill-id').text(id);
+                $('#seckill-title').text(title);
+                $('#seckill-goodsId').text(goodsId);
+                $('#seckill-price').text(priceFormatter(seckillPrice));
+                $('#seckill-stoke').text(seckillStock);
+                $('#seckill-purchaseLimitNum').text(purchaseLimitNum);
+                $('#seckill-isAvailable').text(isAvailableFormatter(isAvailable));
+                $('#seckill-startTime').text(utcToLocalFormatter(startTime));
+                $('#seckill-endTime').text(utcToLocalFormatter(endTime));
 
-            if (isAvailable === 1){
-                countTime();
+                if (isAvailable === 1){
+                    countTime();
+                }
+            }else {
+                swal(r.msg, {
+                    icon: "error",
+                });
             }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            // handle error
+            console.error("AJAX Error: ", textStatus, errorThrown);
         }
     });
+
 }
 
 function calculatePrice(){
