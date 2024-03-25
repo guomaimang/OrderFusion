@@ -5,6 +5,7 @@ import lombok.Setter;
 
 
 public class ErrorMessage {
+
     @Getter @Setter
     private int code;
     @Getter @Setter
@@ -33,8 +34,11 @@ public class ErrorMessage {
     // User Message, like 5004x
 
     // Seckill Message, like 5005x
-
-
+    public static ErrorMessage SECKILL_NO_PERMISSION = new ErrorMessage(50051, "No Permission. Please try again.");
+    public static ErrorMessage SECKILL_NO_STOCK = new ErrorMessage(50052, "No Stock. Please try again.");
+    public static ErrorMessage SECKILL_REPEATED = new ErrorMessage(50053, "Repeated join. Please try again.");
+    public static ErrorMessage SECKILL_EXCEED_LIMITATION = new ErrorMessage(50054, "Exceed Limitation. Please try again.");
+    public static final ErrorMessage SECKILL_FAILED = new ErrorMessage(50055, "Seckill Failed. Please try again.");
 
     //constructor
     private ErrorMessage() {

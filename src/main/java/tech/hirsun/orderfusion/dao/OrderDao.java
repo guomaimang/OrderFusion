@@ -34,4 +34,6 @@ public interface OrderDao {
                          @Param("selectStatus") Integer selectStatus,
                          @Param("selectChannel") Integer selectChannel);
 
+    @Select("select count(*) from `order` where user_id = #{loggedInUserId} and seckill_event_id = #{seckillEventId}")
+    public int countOnesSeckill(Integer loggedInUserId, Integer seckillEventId);
 }

@@ -37,5 +37,5 @@ public interface GoodsDao {
     public int insert(Goods goods);
 
     @Update("update goods set stock = stock - #{amount} where id = #{id} and stock >= #{amount}")
-    public int generalMinusStock(@Param("id") int id, @Param("amount") int amount);
+    public int minusStock(@Param("id") int id, @Param("amount") int amount);
 }

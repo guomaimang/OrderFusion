@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.hirsun.orderfusion.pojo.Goods;
 import tech.hirsun.orderfusion.pojo.Order;
+import tech.hirsun.orderfusion.pojo.SeckillEvent;
 import tech.hirsun.orderfusion.pojo.User;
 import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.GoodsService;
 import tech.hirsun.orderfusion.service.OrderService;
+import tech.hirsun.orderfusion.service.SeckillEventService;
 import tech.hirsun.orderfusion.service.UserService;
 import tech.hirsun.orderfusion.vo.OrderVo;
 
@@ -25,6 +27,8 @@ public class AdminController {
     private GoodsService goodsService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private SeckillEventService seckillEventService;
 
 
     // For User
@@ -89,7 +93,6 @@ public class AdminController {
     }
 
     // For Goods
-
     @PostMapping("/goods/add")
     public Result addGoods(@RequestBody Goods goods) {
         try {
@@ -110,6 +113,31 @@ public class AdminController {
             return Result.success();
         } catch (Exception e) {
             log.error("Error when edit goods");
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
+        }
+    }
+
+    // For SeckillEcent
+    @PostMapping("/seckill/add")
+    public Result addSeckill(@RequestBody SeckillEvent seckillEvent) {
+        try {
+            log.info("Admin request add seckill, title: {}", seckillEvent.getTitle());
+            seckillEventService.create(seckillEvent);
+            return Result.success();
+        } catch (Exception e) {
+            log.error("Error when add seckill");
+            return Result.error(new ErrorMessage(50000, "Illegal Request"));
+        }
+    }
+
+    @PutMapping("/seckill/edit")
+    public Result editSeckill(@RequestBody SeckillEvent seckillEvent) {
+        try {
+            log.info("Admin request edit seckill, id: {}", seckillEvent.getId());
+            seckillEventService.update(seckillEvent);
+            return Result.success();
+        } catch (Exception e) {
+            log.error("Error when edit seckill");
             return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
     }

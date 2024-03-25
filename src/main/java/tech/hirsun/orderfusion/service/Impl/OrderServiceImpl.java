@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.hirsun.orderfusion.dao.GoodsDao;
 import tech.hirsun.orderfusion.dao.OrderDao;
+import tech.hirsun.orderfusion.dao.SeckillEventDao;
 import tech.hirsun.orderfusion.pojo.*;
 import tech.hirsun.orderfusion.service.*;
 import tech.hirsun.orderfusion.vo.OrderVo;
@@ -31,6 +32,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private SeckillEventService seckillEventService;
+
+    @Autowired
+    private SeckillEventDao seckillEventDao;
+
 
     // For Customer
     /**
@@ -69,12 +74,68 @@ public class OrderServiceImpl implements OrderService {
         orderDao.insert(draftOrder);
 
         // update the stock
-        if (goodsDao.generalMinusStock(draftOrder.getGoodsId(), draftOrder.getGoodsAmount()) > 0) {
+        if (goodsDao.minusStock(draftOrder.getGoodsId(), draftOrder.getGoodsAmount()) > 0) {
             return draftOrder.getId();
         } else {
             return -1;
         }
 
+    }
+
+    @Override
+    @Transactional
+    public int seckillCreate(Integer loggedInUserId, Order order) {
+        order.setUserId(loggedInUserId);
+        order.setChannel(1);
+
+        //cp the template from frontend order
+        Order draftOrder = Order.getDraftObjForDB(order);
+        SeckillEvent seckillEvent = seckillEventService.getSeckillEventInfo(draftOrder.getSeckillEventId());
+
+        // check the availability
+        if (seckillEvent.getIsAvailable() != 1) {
+            return -1;
+        }
+
+        // check the time
+        Date currentTime = new Date();
+        if (!(seckillEvent.getStartTime().after(currentTime) || seckillEvent.getEndTime().before(currentTime))) {
+            return -1;
+        }
+
+        // check the stock
+        if (seckillEvent.getSecKillStock() < draftOrder.getGoodsAmount()){
+            return -2;
+        }
+
+        // check the repeated
+        if (orderDao.countOnesSeckill(loggedInUserId, draftOrder.getSeckillEventId()) > 0 ){
+            return -3;
+        }
+
+        // check the limitation
+        if (draftOrder.getGoodsAmount() > seckillEvent.getPurchaseLimitNum()){
+            return -4;
+        }
+
+        // set fields
+        draftOrder.setGoodsName(seckillEvent.getTitle());
+        draftOrder.setPayment(seckillEvent.getSeckillPrice() * draftOrder.getGoodsAmount());
+        draftOrder.setAdminRemark(null);
+        draftOrder.setStatus(1);
+        draftOrder.setCreateTime(currentTime);
+        draftOrder.setPayTime(null);
+        draftOrder.setSentTime(null);
+        draftOrder.setPayId(null);
+
+        orderDao.insert(draftOrder);
+
+        // update the stock
+        if (seckillEventDao.minusStock(draftOrder.getSeckillEventId(), draftOrder.getGoodsAmount()) > 0) {
+            return draftOrder.getId();
+        } else {
+            return -5;
+        }
     }
 
     @Override

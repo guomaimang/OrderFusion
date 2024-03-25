@@ -3,6 +3,7 @@ package tech.hirsun.orderfusion.service;
 import tech.hirsun.orderfusion.pojo.Order;
 import tech.hirsun.orderfusion.pojo.PageBean;
 import tech.hirsun.orderfusion.pojo.Pay;
+import tech.hirsun.orderfusion.pojo.SeckillEvent;
 import tech.hirsun.orderfusion.vo.OrderVo;
 
 public interface OrderService {
@@ -18,9 +19,12 @@ public interface OrderService {
 
     public PageBean page(Integer pageNum, Integer pageSize, Integer userId, Integer searchId, String searchName, Integer selectStatus, Integer selectChannel);
 
+    public int seckillCreate(Integer loggedInUserId, Order Order);
+
     Pay orderPay(Integer id);
 
     // For Admin Only
     public void updateUnderAdmin(Order order);
+
 
 }

@@ -39,12 +39,12 @@ public class OrderController {
     }
 
     @PostMapping("/seckill/create")
-    public Result seckillCreate(@RequestHeader String jwt, @RequestBody SeckillEvent seckillEvent) {
+    public Result seckillCreate(@RequestHeader String jwt, @RequestBody Order order) {
         try {
-            log.info("Request create seckill order, event: {}, jwt: {}", seckillEvent, jwt);
+            log.info("Request create seckill order, order: {}, jwt: {}", order, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
 
-            int orderId = orderService.seckillCreate(loggedInUserId, seckillEvent);
+            int orderId = orderService.seckillCreate(loggedInUserId, order);
             if (orderId > 0) {
                 return Result.success(orderId);
             } else if(orderId == -1){
@@ -53,6 +53,10 @@ public class OrderController {
                 return Result.error(ErrorMessage.SECKILL_NO_STOCK);
             }else if(orderId == -3) {
                 return Result.error(ErrorMessage.SECKILL_REPEATED);
+            }else if(orderId == -4){
+                return Result.error(ErrorMessage.SECKILL_EXCEED_LIMITATION);
+            }else if(orderId == -5){
+                return Result.error(ErrorMessage.SECKILL_FAILED);
             }else {
                 return Result.error(ErrorMessage.ORDER_NO_PERMISSION_GENERATION);
             }

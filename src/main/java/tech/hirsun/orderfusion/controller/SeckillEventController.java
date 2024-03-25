@@ -36,7 +36,7 @@ public class SeckillEventController {
     public Result getSeckillInfo(@RequestParam Integer id) {
         try {
             log.info("Request seckill info, id: {}", id);
-            return Result.success(seckillEventService.getSeckillInfo(id));
+            return Result.success(seckillEventService.getSeckillEventInfo(id));
         } catch (Exception e) {
             log.error("Error when admin request seckill info");
             return Result.error(new ErrorMessage(50000, "Illegal Request"));
