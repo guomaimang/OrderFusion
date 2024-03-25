@@ -6,7 +6,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
         insert into seckill_event (goods_id, title, seckill_price, seckill_stock, start_time, end_time,purchase_limit_num)
-        values (#{goodsId}, #{title}, #{seckillPrice},#{secKillStock}, #{startTime}, #{endTime}, #{purchaseLimitNum})
+        values (#{goodsId}, #{title}, #{seckillPrice},#{seckillStock}, #{startTime}, #{endTime}, #{purchaseLimitNum})
     </insert>
 
     <select id="count" parameterType="java.lang.String" resultType="java.lang.Integer">

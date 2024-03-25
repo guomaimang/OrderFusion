@@ -14,7 +14,7 @@ public class SeckillEvent {
     Integer goodsId;
     String Title;
     Double seckillPrice;
-    Integer secKillStock;
+    Integer seckillStock;
 
     Date startTime;
     Date endTime;
@@ -43,8 +43,8 @@ public class SeckillEvent {
             draftSeckillEvent.setSeckillPrice(seckillEvent.getSeckillPrice());
         }
 
-        if (seckillEvent.getSecKillStock() != null){
-            draftSeckillEvent.setSecKillStock(seckillEvent.getSecKillStock());
+        if (seckillEvent.getSeckillStock() != null){
+            draftSeckillEvent.setSeckillStock(seckillEvent.getSeckillStock());
         }
 
         if (seckillEvent.getStartTime() != null){

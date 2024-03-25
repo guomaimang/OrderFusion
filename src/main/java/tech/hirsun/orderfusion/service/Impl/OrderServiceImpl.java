@@ -104,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // check the stock
-        if (seckillEvent.getSecKillStock() < draftOrder.getGoodsAmount()){
+        if (seckillEvent.getSeckillStock() < draftOrder.getGoodsAmount()){
             return -2;
         }
 
@@ -122,11 +122,12 @@ public class OrderServiceImpl implements OrderService {
         draftOrder.setGoodsName(seckillEvent.getTitle());
         draftOrder.setPayment(seckillEvent.getSeckillPrice() * draftOrder.getGoodsAmount());
         draftOrder.setAdminRemark(null);
-        draftOrder.setStatus(1);
+        draftOrder.setStatus(0);
         draftOrder.setCreateTime(currentTime);
         draftOrder.setPayTime(null);
         draftOrder.setSentTime(null);
         draftOrder.setPayId(null);
+        draftOrder.setSeckillEventId(seckillEvent.getId());
 
         orderDao.insert(draftOrder);
 

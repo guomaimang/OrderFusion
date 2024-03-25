@@ -121,10 +121,11 @@ public class AdminController {
     @PostMapping("/seckill/add")
     public Result addSeckill(@RequestBody SeckillEvent seckillEvent) {
         try {
-            log.info("Admin request add seckill, title: {}", seckillEvent.getTitle());
+            log.info("Admin request add seckill: {}", seckillEvent);
             seckillEventService.create(seckillEvent);
             return Result.success();
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("Error when add seckill");
             return Result.error(new ErrorMessage(50000, "Illegal Request"));
         }
