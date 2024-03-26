@@ -1,8 +1,5 @@
 package tech.hirsun.orderfusion.service;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tech.hirsun.orderfusion.dao.GoodsDao;
 import tech.hirsun.orderfusion.pojo.Goods;
 import tech.hirsun.orderfusion.pojo.PageBean;
 
@@ -16,4 +13,6 @@ public interface GoodsService {
     public PageBean page(Integer pagenum, Integer pagesize, String keyword);
 
     public void add(Goods goods);
+
+    public int minusStock(Integer id, Integer amount);
 }

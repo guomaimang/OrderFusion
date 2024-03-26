@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import tech.hirsun.orderfusion.dao.UserDao;
 import tech.hirsun.orderfusion.pojo.PageBean;
 import tech.hirsun.orderfusion.pojo.User;
+import tech.hirsun.orderfusion.redis.RedisService;
+import tech.hirsun.orderfusion.redis.UserKey;
 import tech.hirsun.orderfusion.service.UserService;
 import tech.hirsun.orderfusion.utils.HashUtil;
 import tech.hirsun.orderfusion.utils.SaltUtils;
@@ -20,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    RedisService redisService;
 
     @Value("${orderfusion.fixedSalt}")
     private String fixedSalt;
@@ -64,6 +69,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserInfo(Integer id) {
+        // from redis
+        User user = redisService.get(UserKey.byId,String.valueOf(id),User.class);
+        if (user != null) {
+            return user;
+        }
+
+        // from db
+        user = userDao.getUserById(id);
+        if (user != null) {
+            redisService.set(UserKey.byId,String.valueOf(id),user);
+        }
         return userDao.getUserById(id);
     }
 
@@ -92,6 +108,8 @@ public class UserServiceImpl implements UserService {
             }
         }
         userDao.update(draftUser);
+        // update redis
+        redisService.delete(UserKey.byId,String.valueOf(user.getId()));
     }
 
     @Override
@@ -129,6 +147,9 @@ public class UserServiceImpl implements UserService {
         } else {
             draftUser.setIsFrozen(0);
         }
+        // update database
         userDao.update(draftUser);
+        // update redis
+        redisService.delete(UserKey.byId,String.valueOf(user.getId()));
     }
 }

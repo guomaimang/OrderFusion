@@ -9,13 +9,13 @@ public abstract class BasePrefix implements KeyPrefix{
 
     private final String prefix;
 
-    public BasePrefix(int expireSeconds,String prefix){
+    public BasePrefix(int expireSeconds, String prefix){
         this.expireSeconds = expireSeconds;
         this.prefix = prefix;
     }
 
     public BasePrefix(String prefix){
-        this(0,prefix); // 0 means never expire
+        this(86400,prefix); // 0 means never expire
     }
 
     public String getPrefix(){

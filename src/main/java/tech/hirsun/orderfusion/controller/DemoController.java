@@ -65,7 +65,7 @@ public class DemoController {
     @ResponseBody
     @RequestMapping("/redis/get/user")
     public Result<User> redisGet() {
-        User user = redisService.get(UserKey.getById,"1", User.class);
+        User user = redisService.get(UserKey.byId,"1", User.class);
         return Result.success(user);
     }
 
@@ -78,14 +78,16 @@ public class DemoController {
         return Result.success(jwt);
     }
 
-//    @ResponseBody
-//    @RequestMapping("/redis/set/user")
-//    public Result<User> redisSet() {
-//        User user = new User(1,"himpu");
-//        redisService.set(UserKey.getById, "1",user);
-//        User userrt= redisService.get(UserKey.getById,"1", User.class);
-//        return Result.success(userrt);
-//    }
+    @ResponseBody
+    @RequestMapping("/redis/set/user")
+    public Result<User> redisSet() {
+        User user = new User();
+        user.setId(1);
+        user.setName("1111");
+        redisService.set(UserKey.byId, "1",user);
+        User userrt= redisService.get(UserKey.byId,"1", User.class);
+        return Result.success(userrt);
+    }
 
 
 

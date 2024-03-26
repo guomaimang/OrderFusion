@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.hirsun.orderfusion.dao.GoodsDao;
 import tech.hirsun.orderfusion.dao.OrderDao;
 import tech.hirsun.orderfusion.dao.SeckillEventDao;
 import tech.hirsun.orderfusion.pojo.*;
@@ -20,9 +19,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDao orderDao;
-
-    @Autowired
-    private GoodsDao goodsDao;
 
     @Autowired
     private GoodsService goodsService;
@@ -74,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
         orderDao.insert(draftOrder);
 
         // update the stock
-        if (goodsDao.minusStock(draftOrder.getGoodsId(), draftOrder.getGoodsAmount()) > 0) {
+        if (goodsService.minusStock(draftOrder.getGoodsId(), draftOrder.getGoodsAmount()) > 0) {
             return draftOrder.getId();
         } else {
             return -1;
@@ -174,7 +170,7 @@ public class OrderServiceImpl implements OrderService {
         if (loggedInUserId != order.getUserId() && loggedInUserId != 0){
             return null;
         }
-        Goods goods = goodsDao.getGoodsById(order.getGoodsId());
+        Goods goods = goodsService.getGoodsInfo(order.getGoodsId());
         if (goods == null) {
             return null;
         }
@@ -227,7 +223,6 @@ public class OrderServiceImpl implements OrderService {
                 selectStatus,
                 selectChannel
         );
-
         return new PageBean(count, orders,Math.floorDiv(count, pageSize) + 1, pageNum);
     }
 

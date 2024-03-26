@@ -44,8 +44,11 @@ public class RedisPoolFactory {
         poolConfig.setMaxIdle(maxIdle);
         poolConfig.setMaxTotal(maxTotal);
         poolConfig.setMaxWaitMillis(maxWaitSeconds * 1000);
-        JedisPool jedisPool = new JedisPool(poolConfig, host, port, timeout * 1000, password, database);
-        return jedisPool;
+        if (password == null || password.equals("")) {
+            return new JedisPool(poolConfig, host, port, timeout * 1000, null, database);
+        } else {
+            return new JedisPool(poolConfig, host, port, timeout * 1000, password, database);
+        }
     }
 
 }

@@ -44,4 +44,10 @@ public class GoodsServiceImpl implements GoodsService {
         goodsDao.insert(draftGoods);
     }
 
+    @Override
+    public int minusStock(Integer id, Integer amount) {
+        return goodsDao.minusStock(id, amount);
+    }
+
+
 }
