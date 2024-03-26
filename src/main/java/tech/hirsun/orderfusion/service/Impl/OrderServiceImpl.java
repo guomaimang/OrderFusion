@@ -130,14 +130,15 @@ public class OrderServiceImpl implements OrderService {
         draftOrder.setPayId(null);
         draftOrder.setSeckillEventId(seckillEvent.getId());
 
-        orderDao.insert(draftOrder);
-
         // update the stock
         if (seckillEventDao.minusStock(draftOrder.getSeckillEventId(), draftOrder.getGoodsAmount()) > 0) {
+            // generate the order
+            orderDao.insert(draftOrder);
             return draftOrder.getId();
         } else {
             return -5;
         }
+
     }
 
     @Override
