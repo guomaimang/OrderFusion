@@ -24,5 +24,5 @@ public interface SeckillEventDao {
     public List<SeckillEvent> list(int start, Integer pageSize, String keyword);
 
     @Update("update seckill_event set seckill_stock = seckill_stock - #{goodsAmount} where id = #{seckillEventId} and seckill_stock >= #{goodsAmount}")
-    int minusStock(Integer seckillEventId, Integer goodsAmount);
+    public int minusStock(Integer seckillEventId, Integer goodsAmount);
 }

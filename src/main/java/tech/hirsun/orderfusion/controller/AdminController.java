@@ -122,8 +122,11 @@ public class AdminController {
     public Result addSeckill(@RequestBody SeckillEvent seckillEvent) {
         try {
             log.info("Admin request add seckill: {}", seckillEvent);
-            seckillEventService.create(seckillEvent);
-            return Result.success();
+            if (seckillEventService.create(seckillEvent) > 0) {
+                return Result.success();
+            }else {
+                return Result.error(new ErrorMessage(50000, "Illegal Request"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
             log.error("Error when add seckill");

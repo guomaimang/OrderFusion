@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.hirsun.orderfusion.pojo.Order;
-import tech.hirsun.orderfusion.pojo.SeckillEvent;
+import tech.hirsun.orderfusion.rabbitmq.MQSender;
 import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.OrderService;
@@ -19,6 +19,9 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private MQSender mqSender;
+
     // General means general shopping and not seckill
     @PostMapping("/general/create")
     public Result generalCreate(@RequestHeader String jwt, @RequestBody Order order) {
@@ -32,19 +35,17 @@ public class OrderController {
                 return Result.error(ErrorMessage.ORDER_NO_PERMISSION_GENERATION);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("Error when user request create order");
             return Result.error(new ErrorMessage(50000, "Order failed, no payment will be deducted. Please try again."));
         }
     }
 
     @PostMapping("/seckill/create")
-    public Result seckillCreate(@RequestHeader String jwt, @RequestBody Order order) {
+    public Result seckillCreateRequest(@RequestHeader String jwt, @RequestBody Order order) {
         try {
             log.info("Request create seckill order, order: {}, jwt: {}", order, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
-
-            int orderId = orderService.seckillCreate(loggedInUserId, order);
+            int orderId = orderService.seckillCreateRequest(loggedInUserId, order);
             if (orderId > 0) {
                 return Result.success(orderId);
             } else if(orderId == -1){
@@ -61,7 +62,6 @@ public class OrderController {
                 return Result.error(ErrorMessage.ORDER_NO_PERMISSION_GENERATION);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("Error when user request create order");
             return Result.error(new ErrorMessage(50000, "Order failed, no payment will be deducted. Please try again."));
         }

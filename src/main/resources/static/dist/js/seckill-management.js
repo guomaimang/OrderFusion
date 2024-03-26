@@ -195,6 +195,7 @@ function editSeckillEvent() {
     if (id == null) {
         return;
     }
+
     //请求数据
     $.ajax({
         url: "/seckill/info",
@@ -217,6 +218,16 @@ function editSeckillEvent() {
                 $('#modal-endTime').val(utcToLocal(r.data.endTime));
                 $('#modal-purchaseLimitationNumber').val(r.data.purchaseLimitNum);
                 $('#modal-isAvailable').val(r.data.isAvailable);
+
+                if (r.data.startTime < new Date().getTime()) {
+                    document.getElementById("modal-goodsId").disabled = true;
+                    document.getElementById("modal-startTime").disabled = true;
+                    document.getElementById("modal-title").disabled = true;
+                    document.getElementById("modal-price").disabled = true;
+                    document.getElementById("modal-stock").disabled = true;
+                    document.getElementById("modal-purchaseLimitationNumber").disabled = true;
+                }
+
             }else {
                 swal(r.msg, {
                     icon: "error",

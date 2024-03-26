@@ -5,8 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.hirsun.orderfusion.dao.OrderDao;
-import tech.hirsun.orderfusion.dao.SeckillEventDao;
+import tech.hirsun.orderfusion.dao.SeckillOrdersetActionDao;
 import tech.hirsun.orderfusion.pojo.*;
+import tech.hirsun.orderfusion.rabbitmq.MQSender;
+import tech.hirsun.orderfusion.rabbitmq.SeckillMessage;
+import tech.hirsun.orderfusion.redis.RedisService;
+import tech.hirsun.orderfusion.redis.SeckillEventActionKey;
 import tech.hirsun.orderfusion.service.*;
 import tech.hirsun.orderfusion.vo.OrderVo;
 
@@ -21,6 +25,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
 
     @Autowired
+    private SeckillOrdersetActionDao seckillOrdersetActionDao;
+
+    @Autowired
     private GoodsService goodsService;
 
     @Autowired
@@ -30,8 +37,10 @@ public class OrderServiceImpl implements OrderService {
     private SeckillEventService seckillEventService;
 
     @Autowired
-    private SeckillEventDao seckillEventDao;
+    private RedisService redisService;
 
+    @Autowired
+    private MQSender mqSender;
 
     // For Customer
     /**
@@ -79,8 +88,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
-    public int seckillCreate(Integer loggedInUserId, Order order) {
+    public int seckillCreateRequest(Integer loggedInUserId, Order order) {
         order.setUserId(loggedInUserId);
         order.setChannel(1);
 
@@ -99,19 +107,50 @@ public class OrderServiceImpl implements OrderService {
             return -1;
         }
 
-        // check the stock
-        if (seckillEvent.getSeckillStock() < draftOrder.getGoodsAmount()){
-            return -2;
-        }
-
-        // check the repeated
-        if (orderDao.countOnesSeckill(loggedInUserId, draftOrder.getSeckillEventId()) > 0 ){
-            return -3;
-        }
-
         // check the limitation
         if (draftOrder.getGoodsAmount() > seckillEvent.getPurchaseLimitNum()){
             return -4;
+        }
+
+        // check if it is perticipated
+        String redisKey = "SeckillEventActionKey" +
+                " userId: " + loggedInUserId +
+                " seckillEventId: " + draftOrder.getSeckillEventId();
+        SeckillEventAction seckillEventAction = redisService.get(SeckillEventActionKey.byParams, redisKey, SeckillEventAction.class);
+        if (seckillEventAction == null) {
+            redisService.set(SeckillEventActionKey.byParams, redisKey, new SeckillEventAction(1,null,"You are in the waiting list. Once success, you will receive the order in order list."));
+        }else if (seckillEventAction.getStatus() > 0) {
+            return -3;
+        }
+
+        // check the stock
+        if (seckillEvent.getSeckillStock() < draftOrder.getGoodsAmount()){
+        redisService.set(SeckillEventActionKey.byParams, redisKey, new SeckillEventAction(3,null,"Sorry, there is no enough stock in your area."));
+            return -2;
+        }
+
+        // minus the stock in redis
+        seckillEvent.setSeckillStock(seckillEvent.getSeckillStock() - draftOrder.getGoodsAmount());
+
+        // sent the request to queue
+        SeckillMessage seckillMessage = new SeckillMessage(loggedInUserId, draftOrder);
+        mqSender.sentSeckillOrder(draftOrder);
+
+        return 0;
+    }
+
+    @Override
+    public int processSeckillRequest(Integer loggedInUserId, Order order) {
+        order.setUserId(loggedInUserId);
+        order.setChannel(1);
+
+        //cp the template from frontend order
+        Order draftOrder = Order.getDraftObjForDB(order);
+        SeckillEvent seckillEvent = seckillEventService.getSeckillEventInfo(draftOrder.getSeckillEventId());
+
+        // check the repeated
+        if (seckillOrdersetActionDao.count(loggedInUserId, draftOrder.getSeckillEventId()) > 0 ){
+            return -3;
         }
 
         // set fields
@@ -120,21 +159,27 @@ public class OrderServiceImpl implements OrderService {
         draftOrder.setPayment(seckillEvent.getSeckillPrice() * draftOrder.getGoodsAmount());
         draftOrder.setAdminRemark(null);
         draftOrder.setStatus(0);
-        draftOrder.setCreateTime(currentTime);
+        draftOrder.setCreateTime(new Date());
         draftOrder.setPayTime(null);
         draftOrder.setSentTime(null);
         draftOrder.setPayId(null);
         draftOrder.setSeckillEventId(seckillEvent.getId());
 
-        // update the stock
-        if (seckillEventDao.minusStock(draftOrder.getSeckillEventId(), draftOrder.getGoodsAmount()) > 0) {
+        // check update the stock
+        if (seckillEventService.minusStock(draftOrder.getSeckillEventId(), draftOrder.getGoodsAmount()) > 0) {
+            // insert the action into seckill_orderset_action. if duplicated, throw excaption, and the transaction will be rolled back
+             seckillOrdersetActionDao.insert(loggedInUserId, draftOrder.getSeckillEventId());
             // generate the order
             orderDao.insert(draftOrder);
+            // update the redis
+            String redisKey = "SeckillEventActionKey" +
+                    " userId: " + loggedInUserId +
+                    " seckillEventId: " + draftOrder.getSeckillEventId();
+            redisService.set(SeckillEventActionKey.byParams, redisKey, new SeckillEventAction(2,draftOrder.getId(),"Congratulations! You have successfully seckill the goods. Please check your order list."));
             return draftOrder.getId();
         } else {
             return -5;
         }
-
     }
 
     @Override

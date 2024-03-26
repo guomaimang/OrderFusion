@@ -5,7 +5,7 @@ import tech.hirsun.orderfusion.pojo.SeckillEvent;
 
 public interface SeckillEventService {
 
-    public void create(SeckillEvent seckillEvent);
+    public int create(SeckillEvent seckillEvent);
 
     public void update(SeckillEvent seckillEvent);
 
@@ -13,4 +13,5 @@ public interface SeckillEventService {
 
     public PageBean page(Integer pageNum, Integer pageSize, String keyword);
 
+    public int minusStock(Integer seckillEventId, Integer goodsAmount);
 }

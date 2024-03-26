@@ -15,7 +15,7 @@ function contentsPreparation(){
             colModel: [
                 // 设置列表表头
                 {label: 'ID', name: 'id', index: 'id', width: 30, key: true},
-                {label: 'Goods ID', name: 'goodsId', index: 'goodsId', width: 30, key: true},
+                {label: 'Goods ID', name: 'goodsId', index: 'goodsId', width: 30},
                 {label: 'Title', name: 'title', index: 'title', width: 60},
                 {label: 'Price', name: 'seckillPrice', index: 'seckillPrice', width: 30,  editable: true, formatter:priceFormatter},
                 {label: 'Stock', name: 'seckillStock', index: 'seckillStock', width: 30},
