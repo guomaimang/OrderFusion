@@ -180,7 +180,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(Order order) {
+    @Transactional
+    public Pay pay(Order order) {
         Order draftOrder = Order.getDraftObjForDB(order);
 
         //set non-editable fields
@@ -197,6 +198,18 @@ public class OrderServiceImpl implements OrderService {
         draftOrder.setChannel(null);
 
         orderDao.update(draftOrder);
+
+        if (order.getDeliveryAddress() == null || order.getDeliveryPhone() == null || order.getDeliveryReceiver() == null ||
+                order.getDeliveryAddress().isEmpty() || order.getDeliveryPhone().isEmpty() || order.getDeliveryReceiver().isEmpty()) {
+            return null;
+        }
+
+        Pay pay = payService.virtualPay();
+        order.setPayId(pay.getId());
+        order.setPayTime(pay.getPayTime());
+        order.setStatus(1);
+        orderDao.update(order);
+        return pay;
     }
 
     /**
@@ -266,26 +279,6 @@ public class OrderServiceImpl implements OrderService {
                 selectChannel
         );
         return new PageBean(count, orders,Math.floorDiv(count, pageSize) + 1, pageNum);
-    }
-
-    @Transactional
-    @Override
-    public Pay orderPay(Integer id) {
-        Order order = orderDao.getOrderById(id);
-        if (order == null || order.getStatus() != 0) {
-            return null;
-        }
-        if (order.getDeliveryAddress() == null || order.getDeliveryPhone() == null || order.getDeliveryReceiver() == null ||
-                order.getDeliveryAddress().isEmpty() || order.getDeliveryPhone().isEmpty() || order.getDeliveryReceiver().isEmpty()) {
-            return null;
-        }
-
-        Pay pay = payService.virtualPay();
-        order.setPayId(pay.getId());
-        order.setPayTime(pay.getPayTime());
-        order.setStatus(1);
-        orderDao.update(order);
-        return pay;
     }
 
     // For Admin

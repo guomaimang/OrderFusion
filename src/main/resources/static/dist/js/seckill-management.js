@@ -219,7 +219,9 @@ function editSeckillEvent() {
                 $('#modal-purchaseLimitationNumber').val(r.data.purchaseLimitNum);
                 $('#modal-isAvailable').val(r.data.isAvailable);
 
-                if (r.data.startTime < new Date().getTime()) {
+                console.log("startTime: " + r.data.startTime);
+                console.log("new Date().getTime(): " + new Date().getTime());
+                if (new Date(r.data.startTime) < new Date()) {
                     document.getElementById("modal-goodsId").disabled = true;
                     document.getElementById("modal-startTime").disabled = true;
                     document.getElementById("modal-title").disabled = true;

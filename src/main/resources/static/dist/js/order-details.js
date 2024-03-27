@@ -17,6 +17,7 @@ function contentsPreparation(){
                 document.getElementById("goodsInfo-id").innerHTML = r.data.goods.id;
                 document.getElementById("goodsInfo-name").innerHTML = r.data.goods.name;
                 document.getElementById("goodsInfo-title").innerHTML = r.data.goods.title;
+                document.getElementById("card-imageUri").src = isNull(r.data.imageUri)? "https://pic.hanjiaming.com.cn/2024/03/24/fec4e63dcce3f.jpg": r.data.imageUri;
 
                 document.getElementById("orderInfo-id").value = r.data.order.id;
                 document.getElementById("orderInfo-amount").value = r.data.order.goodsAmount;
@@ -118,8 +119,8 @@ function receiverInfoButtonClick() {
         "userRemark": userRemark,
     };
 
-    let url = "/order/update";
-    let method = "PUT";
+    let url = "/order/pay";
+    let method = "POST";
 
     // 执行方法
     $.ajax({
@@ -133,40 +134,12 @@ function receiverInfoButtonClick() {
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         success: function (r) {
-            if (r.code !== 0) {
-                alert(r.msg);
-                window.location.reload();
-            }
-        },
-        error: function () {
-            swal("Operation failure, please contact the support!", {
-                icon: "error",
-            });
-            document.getElementById("receiverInfoButton").disabled = false;
-            document.getElementById("receiverInfoButton").innerHTML = "Submit & Pay";
-        },
-    });
-
-    $.ajax({
-        type: "POST",           //方法类型
-        dataType: "json",       //预期服务器返回的数据类型
-        url: "/order/pay/"+id,     //url
-        contentType: "application/json; charset=utf-8",
-        beforeSend: function (request) {
-            //设置header值
-            request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
-        },
-        success: function (r) {
             if (r.code === 0) {
-                alert("Payment success!");
-                window.location.reload();
-            } else {
-                swal(r.msg, {
-                    icon: "error",
-                });
+                alert("Payment successful!");
+            }else {
+                alert(r.msg);
             }
-            document.getElementById("receiverInfoButton").disabled = false;
-            document.getElementById("receiverInfoButton").innerHTML = "Submit & Pay";
+            window.location.reload();
         },
         error: function () {
             swal("Operation failure, please contact the support!", {
@@ -174,10 +147,8 @@ function receiverInfoButtonClick() {
             });
             document.getElementById("receiverInfoButton").disabled = false;
             document.getElementById("receiverInfoButton").innerHTML = "Submit & Pay";
-        }
-
+        },
     });
-
 
 
 }

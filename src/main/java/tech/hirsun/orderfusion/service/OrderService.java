@@ -13,7 +13,7 @@ public interface OrderService {
 
     int processSeckillRequest(Integer loggedInUserId, Order order);
 
-    public void update(Order order);
+    public Pay pay(Order order);
 
     public OrderVo getOrderVo(Integer loggedInUserId, Integer orderId);
 
@@ -23,7 +23,6 @@ public interface OrderService {
 
     public SeckillEventAction seckillCreateRequest(Integer loggedInUserId, Order Order);
 
-    Pay orderPay(Integer id);
 
     // For Admin Only
     public void updateUnderAdmin(Order order);

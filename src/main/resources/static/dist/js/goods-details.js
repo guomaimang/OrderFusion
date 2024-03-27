@@ -19,7 +19,7 @@ function contentsPreparation(){
                 $('#card-price').text(priceFormatter(r.data.price));
                 $('#card-stock').text(r.data.stock);
                 $('#card-isAvailable').text(isAvailableFormatter(r.data.isAvailable));
-                $('#card-imageUri').text(r.data.imageUri);
+                document.getElementById("card-imageUri").src = isNull(r.data.imageUri)? "https://pic.hanjiaming.com.cn/2024/03/24/fec4e63dcce3f.jpg": r.data.imageUri;
                 editorD.txt.html(r.data.description);
                 if (r.data.isAvailable === 1){
                     let buyButton = document.getElementById("buyButton");
@@ -44,7 +44,7 @@ let editorD;
 const E = window.wangEditor;
 editorD = new E('#wangEditor')
 // 设置编辑区域高度为 400px
-editorD.config.height = 260
+editorD.config.height = 800
 //配置服务端图片上传地址
 editorD.config.uploadImgServer = 'images/upload'
 editorD.config.uploadFileName = 'file'

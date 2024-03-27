@@ -195,7 +195,7 @@ function previewGoods() {
     if (id == null) {
         return;
     }
-    window.open("/goods-detail.html?id=" + id);
+    window.open("/goods-details.html?id=" + id);
 }
 
 //绑定 modal 表单上的 SAVE 按钮

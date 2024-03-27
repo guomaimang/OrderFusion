@@ -4,10 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.hirsun.orderfusion.pojo.Order;
-import tech.hirsun.orderfusion.pojo.SeckillEventAction;
-import tech.hirsun.orderfusion.rabbitmq.MQSender;
-import tech.hirsun.orderfusion.redis.RedisService;
-import tech.hirsun.orderfusion.redis.SeckillEventActionKey;
 import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.OrderService;
@@ -52,8 +48,8 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestHeader String jwt, @RequestBody Order order) {
+    @PostMapping("/pay")
+    public Result pay(@RequestHeader String jwt, @RequestBody Order order) {
         try {
             log.info("Request update order, order: {}, jwt: {}", order, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
@@ -63,7 +59,7 @@ public class OrderController {
             if (dbOrder == null || dbOrder.getStatus() != 0){
                 return Result.error(ErrorMessage.USER_NO_PERMISSION);
             }else{
-                orderService.update(order);
+                orderService.pay(order);
                 return Result.success();
             }
 
@@ -110,23 +106,5 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/pay/{id}")
-    public Result pay(@RequestHeader String jwt, @PathVariable("id") Integer orderId) {
-        try {
-            log.info("Request order payment, id: {}, jwt: {}", orderId, jwt);
-            int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
-            log.info("Logged in User id: {}", loggedInUserId);
-            Order order = orderService.getOrderInfo(loggedInUserId, orderId);
-
-            if (order == null || order.getStatus() != 0) {
-                return Result.error(ErrorMessage.USER_NO_PERMISSION);
-            }else{
-                return Result.success(orderService.orderPay(orderId));
-            }
-        } catch (Exception e) {
-            log.error("Error when user request order payment");
-            return Result.error(new ErrorMessage(50000, "Payment failed, please try again."));
-        }
-    }
 
 }
