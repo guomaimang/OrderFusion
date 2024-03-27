@@ -119,12 +119,18 @@ function submitOrderButtonClick() {
             request.setRequestHeader("recaptchaToken", grecaptcha.getResponse());
         },
         success: function (r) {
-            if (r.code === 0) {
-                alert("Order submitted successfully! Now you will be redirected to pay the order.");
-                window.location.href = "/order-details.html?id=" + r.data;
-            } else {
-                swal(r.msg, {
-                    icon: "error",
+            if (r.data.status === 0) {
+                document.getElementById("goodsAmount").disabled = true;
+                swal(r.data.message, {
+                    icon: "success",
+                });
+            } else if(r.data.status === 2){
+                alert(r.data.message);
+                window.location.href = "/order-details.html?id=" + r.data.orderId;
+            }
+            else {
+                swal(r.data.message, {
+                    icon: "warning",
                 });
             }
             document.getElementById("submitOrderButton").disabled = false;

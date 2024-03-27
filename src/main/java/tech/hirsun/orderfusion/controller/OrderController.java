@@ -4,7 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.hirsun.orderfusion.pojo.Order;
+import tech.hirsun.orderfusion.pojo.SeckillEventAction;
 import tech.hirsun.orderfusion.rabbitmq.MQSender;
+import tech.hirsun.orderfusion.redis.RedisService;
+import tech.hirsun.orderfusion.redis.SeckillEventActionKey;
 import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
 import tech.hirsun.orderfusion.service.OrderService;
@@ -18,9 +21,6 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private MQSender mqSender;
 
     // General means general shopping and not seckill
     @PostMapping("/general/create")
@@ -45,22 +45,7 @@ public class OrderController {
         try {
             log.info("Request create seckill order, order: {}, jwt: {}", order, jwt);
             int loggedInUserId = Integer.parseInt(JwtUtils.parseJwt(jwt).get("id").toString());
-            int orderId = orderService.seckillCreateRequest(loggedInUserId, order);
-            if (orderId > 0) {
-                return Result.success(orderId);
-            } else if(orderId == -1){
-                return Result.error(ErrorMessage.SECKILL_NO_PERMISSION);
-            }else if(orderId == -2) {
-                return Result.error(ErrorMessage.SECKILL_NO_STOCK);
-            }else if(orderId == -3) {
-                return Result.error(ErrorMessage.SECKILL_REPEATED);
-            }else if(orderId == -4){
-                return Result.error(ErrorMessage.SECKILL_EXCEED_LIMITATION);
-            }else if(orderId == -5){
-                return Result.error(ErrorMessage.SECKILL_FAILED);
-            }else {
-                return Result.error(ErrorMessage.ORDER_NO_PERMISSION_GENERATION);
-            }
+            return Result.success(orderService.seckillCreateRequest(loggedInUserId, order));
         } catch (Exception e) {
             log.error("Error when user request create order");
             return Result.error(new ErrorMessage(50000, "Order failed, no payment will be deducted. Please try again."));
