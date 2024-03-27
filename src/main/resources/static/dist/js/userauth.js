@@ -5,7 +5,7 @@
 async function checkLogin() {
     if (window.localStorage.getItem("jwt") == null || window.localStorage.getItem("jwt") === ""){
         alert("You are not logged in, please go to login first!")
-        window.location.href = "login.html";
+        // window.location.href = "login.html";
         return;
     }
 
@@ -62,7 +62,7 @@ async function checkLoggedInAdmin() {
     await checkLogin();
     if (window.localStorage.getItem("isAdmin") !== "1") {
        window.alert("You are not an administrator, please log in as an administrator and then do this action!")
-       // window.location.href = "index.html";
+       window.location.href = "index.html";
     }
 }
 
