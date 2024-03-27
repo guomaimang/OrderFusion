@@ -26,11 +26,15 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginCheckInterceptor)
                 .addPathPatterns("/demo/proc/**")
                 .addPathPatterns("/userauth/refreshtoken")
+                .addPathPatterns("/admin/**")
+                .addPathPatterns("/order/**")
+                .addPathPatterns("/seckill/**")
                 .order(0);
 
         registry.addInterceptor(reCaptchaCheckInterceptor)
                 .addPathPatterns("/userauth/login")
-                .addPathPatterns("/general/order/create")
+                .addPathPatterns("/order/general/create")
+                .addPathPatterns("/order/seckill/create")
                 .order(1);
     }
 }

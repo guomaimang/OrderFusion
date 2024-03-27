@@ -5,7 +5,7 @@
 async function checkLogin() {
     if (window.localStorage.getItem("jwt") == null || window.localStorage.getItem("jwt") === ""){
         alert("You are not logged in, please go to login first!")
-        // window.location.href = "login.html";
+        window.location.href = "login.html";
         return;
     }
 
