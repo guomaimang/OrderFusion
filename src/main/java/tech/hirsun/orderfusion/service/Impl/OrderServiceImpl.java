@@ -95,28 +95,23 @@ public class OrderServiceImpl implements OrderService {
         //cp the template from frontend order
         Order draftOrder = Order.getDraftObjForDB(order);
         SeckillEvent seckillEvent = seckillEventService.getSeckillEventInfo(draftOrder.getSeckillEventId());
-
         // check the availability
         if (seckillEvent.getIsAvailable() != 1) {
             return new SeckillEventAction(-1,null,"Sorry, this seckill event is not available.");
         }
-
         // check the time
         Date currentTime = new Date();
         if (seckillEvent.getStartTime().after(currentTime) || seckillEvent.getEndTime().before(currentTime)) {
             return new SeckillEventAction(-1,null,"Sorry, this seckill event is not available in this time.");
         }
-
         // check the limitation
         if (draftOrder.getGoodsAmount() > seckillEvent.getPurchaseLimitNum()){
             return new SeckillEventAction(-1,null,"Sorry, you have exceed the limitation of purchase.");
         }
-
-        // check if it is perticipated
-        String redisKey = "SeckillEventActionKey" +
-                " userId: " + loggedInUserId +
-                " seckillEventId: " + draftOrder.getSeckillEventId();
-        SeckillEventAction seckillEventAction = redisService.get(SeckillEventActionKey.byParams, redisKey, SeckillEventAction.class);
+        // check if it is participated
+        String redisKey = "SeckillEventActionKey" + " userId: " + loggedInUserId + " seckillEventId: " + draftOrder.getSeckillEventId();
+        SeckillEventAction seckillEventAction =
+                redisService.get(SeckillEventActionKey.byParams, redisKey, SeckillEventAction.class);
         if (seckillEventAction == null){
             // means the action is creating
             // check the stock
@@ -166,15 +161,21 @@ public class OrderServiceImpl implements OrderService {
 
         // check update the stock
         if (seckillEventService.minusStock(draftOrder.getSeckillEventId(), draftOrder.getGoodsAmount()) > 0) {
-            // insert the action into seckill_orderset_action. if duplicated, throw excaption, and the transaction will be rolled back
+            // insert the action into seckill_orderset_action.
+            // if duplicated, throw excaption, and the transaction will be rolled back
              seckillOrdersetActionDao.insert(loggedInUserId, draftOrder.getSeckillEventId());
             // generate the order
             orderDao.insert(draftOrder);
             // update the redis
-            redisService.set(SeckillEventActionKey.byParams, redisKey, new SeckillEventAction(2,draftOrder.getId(),"Congratulations! You have successfully seckill the goods. Please check your order list."));
+            redisService.set(SeckillEventActionKey.byParams, redisKey, new SeckillEventAction(
+                    2,draftOrder.getId(),
+                    "Congratulations! You have successfully seckill the goods. Please check your order list."));
             return draftOrder.getId();
         } else {
-            redisService.set(SeckillEventActionKey.byParams, redisKey, new SeckillEventAction(-1,null,"Sorry, there is no enough stock in your area. Please try later"));
+            redisService.set(SeckillEventActionKey.byParams, redisKey, new SeckillEventAction(
+                    -1,
+                    null,
+                    "Sorry, there is no enough stock in your area. Please try later"));
             return -5;
         }
     }

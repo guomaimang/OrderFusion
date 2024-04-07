@@ -5,31 +5,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import tech.hirsun.orderfusion.dao.SeckillEventDao;
+import tech.hirsun.orderfusion.dao.UserDao;
 import tech.hirsun.orderfusion.pojo.Order;
 import tech.hirsun.orderfusion.pojo.User;
 import tech.hirsun.orderfusion.redis.RedisService;
 import tech.hirsun.orderfusion.redis.UserKey;
 import tech.hirsun.orderfusion.result.ErrorMessage;
 import tech.hirsun.orderfusion.result.Result;
+import tech.hirsun.orderfusion.service.SeckillEventService;
 import tech.hirsun.orderfusion.service.UserService;
 import tech.hirsun.orderfusion.utils.JwtUtils;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/demo")
 public class DemoController {
 
     @Autowired
-    private UserService userService;
+    private SeckillEventService seckillEventService;
 
     @Autowired
-    private RedisService redisService;
-
-    @RequestMapping("/page")
-    public String page(Model model) {
-        model.addAttribute("name", "orderfusion");
-        return "demo";
-    }
+    private SeckillEventDao seckillEventDao;
 
     @ResponseBody
     @RequestMapping("/text")
@@ -51,7 +48,7 @@ public class DemoController {
 
     @ResponseBody
     @RequestMapping("/error")
-    public Result<String> error() {
+    public Result error() {
         return Result.error(ErrorMessage.SERVER_ERROR);
     }
 
@@ -63,32 +60,16 @@ public class DemoController {
 //    }
 
     @ResponseBody
-    @RequestMapping("/redis/get/user")
-    public Result<User> redisGet() {
-        User user = redisService.get(UserKey.byId,"1", User.class);
-        return Result.success(user);
+    @RequestMapping("/redis/get/seckill")
+    public Result redisGet() {
+        return Result.success(seckillEventService.getSeckillEventInfo(1));
     }
 
     @ResponseBody
-    @RequestMapping("/jwt")
-    public Result jwt(@RequestHeader String jwt, @RequestBody Order order) {
-        log.info("Request create order, order: {}, jwt: {}", order, jwt);
-        JwtUtils.parseJwt(jwt);
-        log.info("Logged in User id: {}", JwtUtils.parseJwt(jwt).get("id").toString());
-        return Result.success(jwt);
+    @RequestMapping("/db/get/seckill")
+    public Result dbGet() {
+        return Result.success(seckillEventDao.getSeckillEventById(1));
     }
-
-    @ResponseBody
-    @RequestMapping("/redis/set/user")
-    public Result<User> redisSet() {
-        User user = new User();
-        user.setId(1);
-        user.setName("1111");
-        redisService.set(UserKey.byId, "1",user);
-        User userrt= redisService.get(UserKey.byId,"1", User.class);
-        return Result.success(userrt);
-    }
-
 
 
 }

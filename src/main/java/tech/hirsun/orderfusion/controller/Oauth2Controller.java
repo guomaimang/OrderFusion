@@ -61,6 +61,7 @@ public class Oauth2Controller {
         Call call = client.newCall(request);
         try (Response response = call.execute()) {
             String responseBody = response.body().string();
+            log.info("Response from Azure AD: {}", responseBody);
             String idToken = JSON.parseObject(responseBody).getString("id_token");
 
             SignedJWT ssoJwt = SignedJWT.parse(idToken);
