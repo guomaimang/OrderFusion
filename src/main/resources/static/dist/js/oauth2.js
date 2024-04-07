@@ -3,8 +3,8 @@ const code = queryParams.get("code");
 let data = {"code": code}
 
 $.ajax({
-    type: "POST",//方法类型
-    dataType: "json",//预期服务器返回的数据类型
+    type: "POST",
+    dataType: "json",
     url: "/userauth/oauth2/callback",
     contentType: "application/json; charset=utf-8",
     data: JSON.stringify(data),

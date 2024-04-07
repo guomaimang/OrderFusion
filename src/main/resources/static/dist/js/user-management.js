@@ -82,15 +82,15 @@ function validObject() {
         showErrorInfo("Name cannot be empty!");
         return false;
     }
-    if (!validLength(name, 20)) {
-        showErrorInfo("Name length cannot be larger than 20!");
+    if (!validLength(name, 50)) {
+        showErrorInfo("Name length cannot be larger than 50!");
         return false;
     }
 
     let password = $('#modal-password').val();
     if (!isNull(password)) {
-        if (!validLength(name, 20)) {
-            showErrorInfo("Password length cannot be larger than 20!");
+        if (!validLength(name, 40)) {
+            showErrorInfo("Password length cannot be larger than 40!");
             return false;}
     }
 
@@ -115,16 +115,28 @@ function editUser() {
         return;
     }
     //请求数据
-    $.get("admin/user/info?id=" + id, function (r) {
-        if (r.code === 0 && r.data != null) {
-            //填充数据 至 modal
-            $('#modal-id').val(r.data.id);
-            $('#modal-email').val(r.data.email);
-            $('#modal-name').val(r.data.name);
-            $('#modal-registerTime').val(utcToLocalFormatter(r.data.registerTime));
-            $('#modal-isFrozen').val(isFrozenFormatter(r.data.isFrozen));
+    $.ajax({
+        url: "/admin/user/info",
+        type: "GET",
+        data: {
+            id: id
+        },
+        beforeSend: function (request) {
+            //设置header值
+            request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+        },
+        success: function(r) {
+            if (r.code === 0 && r.data != null) {
+                //填充数据 至 modal
+                $('#modal-id').val(r.data.id);
+                $('#modal-email').val(r.data.email);
+                $('#modal-name').val(r.data.name);
+                $('#modal-registerTime').val(utcToLocalFormatter(r.data.registerTime));
+                $('#modal-isFrozen').val(isFrozenFormatter(r.data.isFrozen));
+            }
         }
     });
+
     //显示 modal
     $('#userModal').modal('show');
 }
@@ -195,11 +207,11 @@ $('#saveButton').click(async function () {
 
         // 表示新增操作
         if (id === null || id === "" || id === undefined || id < 0) {
-            url = 'admin/user/add';
+            url = '、admin/user/add';
             method = 'POST';
         }else {
             // id>=0表示编辑操作
-            url = 'admin/user/edit';
+            url = '/admin/user/edit';
             method = 'PUT';
         }
 
@@ -210,6 +222,10 @@ $('#saveButton').click(async function () {
             url: url,               //url
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
+            beforeSend: function (request) {
+                //设置header值
+                request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
+            },
             success: function (r) {
                 if (r.code === 0) {
                     $('#userModal').modal('hide');

@@ -18,24 +18,15 @@ async function checkLogin() {
         return;
     }
 
-    let name = document.getElementById("nameField");
-    name.textContent = window.localStorage.getItem("name");
-
-    let identifier = document.getElementById("identifierField");
-    if (window.localStorage.getItem("isAdmin") === "0"){
-        identifier.textContent = "Customer";
-    } else {
-        identifier.textContent = "Admin";
-        toggleDisplay("adminMenu", "block");
-    }
+    await setPageText();
 
     // check if there is any need for refresh token
     // if the token is about to expire in 6 hours, refresh it
     if (payload.exp * 1000 - Date.now() < 1000 * 60 * 60 * 6){
         let data = {"jwt": window.localStorage.getItem("jwt")};
         $.ajax({
-            type: "PUT",//方法类型
-            dataType: "json",//预期服务器返回的数据类型
+            type: "PUT", // method type
+            dataType: "json",// Data type expected to be returned by the server
             url: "userauth/refreshtoken",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
@@ -52,6 +43,19 @@ async function checkLogin() {
                 console.log("Failed to refresh token.")
             }
         });
+    }
+}
+
+async function setPageText() {
+    let name = document.getElementById("nameField");
+    name.textContent = isNull(window.localStorage.getItem("name"))? "Guest User": window.localStorage.getItem("name");
+
+    let identifier = document.getElementById("identifierField");
+    if (window.localStorage.getItem("isAdmin") === "1"){
+        identifier.textContent = "Admin";
+        toggleDisplay("adminMenu", "block");
+    } else {
+        identifier.textContent = "Customer";
     }
 }
 

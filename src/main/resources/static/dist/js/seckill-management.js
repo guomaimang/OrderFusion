@@ -186,6 +186,13 @@ function addSeckillEvent() {
     reset();
     $('.modal-title').html('Add');
     $('#seckillEventModal').modal('show');
+
+    document.getElementById("modal-goodsId").disabled = false;
+    document.getElementById("modal-startTime").disabled = false;
+    document.getElementById("modal-title").disabled = false;
+    document.getElementById("modal-price").disabled = false;
+    document.getElementById("modal-stock").disabled = false;
+    document.getElementById("modal-purchaseLimitationNumber").disabled = false;
 }
 function editSeckillEvent() {
     reset();
