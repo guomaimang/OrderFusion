@@ -10,3 +10,4 @@ The system adopts intelligent design thinking, introduces queuing and caching me
 
 ![CleanShot 2024-04-01 at 23 33 56@2x](https://github.com/guomaimang/OrderFusion/assets/47519540/a02277a8-1593-419f-8b76-88dcaa495968)
 
+@[HK PolyU](https://comp.polyu.edu.hk/) @[Microsoft Learn Student Ambassadors](https://mvp.microsoft.com/studentambassadors)
