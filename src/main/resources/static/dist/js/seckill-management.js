@@ -2,18 +2,18 @@ function contentsPreparation(){
 
     $(function () {
 
-        //隐藏错误提示框
+        
         $('.alert-danger').css("display", "none");
 
         $("#jqGrid").jqGrid({
-            // 设置API
+            
             url: '/seckill/list',
             loadBeforeSend: function(jqXHR) {
                 jqXHR.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
             },
             datatype: "json",
             colModel: [
-                // 设置列表表头
+                
                 {label: 'ID', name: 'id', index: 'id', width: 30, key: true},
                 {label: 'Goods ID', name: 'goodsId', index: 'goodsId', width: 30},
                 {label: 'Title', name: 'title', index: 'title', width: 60},
@@ -46,18 +46,18 @@ function contentsPreparation(){
                 order: "order",
             },
             gridComplete: function () {
-                //隐藏grid底部滚动条
+                
                 $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
             },
         });
 
-        // 搜索功能
+        
         $("#searchButton").click(function(){
-            let keyword = $("#searchInput").val(); //获取输入框的值
+            let keyword = $("#searchInput").val(); 
             $("#jqGrid").jqGrid('setGridParam',{
-                postData: {'keyword': keyword}, //设置postData参数
+                postData: {'keyword': keyword}, 
                 page: 1
-            }).trigger("reloadGrid"); //重新加载JqGrid
+            }).trigger("reloadGrid"); 
         });
 
         $(window).resize(function () {
@@ -66,9 +66,7 @@ function contentsPreparation(){
     });
 }
 
-/**
- * jqGrid 重新加载
- */
+
 function reload() {
     let page = $("#jqGrid").jqGrid('getGridParam', 'page');
     $("#jqGrid").jqGrid('setGridParam', {
@@ -77,9 +75,9 @@ function reload() {
 }
 
 function reset() {
-    //隐藏错误提示框
+    
     $('.alert-danger').css("display", "none");
-    //清空数据
+    
     $('#modal-id').val('');
     $('#modal-goodsId').val('');
     $('#modal-title').val('');
@@ -107,9 +105,6 @@ function utcToLocalFormatter(cellValue) {
 
 contentsPreparation();
 
-/**
- * 数据验证
- */
 function validObject() {
     let goodsId = $('#modal-goodsId').val();
     if (isNull(goodsId))  {
@@ -181,7 +176,7 @@ function validObject() {
 /**
  * 重置 modal 表单数据
  */
-// Grid 顶部的操作按钮
+
 function addSeckillEvent() {
     reset();
     $('.modal-title').html('Add');
@@ -203,19 +198,19 @@ function editSeckillEvent() {
         return;
     }
 
-    //请求数据
+    
     $.ajax({
         url: "/seckill/info",
         data: {id: id},
         type: "GET",
         dataType: "json",
         beforeSend: function (request) {
-            //设置header值
+            
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         success: function (r) {
             if (r.code === 0 && r.data != null) {
-                //填充数据 至 modal
+                
                 $('#modal-id').val(r.data.id);
                 $('#modal-goodsId').val(r.data.goodsId);
                 $('#modal-title').val(r.data.title);
@@ -245,7 +240,7 @@ function editSeckillEvent() {
         }
     });
 
-    //显示 modal
+    
     $('#seckillEventModal').modal('show');
 }
 function previewSeckillEvent() {
@@ -256,18 +251,18 @@ function previewSeckillEvent() {
     window.open("/seckill-details.html?id=" + id);
 }
 function localToUtc(time) {
-    // 创建一个新的Date对象
+    
     let date = new Date(time);
-    // 转换为ISO格式的字符串
+    
     return date.toISOString();
 }
 
 function utcToLocal(dateStr) {
-// 创建一个新的 Date 实例
+
     let date = new Date(dateStr);
 
-    // 使用 Intl.DateTimeFormat 来格式化日期
-    // options 对象定义了我们想要的日期和时间的格式
+    
+    
     let formatter = new Intl.DateTimeFormat('default', {
         year: 'numeric',
         month: '2-digit',
@@ -278,10 +273,10 @@ function utcToLocal(dateStr) {
         hour12: false,
     });
 
-    // 使用 formatter.format 来格式化日期
+    
     let formattedDate = formatter.format(date);
 
-    // 将 formattedDate 从 "MM/DD/YYYY, HH:MM:SS" 转换为 "YYYY-MM-DDTHH:MM:SS"
+    
     let parts = formattedDate.split(/[\s,/]+/);
     formattedDate = `${parts[0]}-${parts[1]}-${parts[2]}T${parts[3]}`;
 
@@ -289,13 +284,13 @@ function utcToLocal(dateStr) {
 
 }
 
-//绑定 modal 表单上的 SAVE 按钮
+
 $('#saveButton').click(async function () {
-    //验证数据
+    
     if (validObject()) {
 
-        // Ajax 发送网络请求
-        // 获取表单数据
+        
+        
         let id = $('#modal-id').val();
         let goodsId = $('#modal-goodsId').val();
         let title = $('#modal-title').val();
@@ -306,7 +301,7 @@ $('#saveButton').click(async function () {
         let purchaseLimitationNumber = $('#modal-purchaseLimitationNumber').val();
         let isAvailable = $('#modal-isAvailable').val();
 
-        // 将即将发送数据封装为Json, 和 Pojo 对应
+        
         let data = {
             "id": id,
             "goodsId": goodsId,
@@ -322,25 +317,25 @@ $('#saveButton').click(async function () {
         let url;
         let method;
 
-        // 表示新增操作
+        
         if (id === null || id === "" || id === undefined || id < 0) {
             url = '/admin/seckill/add';
             method = 'POST';
         }else {
-            // id>=0表示编辑操作
+            
             url = '/admin/seckill/edit';
             method = 'PUT';
         }
 
-        // 执行方法
+        
         $.ajax({
-            type: method,           //方法类型
-            dataType: "json",       //预期服务器返回的数据类型
-            url: url,               //url
+            type: method,           
+            dataType: "json",       
+            url: url,               
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             beforeSend: function (request) {
-                //设置header值
+                
                 request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
             },
             success: function (r) {

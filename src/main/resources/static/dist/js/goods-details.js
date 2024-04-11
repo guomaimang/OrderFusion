@@ -1,18 +1,15 @@
 function contentsPreparation(){
     let id = getQueryParam("id");
 
-    //请求数据
     $.ajax({
         url: "/goods/info",
         data: {id: id},
         type: 'GET',
         beforeSend: function (request) {
-            //设置header值
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         success: function (r) {
             if (r.code === 0 && r.data != null) {
-                //填充数据 至 card
                 $('#card-id').text(r.data.id);
                 $('#card-name').text(r.data.name);
                 $('#card-title').text(r.data.title);
@@ -32,7 +29,6 @@ function contentsPreparation(){
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            // 处理错误
             console.log(textStatus, errorThrown);
         }
     });
@@ -40,19 +36,13 @@ function contentsPreparation(){
 
 
 let editorD;
-//富文本编辑器
 const E = window.wangEditor;
 editorD = new E('#wangEditor')
-// 设置编辑区域高度为 400px
 editorD.config.height = 800
-//配置服务端图片上传地址
 editorD.config.uploadImgServer = 'images/upload'
 editorD.config.uploadFileName = 'file'
-//限制图片大小 2M
 editorD.config.uploadImgMaxSize = 2 * 1024 * 1024
-//限制一次最多能传几张图片 一次最多上传 1 个图片
 editorD.config.uploadImgMaxLength = 1
-//插入网络图片的功能
 editorD.config.showLinkImg = true
 editorD.create();
 editorD.disable();

@@ -1,19 +1,16 @@
 $(function () {
 
-    //隐藏错误提示框
     $('.alert-danger').css("display", "none");
 
     $('#goodsModal').modal('hide');
 
     $("#jqGrid").jqGrid({
-        // 设置API
         url: '/goods/list',
         loadBeforeSend: function(jqXHR) {
             jqXHR.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         datatype: "json",
         colModel: [
-            // 设置列表表头
             {label: 'ID', name: 'id', index: 'id', width: 30, key: true, hidden: false},
             {label: 'Name', name: 'name', index: 'name', width: 100},
             {label: 'Title', name: 'title', index: 'title', width: 150},
@@ -43,24 +40,20 @@ $(function () {
             order: "order",
         },
         gridComplete: function () {
-            //隐藏grid底部滚动条
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         },
         onSelectRow: function () {
-            //返回选中的id
             let selectedRowIndex = $("#" + this.id).getGridParam('selrow');
-            //返回点击这行xlmc的值
             window.open("/goods-details.html?id=" + selectedRowIndex);
         },
     });
 
-    // 搜索功能
     $("#searchButton").click(function(){
-        let searchEmail = $("#searchInput").val(); //获取输入框的值
+        let searchEmail = $("#searchInput").val();
         $("#jqGrid").jqGrid('setGridParam',{
-            postData: {'keyword': searchEmail}, //设置postData参数
+            postData: {'keyword': searchEmail},
             page: 1
-        }).trigger("reloadGrid"); //重新加载JqGrid
+        }).trigger("reloadGrid");
     });
 
     $(window).resize(function () {
@@ -68,9 +61,7 @@ $(function () {
     });
 });
 
-/**
- * jqGrid 重新加载
- */
+
 function reload() {
     let page = $("#jqGrid").jqGrid('getGridParam', 'page');
     $("#jqGrid").jqGrid('setGridParam', {

@@ -32,7 +32,6 @@ function validLength(obj, length) {
 
 
 /**
- * 获取jqGrid选中的一条记录
  * @returns {*}
  */
 function getSelectedRow() {
@@ -56,7 +55,6 @@ function getSelectedRow() {
 
 
 /**
- * 获取jqGrid选中的多条记录
  * @returns {*}
  */
 function getSelectedRows() {
@@ -93,7 +91,6 @@ function toggleDisplay(elementId, displayStyle) {
 }
 
 /**
- * 获取url参数
  * @param name
  * @returns {null|string}
  */
@@ -108,7 +105,6 @@ function getQueryParam(name) {
 }
 
 /**
- * 判断是否为空
  * @param obj
  * @returns {boolean}
  */

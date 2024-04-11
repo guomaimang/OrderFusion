@@ -3,7 +3,6 @@ let stock;
 function contentsPreparation()
 {
     let id = getQueryParam("id");
-    //请求数据
     $.ajax({
         url: "/goods/info",
         type: 'GET',
@@ -11,12 +10,10 @@ function contentsPreparation()
             id: id
         },
         beforeSend: function (request) {
-            //设置header值
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         success: function (r) {
             if (r.code === 0 && r.data != null) {
-                //填充数据
                 $('#goodsId').val(r.data.id);
                 $('#goodsName').val(r.data.name);
                 $('#goodsTitle').val(r.data.title);
@@ -30,7 +27,6 @@ function contentsPreparation()
             }
         },
         error: function (request, status, error) {
-            //处理错误
             console.log("Error: " + error);
         }
     });
@@ -39,11 +35,9 @@ function contentsPreparation()
 
 
 function submitButtonClick() {
-    // 获取表单数据
     let goodsId = $("#goodsId").val();
     let goodsAmount = $("#goodsAmount").val();
 
-    //验证数据
     if (goodsAmount == null || goodsAmount <=0 || goodsAmount > stock) {
         alert("Please enter the correct quantity!");
         return;
@@ -53,7 +47,6 @@ function submitButtonClick() {
         return;
     }
 
-    // 将即将发送数据封装为Json, 和 Pojo 对应
     let data = {
         "goodsId": goodsId,
         "goodsAmount": goodsAmount,
@@ -65,15 +58,13 @@ function submitButtonClick() {
     document.getElementById("submitButton").disabled = true;
     document.getElementById("submitButton").innerHTML = "Submitting...";
 
-    // 执行方法
     $.ajax({
-        type: method,           //方法类型
-        dataType: "json",       //预期服务器返回的数据类型
-        url: url,               //url
+        type: method,
+        dataType: "json",
+        url: url,
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(data),
         beforeSend: function (request) {
-            //设置header值
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
             request.setRequestHeader("recaptchaToken", grecaptcha.getResponse());
         },

@@ -2,12 +2,12 @@ function contentsPreparation(){
     let id = getQueryParam("id");
 
     $.ajax({
-        type: "GET",           //方法类型
-        dataType: "json",       //预期服务器返回的数据类型
+        type: "GET",
+        dataType: "json",
         url: "/admin/order/info/"+id,     //url
         contentType: "application/json; charset=utf-8",
         beforeSend: function (request) {
-            //设置header值
+
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         success: function (r) {

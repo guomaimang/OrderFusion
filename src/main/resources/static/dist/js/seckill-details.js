@@ -11,7 +11,7 @@ let purchaseLimitNum;
 function contentsPreparation(){
     id = getQueryParam("id");
 
-    //请求数据
+    
     $.ajax({
         url: "/seckill/info",
         type: "GET",
@@ -19,12 +19,12 @@ function contentsPreparation(){
             id: id
         },
         beforeSend: function (request) {
-            //设置header值
+            
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         success: function(r) {
             if (r.code === 0 && r.data != null) {
-                // 获取数据
+                
                 id = r.data.id;
                 goodsId = r.data.goodsId;
                 title = r.data.title;
@@ -35,7 +35,7 @@ function contentsPreparation(){
                 isAvailable = r.data.isAvailable;
                 purchaseLimitNum = r.data.purchaseLimitNum;
 
-                //填充数据
+                
                 $('#seckill-id').text(id);
                 $('#seckill-title').text(title);
                 $('#seckill-goodsId').text(goodsId);
@@ -56,7 +56,7 @@ function contentsPreparation(){
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            // handle error
+            
             console.error("AJAX Error: ", textStatus, errorThrown);
         }
     });
@@ -77,10 +77,8 @@ function calculatePrice(){
 }
 
 function submitOrderButtonClick() {
-    // 获取表单数据
     let goodsAmount = $("#goodsAmount").val();
 
-    //验证数据
     if (goodsAmount == null || goodsAmount <=0 || goodsAmount > seckillStock || goodsAmount > purchaseLimitNum) {
         swal("Please enter the correct quantity!", {
             icon: "warning",
@@ -94,7 +92,6 @@ function submitOrderButtonClick() {
         return;
     }
 
-    // 将即将发送数据封装为Json, 和 Pojo 对应
     let data = {
         "seckillEventId": id,
         "goodsAmount": goodsAmount,
@@ -106,15 +103,13 @@ function submitOrderButtonClick() {
     document.getElementById("submitOrderButton").disabled = true;
     document.getElementById("submitOrderButton").innerHTML = "Submitting...";
 
-    // 执行方法
     $.ajax({
-        type: method,           //方法类型
-        dataType: "json",       //预期服务器返回的数据类型
-        url: url,               //url
+        type: method,
+        dataType: "json",
+        url: url,
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(data),
         beforeSend: function (request) {
-            //设置header值
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
             request.setRequestHeader("recaptchaToken", grecaptcha.getResponse());
         },
@@ -177,23 +172,23 @@ function countTime(){
         let countdown = document.getElementById("countdown");
 
         if (now < start) {
-            // 秒杀还未开始，显示距离开始的倒计时
-            let diff = Math.floor((start - now) / 1000);  // 剩余的秒数
+            
+            let diff = Math.floor((start - now) / 1000);  
             let hours = Math.floor(diff / 3600);
             let minutes = Math.floor(diff % 3600 / 60);
             let seconds = Math.floor(diff % 60);
 
             countdown.innerText = 'Countdown to start: ' + hours + ':' + minutes + ':' + seconds;
         } else if (now < end) {
-            // 秒杀已经开始，但还未结束，显示距离结束的倒计时，并使按钮可用
-            let diff = Math.floor((end - now) / 1000);  // 剩余的秒数
+            
+            let diff = Math.floor((end - now) / 1000);  
             let hours = Math.floor(diff / 3600);
             let minutes = Math.floor(diff % 3600 / 60);
             let seconds = Math.floor(diff % 60);
             countdown.innerText = 'Countdown to end：' + hours + ':' + minutes + ':' + seconds;
             submitOrderButton.disabled = false;
         } else {
-            // 秒杀已经结束，使按钮不可用
+            
             countdown.innerText = 'The seckill was over!';
             submitOrderButton.disabled = true;
         }

@@ -1,37 +1,27 @@
 let editorD;
 
 $(function () {
-    //富文本编辑器
     const E = window.wangEditor;
     editorD = new E('#wangEditor')
-    // 设置编辑区域高度为 400px
     editorD.config.height = 260
-    //配置服务端图片上传地址
     editorD.config.uploadImgServer = 'images/upload'
     editorD.config.uploadFileName = 'file'
-    //限制图片大小 2M
     editorD.config.uploadImgMaxSize = 2 * 1024 * 1024
-    //限制一次最多能传几张图片 一次最多上传 1 个图片
     editorD.config.uploadImgMaxLength = 1
-    //插入网络图片的功能
     editorD.config.showLinkImg = true
     editorD.create();
 
-
-    //隐藏错误提示框
     $('.alert-danger').css("display", "none");
 
     $('#goodsModal').modal('hide');
 
     $("#jqGrid").jqGrid({
-        // 设置API
         url: 'goods/list',
         loadBeforeSend: function(jqXHR) {
             jqXHR.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         datatype: "json",
         colModel: [
-            // 设置列表表头
             {label: 'ID', name: 'id', index: 'id', width: 30, key: true, hidden: false},
             {label: 'Name', name: 'name', index: 'name', width: 60},
             {label: 'Title', name: 'title', index: 'title', width: 150},
@@ -61,18 +51,16 @@ $(function () {
             order: "order",
         },
         gridComplete: function () {
-            //隐藏grid底部滚动条
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         },
     });
 
-    // 搜索功能
     $("#searchButton").click(function(){
-        let searchEmail = $("#searchInput").val(); //获取输入框的值
+        let searchEmail = $("#searchInput").val();
         $("#jqGrid").jqGrid('setGridParam',{
-            postData: {'keyword': searchEmail}, //设置postData参数
+            postData: {'keyword': searchEmail},
             page: 1
-        }).trigger("reloadGrid"); //重新加载JqGrid
+        }).trigger("reloadGrid");
     });
 
     $(window).resize(function () {
@@ -80,9 +68,7 @@ $(function () {
     });
 });
 
-/**
- * 数据验证
- */
+
 function validObject() {
     let name = $('#modal-name').val();
     if (isNull(name))  {
@@ -139,10 +125,7 @@ function validObject() {
     return true;
 }
 
-/**
- * 重置 modal 表单数据
- */
-// Grid 顶部的操作按钮
+
 function addGoods() {
     reset();
     $('.modal-title').html('Add');
@@ -156,7 +139,7 @@ function editGoods() {
     if (id == null) {
         return;
     }
-    //请求数据
+
     $.ajax({
         url: "/goods/info",
         type: "GET",
@@ -164,12 +147,11 @@ function editGoods() {
             id: id
         },
         beforeSend: function (request) {
-            //设置header值
+
             request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         success: function (r) {
             if (r.code === 0 && r.data != null) {
-                //填充数据 至 modal
                 $('#modal-id').val(r.data.id);
                 $('#modal-name').val(r.data.name);
                 $('#modal-title').val(r.data.title);
@@ -187,7 +169,7 @@ function editGoods() {
     });
 
 
-    //显示 modal
+
     $('#goodsModal').modal('show');
 }
 function previewGoods() {
@@ -198,14 +180,9 @@ function previewGoods() {
     window.open("/goods-details.html?id=" + id);
 }
 
-//绑定 modal 表单上的 SAVE 按钮
 $('#saveButton').click(async function () {
-    //验证数据
     if (validObject()) {
 
-        // Ajax 发送网络请求
-
-        // 获取表单数据
         let id = $("#modal-id").val();
         let name = $("#modal-name").val();
         let title = $("#modal-title").val();
@@ -215,7 +192,6 @@ $('#saveButton').click(async function () {
         let isAvailable = $("#modal-isAvailable").val();
         let description = editorD.txt.html();
 
-        // 将即将发送数据封装为Json, 和 Pojo 对应
         let data = {
             "id": id,
             "name": name,
@@ -230,25 +206,21 @@ $('#saveButton').click(async function () {
         let url;
         let method;
 
-        // 表示新增操作
         if (id === null || id === "" || id === undefined || id < 0) {
             url = 'admin/goods/add';
             method = 'POST';
         }else {
-            // id>=0表示编辑操作
             url = 'admin/goods/edit';
             method = 'PUT';
         }
 
-        // 执行方法
         $.ajax({
-            type: method,           //方法类型
-            dataType: "json",       //预期服务器返回的数据类型
-            url: url,               //url
+            type: method,
+            dataType: "json",
+            url: url,
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             beforeSend: function (request) {
-                //设置header值
                 request.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
             },
             success: function (r) {
@@ -276,9 +248,7 @@ $('#saveButton').click(async function () {
 });
 
 function reset() {
-    //隐藏错误提示框
     $('.alert-danger').css("display", "none");
-    //清空数据
     $('#modal-id').val('');
     $('#modal-name').val('');
     $('#modal-title').val('');
@@ -288,9 +258,7 @@ function reset() {
     $('#modal-isAvailable').val(1);
     editorD.txt.html('');
 }
-/**
- * jqGrid 重新加载
- */
+
 function reload() {
     reset();
     let page = $("#jqGrid").jqGrid('getGridParam', 'page');
@@ -299,10 +267,7 @@ function reload() {
     }).trigger("reloadGrid");
 }
 
-/**
- * jqGrid isFrozen formatter
- * @returns {string}
- */
+
 function priceFormatter(cellValue) {
     return "HKD " + cellValue;
 }

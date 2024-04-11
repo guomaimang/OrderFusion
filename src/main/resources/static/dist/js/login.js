@@ -25,7 +25,6 @@ function prepareSSOLink(){
 
 
 /**
- * 用户名称验证,限制输入为邮箱
  *
  * @param email
  * @returns {boolean}
@@ -36,7 +35,6 @@ function validUserName(email) {
 }
 
 /**
- * 用户密码验证 最少6位，最多20位字母或数字的组合
  *
  * @param password
  * @returns {boolean}
@@ -78,14 +76,13 @@ async function login() {
 
     let data = {"email": email, "password":await sha256(password)};
     $.ajax({
-        type: "POST",//方法类型
-        dataType: "json",//预期服务器返回的数据类型
+        type: "POST",
+        dataType: "json",
         url: "userauth/login",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(data),
 
         beforeSend: function (request) {
-            //设置header值
             request.setRequestHeader("recaptchaToken", grecaptcha.getResponse());
         },
 

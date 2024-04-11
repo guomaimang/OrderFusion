@@ -2,18 +2,15 @@ function contentsPreparation(){
 
     $(function () {
 
-        //隐藏错误提示框
         $('.alert-danger').css("display", "none");
 
         $("#jqGrid").jqGrid({
-            // 设置API
             url: '/seckill/list',
             loadBeforeSend: function(jqXHR) {
                 jqXHR.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
             },
             datatype: "json",
             colModel: [
-                // 设置列表表头
                 {label: 'ID', name: 'id', index: 'id', width: 30, key: true},
                 {label: 'Goods ID', name: 'goodsId', index: 'goodsId', width: 30},
                 {label: 'Title', name: 'title', index: 'title', width: 60},
@@ -46,18 +43,14 @@ function contentsPreparation(){
                 order: "order",
             },
             gridComplete: function () {
-                //隐藏grid底部滚动条
                 $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
             },
             onSelectRow: function () {
-                //返回选中的id
                 let selectedRowIndex = $("#" + this.id).getGridParam('selrow');
-                //返回点击这行xlmc的值
                 window.open("/seckill-details.html?id=" + selectedRowIndex);
             },
         });
 
-        // 搜索功能
         $("#searchButton").click(function(){
             let keyword = $("#searchInput").val(); //获取输入框的值
             $("#jqGrid").jqGrid('setGridParam',{
@@ -72,9 +65,7 @@ function contentsPreparation(){
     });
 }
 
-/**
- * jqGrid 重新加载
- */
+
 function reload() {
     let page = $("#jqGrid").jqGrid('getGridParam', 'page');
     $("#jqGrid").jqGrid('setGridParam', {

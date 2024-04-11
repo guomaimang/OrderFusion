@@ -1,19 +1,16 @@
 $(function () {
 
-    //隐藏错误提示框
     $('.alert-danger').css("display", "none");
 
     $('#goodsModal').modal('hide');
 
     $("#jqGrid").jqGrid({
-        // 设置API
         url: '/order/list',
         loadBeforeSend: function(jqXHR) {
             jqXHR.setRequestHeader("jwt", window.localStorage.getItem("jwt"));
         },
         datatype: "json",
         colModel: [
-            // 设置列表表头
             {label: 'Order ID', name: 'id', index: 'id', width: 10, key: true, hidden: false},
             {label: 'User ID', name: 'userId', index: 'userId', width: 10},
             {label: 'Goods ID', name: 'goodsId', index: 'goodsId', width: 10},
@@ -46,18 +43,14 @@ $(function () {
             order: "order",
         },
         gridComplete: function () {
-            //隐藏grid底部滚动条
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         },
         onSelectRow: function () {
-            //返回选中的id
             let selectedRowIndex = $("#" + this.id).getGridParam('selrow');
-            //返回点击这行xlmc的值
             window.open("/order-details.html?id=" + selectedRowIndex);
         },
     });
 
-    // 搜索功能
     $("#applyButton").click(function(){
         let searchName = $("#searchName").val();
         let selectStatus = $("#selectStatus").val();
@@ -68,9 +61,9 @@ $(function () {
                 'searchName': searchName,
                 'selectStatus': selectStatus,
                 'selectChannel': selectChannel
-            }, //设置postData参数
+            },
             page: 1
-        }).trigger("reloadGrid"); //重新加载JqGrid
+        }).trigger("reloadGrid");
     });
 
     $(window).resize(function () {
@@ -78,9 +71,7 @@ $(function () {
     });
 });
 
-/**
- * jqGrid 重新加载
- */
+
 function reload() {
     reset();
     let page = $("#jqGrid").jqGrid('getGridParam', 'page');
