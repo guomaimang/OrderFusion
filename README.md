@@ -9,5 +9,3 @@ To address the potential challenges in seckill operation, this project aims to b
 The system adopts intelligent design thinking, introduces queuing and caching mechanisms, and is equipped with enhanced security threat prevention capabilities and clear business operation management functions. In addition, the project also provides a series of add-on solutions, such as OPENAI-based Chatbot combined with workflow automation, blockchain logging capabilities and single-point authentication.
 
 ![CleanShot 2024-04-01 at 23 33 56@2x](https://github.com/guomaimang/OrderFusion/assets/47519540/a02277a8-1593-419f-8b76-88dcaa495968)
-
-@[HK PolyU](https://comp.polyu.edu.hk/) @[Microsoft Learn Student Ambassadors](https://mvp.microsoft.com/studentambassadors)
